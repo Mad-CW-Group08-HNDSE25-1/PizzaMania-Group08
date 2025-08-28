@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">PizzaMania</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="branch_name">Branch Name</string>
+    <string name="branch_address">Branch Address</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="set_location_on_map">Set Location on map</string>
+    <string name="save_branch">Save Branch</string>
+    <string name="update_branch">Update Branch</string>
+    <string name="delete_branch">Delete Branch</string>
 </resources>
