@@ -9,4 +9,6 @@
     <string name="save_branch">Save Branch</string>
     <string name="update_branch">Update Branch</string>
     <string name="delete_branch">Delete Branch</string>
+    <string name="enter_nearest_city">Enter nearest City</string>
+    <string name="confirm_location">Confirm Location</string>
 </resources>
