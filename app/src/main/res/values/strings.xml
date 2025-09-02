@@ -18,4 +18,6 @@
     <string name="mm_yy">MM/YY</string>
     <string name="cvv">CVV</string>
     <string name="place_order">Place Order</string>
+    <string name="type_a_message">type a message</string>
+    <string name="send">Send</string>
 </resources>
