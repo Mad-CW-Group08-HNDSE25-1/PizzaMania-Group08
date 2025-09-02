@@ -31,7 +31,6 @@
             android:id="@+id/sendBtn"
             android:text="@string/send"/>
 
-
     </LinearLayout>
 
 </RelativeLayout>
