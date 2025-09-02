@@ -11,4 +11,11 @@
     <string name="delete_branch">Delete Branch</string>
     <string name="enter_nearest_city">Enter nearest City</string>
     <string name="confirm_location">Confirm Location</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="card_payment">Card Payment</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="mm_yy">MM/YY</string>
+    <string name="cvv">CVV</string>
+    <string name="place_order">Place Order</string>
 </resources>
