@@ -6,6 +6,7 @@
     android:padding="10dp"
     android:layout_gravity="start"
     android:layout_margin="4dp"
-    android:textColor="@color/black">
+    android:textColor="@color/black"
+    android:background="@drawable/bot_chat_bubble">
 
 </TextView>
