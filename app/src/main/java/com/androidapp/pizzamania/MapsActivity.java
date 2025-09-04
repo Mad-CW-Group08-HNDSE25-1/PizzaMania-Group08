@@ -95,12 +95,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void searchLocation(){
-        String enteredLocation = txtSearch.getText().toString();
+        String enteredLocation = txtSearch.getText().toString().trim();
         if (enteredLocation.isEmpty()) {
+            Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        if (!Geocoder.isPresent()) {
+            Toast.makeText(this, "Location service is not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try {
 
             List<Address> addressList = geocoder.getFromLocationName(enteredLocation + ", Sri Lanka", 1);
@@ -111,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(searchedLatLang).title(enteredLocation));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLang, 10));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLang, 15));
             }else {
                 Toast.makeText(this, "Invalid Location", Toast.LENGTH_SHORT).show();
             }
