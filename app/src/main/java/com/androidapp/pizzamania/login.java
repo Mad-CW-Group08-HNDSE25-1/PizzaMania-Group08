@@ -1,6 +1,12 @@
 package com.androidapp.pizzamania;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +15,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class login extends AppCompatActivity {
+    private Button loginBtn;
+    private TextView forgotPwdBtn;
+
+    private TextView signupBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +29,33 @@ public class login extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        loginBtn = findViewById(R.id.btnLogin);
+        forgotPwdBtn = findViewById(R.id.forgotPwd);
+        signupBtn = findViewById(R.id.signup);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login.this, signup.class));
+            }
+        });
+
+
+        forgotPwdBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login.this, forgot_pwd.class));
+            }
+        });
+
+
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login.this, signup.class));
+            }
         });
     }
 }
