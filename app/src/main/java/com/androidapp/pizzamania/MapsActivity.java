@@ -1,10 +1,14 @@
 package com.androidapp.pizzamania;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -12,11 +16,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.androidapp.pizzamania.databinding.ActivityMapsBinding;
 
@@ -30,6 +37,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private EditText txtSearch;
     private Button btnSearch;
     private LatLng searchedLatLang;
+    private int locationPermissionId;
+    private LatLng currentLatLang;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +51,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         txtSearch = findViewById(R.id.search_bar);
         btnSearch = findViewById(R.id.btnConfirm);
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        if(mapFragment != null){
+        if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
 
@@ -57,13 +70,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         btnSearch.setOnClickListener(v -> {
-            if (searchedLatLang != null){
-                Intent addBranchIntent = new Intent();
-                addBranchIntent.putExtra("lat", searchedLatLang.latitude);
-                addBranchIntent.putExtra("long", searchedLatLang.longitude);
-                setResult(RESULT_OK, addBranchIntent);
-                finish();
-            }else{
+
+            if (searchedLatLang == null){
+                searchLocation();
+            }
+
+            if (searchedLatLang != null) {
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLang, 15));
+
+                Toast.makeText(this, "Getting Location ...", Toast.LENGTH_SHORT).show();
+
+                new android.os.Handler().postDelayed(() -> {
+                    Intent addBranchIntent = new Intent();
+                    addBranchIntent.putExtra("lat", searchedLatLang.latitude);
+                    addBranchIntent.putExtra("long", searchedLatLang.longitude);
+                    setResult(RESULT_OK, addBranchIntent);
+                    finish();
+                }, 5000);
+
+            } else {
                 Toast.makeText(this, "Please Select a Location", Toast.LENGTH_SHORT).show();
             }
         });
@@ -83,18 +109,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
 
-        LatLng colombo = new LatLng(6.9271, 79.8612);
-        mMap.addMarker(new MarkerOptions().position(colombo).title("Marker in colombo"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(colombo, 10));
+            mMap.setMyLocationEnabled(true);
+
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(currentLocation -> {
+                if (currentLocation != null){
+
+                    currentLatLang = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(currentLatLang).title("Current Location"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLang, 10));
+                }
+            });
+        }else {
+            getPermission();
+        }
 
     }
 
-    private void searchLocation(){
+    private void searchLocation() {
         String enteredLocation = txtSearch.getText().toString().trim();
         if (enteredLocation.isEmpty()) {
             Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
@@ -118,8 +151,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(searchedLatLang).title(enteredLocation));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(searchedLatLang, 15));
-            }else {
+
+                LatLngBounds bounds = new LatLngBounds.Builder().include(currentLatLang).include(searchedLatLang).build();
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150), 2000, null);
+                currentLatLang = searchedLatLang;
+            } else {
                 Toast.makeText(this, "Invalid Location", Toast.LENGTH_SHORT).show();
             }
 
@@ -127,5 +164,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ioException.printStackTrace();
             Toast.makeText(this, "Error Finding Location", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+        }, locationPermissionId);
     }
 }
