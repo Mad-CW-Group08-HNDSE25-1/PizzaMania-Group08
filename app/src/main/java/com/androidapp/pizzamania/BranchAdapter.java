@@ -84,6 +84,16 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
 
             }
         });
+
+        holder.updateBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AddBranchActivity.class);
+            intent.putExtra("branchKey", branchesDTO.getKey());
+            intent.putExtra("branchName", branchesDTO.getBranchName());
+            intent.putExtra("branchAddress", branchesDTO.getBranchAddress());
+            intent.putExtra("lat", branchesDTO.getLatitude());
+            intent.putExtra("lng", branchesDTO.getLongitude());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -91,10 +101,12 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
         return branchesList != null ? branchesList.size() :  0;
     }
 
-    static class BranchViewHolder extends RecyclerView.ViewHolder {
+    static class BranchViewHolder extends RecyclerView.ViewHolder { ;
         TextView txtBranchName;
         TextView txtBranchAddress;
         Button btnViewLocation;
+
+        Button updateBtn;
         Button btnDelete;
 
         BranchViewHolder(@NonNull View itemView) {
@@ -102,6 +114,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
             txtBranchName = itemView.findViewById(R.id.txtBranchName);
             txtBranchAddress = itemView.findViewById(R.id.txtBranchAddress);
             btnViewLocation = itemView.findViewById(R.id.btnViewLocation);
+            updateBtn = itemView.findViewById(R.id.btnUpdateBranch);
             btnDelete = itemView.findViewById(R.id.btnDeleteBranch);
         }
     }

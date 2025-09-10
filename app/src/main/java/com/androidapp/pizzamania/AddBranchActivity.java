@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -29,8 +30,10 @@ public class AddBranchActivity extends AppCompatActivity {
     private EditText eLatitude;
     private EditText eLongitude;
     private EditText eBranchName;
-    private  EditText eBranchAddress;
+    private EditText eBranchAddress;
     private FirebaseDatabase firebaseDatabase;
+
+    private String branchKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +56,28 @@ public class AddBranchActivity extends AppCompatActivity {
             Intent intent = new Intent(AddBranchActivity.this, MapsActivity.class);
             startActivityForResult(intent, 200);
         });
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("branchKey")) {
+            this.branchKey = intent.getStringExtra("branchKey");
+            eBranchName.setText(intent.getStringExtra("branchName"));
+            eBranchAddress.setText(intent.getStringExtra("branchAddress"));
+            eLatitude.setText(String.valueOf(intent.getDoubleExtra("lat", 0)));
+            eLongitude.setText(String.valueOf(intent.getDoubleExtra("lng", 0)));
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == 200) && (resultCode == RESULT_OK) &&( data != null)){
+        if ((requestCode == 200) && (resultCode == RESULT_OK) && (data != null)) {
             eLongitude.setText(String.valueOf(data.getDoubleExtra("long", 0)));
             eLatitude.setText(String.valueOf(data.getDoubleExtra("lat", 0)));
         }
     }
 
-    public void addBranches(View v){
+    public void addBranches(View v) {
 
         HashMap<String, Object> branchHashMap = new HashMap<>();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -74,43 +86,109 @@ public class AddBranchActivity extends AppCompatActivity {
 
         String branchName = eBranchName.getText().toString();
         String branchAddress = eBranchAddress.getText().toString();
-        double latitude = Double.parseDouble(eLatitude.getText().toString());
-        double longitude = Double.parseDouble(eLongitude.getText().toString());
+        String latitude = eLatitude.getText().toString();
+        String longitude = eLongitude.getText().toString();
 
-        if (branchName.trim().isEmpty()){
+        if (branchName.trim().isEmpty()) {
             Toast.makeText(this, "Please Enter the Branch Name", Toast.LENGTH_SHORT).show();
         } else if (branchAddress.trim().isEmpty()) {
             Toast.makeText(this, "Please Enter the Branch Address", Toast.LENGTH_SHORT).show();
         } else if (String.valueOf(latitude).trim().isEmpty()) {
             Toast.makeText(this, "Please Select a Location", Toast.LENGTH_SHORT).show();
-        }else if (String.valueOf(longitude).trim().isEmpty()) {
+        } else if (String.valueOf(longitude).trim().isEmpty()) {
             Toast.makeText(this, "Please Select a Location", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
 
-            branchHashMap.put("key", key);
-            branchHashMap.put("branchName", branchName);
-            branchHashMap.put("branchAddress", branchAddress);
-            branchHashMap.put("latitude", latitude);
-            branchHashMap.put("longitude", longitude);
+            double dblLatitude = Double.parseDouble(latitude);
+            double dblLongitude = Double.parseDouble(longitude);
 
-            assert key != null;
-            branchReference.child(key).setValue(branchHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+            new AlertDialog.Builder(this).setTitle("Insert Branch").setMessage("Are All the details correct")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        branchHashMap.put("key", key);
+                        branchHashMap.put("branchName", branchName);
+                        branchHashMap.put("branchAddress", branchAddress);
+                        branchHashMap.put("latitude", dblLatitude);
+                        branchHashMap.put("longitude", dblLongitude);
 
-                    eBranchName.getText().clear();
-                    eBranchAddress.getText().clear();
-                    eLatitude.getText().clear();
-                    eLongitude.getText().clear();
+                        assert key != null;
+                        branchReference.child(key).setValue(branchHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
-                    Toast.makeText(AddBranchActivity.this, "Branch Added Successfully", Toast.LENGTH_SHORT).show();
-                }
-            });
+                                eBranchName.getText().clear();
+                                eBranchAddress.getText().clear();
+                                eLatitude.getText().clear();
+                                eLongitude.getText().clear();
+
+                                Toast.makeText(AddBranchActivity.this, "Branch Added Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                        dialog.dismiss();
+                    }).show();
 
         }
     }
 
-    public void viewBranchBtnOnclick(View view){
+    public void updateBranches(View v) {
+
+        HashMap<String, Object> upBranchHashMap = new HashMap<>();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference branchReference = firebaseDatabase.getReference("branches");
+        String key = this.branchKey;
+
+        String branchName = eBranchName.getText().toString();
+        String branchAddress = eBranchAddress.getText().toString();
+        String latitude = eLatitude.getText().toString();
+        String longitude = eLongitude.getText().toString();
+
+        if (!key.isEmpty()) {
+            if (branchName.trim().isEmpty()) {
+                Toast.makeText(this, "Please Enter the Branch Name", Toast.LENGTH_SHORT).show();
+            } else if (branchAddress.trim().isEmpty()) {
+                Toast.makeText(this, "Please Enter the Branch Address", Toast.LENGTH_SHORT).show();
+            } else if (String.valueOf(latitude).trim().isEmpty()) {
+                Toast.makeText(this, "Please Select a Location", Toast.LENGTH_SHORT).show();
+            } else if (String.valueOf(longitude).trim().isEmpty()) {
+                Toast.makeText(this, "Please Select a Location", Toast.LENGTH_SHORT).show();
+            } else {
+
+                double dblLatitude = Double.parseDouble(latitude);
+                double dblLongitude = Double.parseDouble(longitude);
+
+                new AlertDialog.Builder(this).setTitle("Update Branch").setMessage("Do you want to Update this branch")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            upBranchHashMap.put("branchName", branchName);
+                            upBranchHashMap.put("branchAddress", branchAddress);
+                            upBranchHashMap.put("latitude", dblLatitude);
+                            upBranchHashMap.put("longitude", dblLongitude);
+
+                            branchReference.child(key).updateChildren(upBranchHashMap)
+                                    .addOnSuccessListener(successVoid -> {
+
+                                        eBranchName.getText().clear();
+                                        eBranchAddress.getText().clear();
+                                        eLatitude.getText().clear();
+                                        eLongitude.getText().clear();
+
+                                        Toast.makeText(this, "Update Successfully", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(exception -> {
+                                        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+                                    });
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            dialog.dismiss();
+                        }).show();
+
+            }
+        } else {
+            Toast.makeText(this, "Branch key is missing cannot update", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void viewBranchBtnOnclick(View view) {
         Intent viewBranchIntent = new Intent(AddBranchActivity.this, ViewBranches.class);
         startActivity(viewBranchIntent);
     }
