@@ -16,10 +16,7 @@
        android:layout_height="match_parent"
        android:padding="12dp"
        android:layout_above="@id/fabAddBranch"
-       android:id="@+id/recyclerViewBranches">
-
-
-   </androidx.recyclerview.widget.RecyclerView>
+       android:id="@+id/recyclerViewBranches"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

@@ -89,9 +89,9 @@ public class AddBranchActivity extends AppCompatActivity {
 
             branchHashMap.put("key", key);
             branchHashMap.put("branchName", branchName);
-            branchHashMap.put("branchAddress", branchName);
-            branchHashMap.put("latitude", branchName);
-            branchHashMap.put("longitude", branchName);
+            branchHashMap.put("branchAddress", branchAddress);
+            branchHashMap.put("latitude", latitude);
+            branchHashMap.put("longitude", longitude);
 
             assert key != null;
             branchReference.child(key).setValue(branchHashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
