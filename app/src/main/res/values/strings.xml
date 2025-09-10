@@ -8,7 +8,7 @@
     <string name="set_location_on_map">Set Location on map</string>
     <string name="save_branch">Save Branch</string>
     <string name="update_branch">Update Branch</string>
-    <string name="delete_branch">Delete Branch</string>
+    <string name="view_branch">View Branches</string>
     <string name="enter_nearest_city">Enter nearest City</string>
     <string name="confirm_location">Confirm Location</string>
     <string name="cash_on_delivery">Cash On Delivery</string>
@@ -20,4 +20,7 @@
     <string name="place_order">Place Order</string>
     <string name="type_a_message">type a message</string>
     <string name="send">Send</string>
+    <string name="view_location">View Location</string>
+    <string name="delete_branch">Delete Branch</string>
+    <string name="add_branch">Add Branch</string>
 </resources>
