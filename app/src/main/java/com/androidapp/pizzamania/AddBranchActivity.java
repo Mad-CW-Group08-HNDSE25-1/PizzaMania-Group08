@@ -109,4 +109,9 @@ public class AddBranchActivity extends AppCompatActivity {
 
         }
     }
+
+    public void viewBranchBtnOnclick(View view){
+        Intent viewBranchIntent = new Intent(AddBranchActivity.this, ViewBranches.class);
+        startActivity(viewBranchIntent);
+    }
 }

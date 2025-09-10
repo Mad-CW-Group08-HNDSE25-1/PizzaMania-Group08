@@ -11,54 +11,15 @@
     android:elevation="2dp"
     android:orientation="vertical">
 
-   <LinearLayout
+   <androidx.recyclerview.widget.RecyclerView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
+       android:layout_height="match_parent"
        android:padding="12dp"
-       android:background="@color/white"
-       android:layout_marginTop="0dp"
-       android:elevation="2dp">
+       android:layout_above="@id/fabAddBranch"
+       android:id="@+id/recyclerViewBranches">
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:id="@+id/txtBranchName"
-           android:text="@string/branch_name"
-           android:textSize="18sp"
-           android:textStyle="bold"/>
 
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/branch_address"
-           android:textSize="14sp"
-           android:layout_marginTop="4dp"
-           android:textStyle="bold"/>
-
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="horizontal"
-           android:layout_marginTop="8dp">
-
-           <Button
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               android:id="@+id/btnViewLocation"
-               android:text="@string/view_location"/>
-
-           <Button
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               android:id="@+id/btnDeleteBranch"
-               android:text="@string/delete_branch"/>
-
-       </LinearLayout>
-
-   </LinearLayout>
+   </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
