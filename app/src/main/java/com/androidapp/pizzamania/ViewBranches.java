@@ -102,5 +102,9 @@ public class ViewBranches extends AppCompatActivity {
         });
     }
 
+    public void fabButtonOnClick(View v){
+        Intent addBranchIntent = new Intent(ViewBranches.this, AddBranchActivity.class);
+        startActivity(addBranchIntent);
+    }
 
 }
