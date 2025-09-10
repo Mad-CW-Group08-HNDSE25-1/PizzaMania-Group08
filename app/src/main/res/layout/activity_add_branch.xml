@@ -63,8 +63,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/delete_branch"
-            android:id="@+id/btnDeleteBranch"/>
+            android:text="@string/view_branch"
+            android:id="@+id/btnViewBranches"/>
 
 
     </LinearLayout>
