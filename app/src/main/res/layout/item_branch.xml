@@ -39,6 +39,13 @@
             android:text="@string/view_location" />
 
         <Button
+            android:id="@+id/btnUpdateBranch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/update_branch" />
+
+        <Button
             android:id="@+id/btnDeleteBranch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
