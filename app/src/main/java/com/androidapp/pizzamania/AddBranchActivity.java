@@ -21,4 +21,9 @@ public class AddBranchActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+    public void viewBranchBtnOnclick(View view){
+        Intent viewBranchIntent = new Intent(AddBranchActivity.this, ViewBranches.class);
+        startActivity(viewBranchIntent);
+    }
 }

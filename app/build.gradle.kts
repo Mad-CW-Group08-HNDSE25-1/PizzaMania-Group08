@@ -44,6 +44,13 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.play.services.maps)
+<<<<<<< HEAD
+=======
+    implementation(libs.play.services.maps.v1810)
+    implementation(libs.play.services.location)
+    implementation(libs.firebase.bom)
+    implementation(libs.google.firebase.database)
+>>>>>>> a936cfd (Changed the activity_view_branch to recycler view and created the item_branch.xml)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
