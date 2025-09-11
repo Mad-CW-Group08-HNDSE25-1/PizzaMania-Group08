@@ -3,6 +3,7 @@ package com.androidapp.pizzamania;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,13 +15,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.androidapp.pizzamania.controller.AuthController;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private Button btnLogin;
     private TextView linkRegister;
-    private FirebaseAuth auth;
+    private AuthController authController;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        auth = FirebaseAuth.getInstance();
+        authController = new AuthController();
 
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
@@ -49,22 +51,20 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show();
                 return;
             }
-            signIn(email, pass);
+            authController.login(email, pass)
+                    .addOnSuccessListener(aVoid -> {
+                        startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
+                        Log.d("Error", "Login failed"+e);
+                    });
         });
 
         linkRegister.setOnClickListener(view -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
-    }
-
-    private void signIn(String email, String pass) {
-        auth.signInWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
-            startActivity(new Intent(LoginActivity.this, SplashActivity.class));
-            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-            finish();
-        })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
-                });
     }
 }

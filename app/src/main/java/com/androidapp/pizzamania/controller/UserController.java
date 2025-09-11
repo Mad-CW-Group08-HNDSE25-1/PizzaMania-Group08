@@ -109,4 +109,26 @@ public class UserController {
                 });
     }
 
+    public Task<String> getUserBranchById(String id) {
+        DocumentReference userDoc = db.collection("users").document(id);
+
+        return userDoc.get()
+                .continueWith(task -> {
+                    if(!task.isSuccessful()){
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc != null && doc.exists()) {
+                        User user = doc.toObject(User.class);
+                        if (user != null) {
+                            user.setId(doc.getId());
+                            String branch = user.getBranch();
+                            return branch;
+                        }
+                    }
+                    return null;
+                });
+    }
+
+
 }

@@ -58,27 +58,14 @@ public class AuthController {
                 });
     }
 
-    public Task<Void> registerManager(String name, String phone, String email, String pass){
+    public Task<Void> registerUser(String name, String phone, String role, String email, String pass){
         return auth.createUserWithEmailAndPassword(email, pass)
                 .continueWithTask(task -> {
                     if(!task.isSuccessful()){
                         throw Objects.requireNonNull(task.getException());
                     }
                     String uid = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    User user = new User(name, email, phone, "manager");
-
-                    return userController.createUser(uid, user);
-                });
-    }
-
-    public Task<Void> registerAdmin(String name, String phone, String email, String pass){
-        return auth.createUserWithEmailAndPassword(email, pass)
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    String uid = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    User user = new User(name, email, phone, "admin");
+                    User user = new User(name, email, phone, role);
 
                     return userController.createUser(uid, user);
                 });
