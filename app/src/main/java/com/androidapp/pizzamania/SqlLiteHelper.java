@@ -17,9 +17,25 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String createOrderTable = "Create table orders (" +
+                "order_id int primary key autoincrement," +
+                "user_id text," +
+                "branch_id text," +
+                "total_price real," +
+                "created_at Text," +
+                "latitude real," +
+                "longitude real)";
 
+        String createOrderItemTable = "Create table order_items (" +
+                "id primary key autoincrement," +
+                "order_id int," +
+                "item_id Text," +
+                "quantity int," +
+                "price real," +
+                "foreign key(order_id) references orders(order_id))";
 
-
+        db.execSQL(createOrderTable);
+        db.execSQL(createOrderItemTable);
     }
 
     @Override
