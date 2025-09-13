@@ -8,14 +8,14 @@ public class OrderDTO {
 
     private String userID;
     private String branchID;
-    private int orderID;
+    private String orderID;
     private List<ItemDTO> itemList;
 
     public OrderDTO() {
 
     }
 
-    public OrderDTO(String userID, String branchID, int orderID, List<ItemDTO> itemList, double totalAmount, String orderStatus, String createdAt, Location location) {
+    public OrderDTO(String orderID, String userID, String branchID, List<ItemDTO> itemList, double totalAmount, String orderStatus, String createdAt, Location location) {
         this.userID = userID;
         this.branchID = branchID;
         this.orderID = orderID;
@@ -47,11 +47,11 @@ public class OrderDTO {
         this.branchID = branchID;
     }
 
-    public int getOrderID() {
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
