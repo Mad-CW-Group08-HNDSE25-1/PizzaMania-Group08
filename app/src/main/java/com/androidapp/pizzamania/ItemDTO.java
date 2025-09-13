@@ -2,6 +2,7 @@ package com.androidapp.pizzamania;
 
 public class ItemDTO {
 
+    private int orderID;
     private String itemID;
     private int qty;
     private double price;
@@ -11,11 +12,20 @@ public class ItemDTO {
 
     }
 
-    public ItemDTO(String itemID, int qty, double price, double totalPerItem) {
+    public ItemDTO(int orderID, String itemID, int qty, double price, double totalPerItem) {
+        this.orderID = orderID;
         this.itemID = itemID;
         this.qty = qty;
         this.price = price;
         this.totalPerItem = totalPerItem;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     public String getItemID() {
