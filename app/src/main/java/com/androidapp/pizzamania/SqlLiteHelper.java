@@ -102,7 +102,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
                     OrderDTO orderDTO = new OrderDTO();
 
-                    orderDTO.setOrderID(cursor.getInt(cursor.getColumnIndexOrThrow("order_id")));
+                    orderDTO.setOrderID(cursor.getString(cursor.getColumnIndexOrThrow("order_id")));
                     orderDTO.setUserID(cursor.getString(cursor.getColumnIndexOrThrow("user_id")));
                     orderDTO.setBranchID(cursor.getString(cursor.getColumnIndexOrThrow("branch_id")));
                     orderDTO.setTotalAmount(cursor.getDouble(cursor.getColumnIndexOrThrow("total_price")));
