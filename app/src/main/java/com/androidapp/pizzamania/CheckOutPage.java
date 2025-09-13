@@ -101,7 +101,7 @@ public class CheckOutPage extends AppCompatActivity {
                 Log.d(TAG, "Processing card payment: name=" + name + ", number=****" + number.substring(number.length() - 4));
                 Toast.makeText(this, "Processing card payment...", Toast.LENGTH_SHORT).show();
 
-                if(paymentGateway(name, number, expiry, cvv)){
+                if(paymentGateway(name, number, expiry, cvv, totalPrice)){
                     OrderDTO order = new OrderDTO(orderID, userId, branchID, itemDTOList, totalPrice, "pending", createdAt, location);
                     saveOrder(order);
                 }else{
@@ -113,7 +113,7 @@ public class CheckOutPage extends AppCompatActivity {
         });
     }
 
-    private boolean paymentGateway(String name, String number, String expDate, String cvv) {
+    private boolean paymentGateway(String name, String number, String expDate, String cvv, double totPrice) {
 
         if ((name.isEmpty()) || (number.length() != 16) || (cvv.length() != 3)) {
             Log.d(TAG, "Mock payment failed: Invalid input (name=" + name.isEmpty() + ", number=" + number.length() + ", cvv=" + cvv.length() + ")");
@@ -166,8 +166,25 @@ public class CheckOutPage extends AppCompatActivity {
             return false;
         }
 
-        Log.d(TAG, "Mock payment succeeded"); // Temporary logging
-        return true; // Simulate success
+        String lastDigit4 = number.substring(number.length() - 4);
+        int intLast4;
+        try {
+            intLast4 = Integer.parseInt(lastDigit4);
+        } catch (NumberFormatException e) {
+            intLast4 = lastDigit4.hashCode();
+        }
+
+        double mockBalance = 100 + (intLast4 % 5000);
+        Log.d(TAG, "Mock balance for card ****" + intLast4 + " is: " + mockBalance);
+
+        if (totPrice > mockBalance){
+            Log.d(TAG, "Mock payment failed: Insufficient funds. Required=" + totPrice + " balance=" + mockBalance);
+            Toast.makeText(this, "Payment failed: insufficient funds", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        Log.d(TAG, "Mock payment succeeded");
+        return true;
     }
 
     private boolean isValidCardNumber(String cardNumber) {
