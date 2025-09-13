@@ -23,7 +23,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createOrderTable = "Create table orders (" +
-                "order_id int primary key autoincrement," +
+                "order_id integer primary key autoincrement," +
                 "user_id text," +
                 "branch_id text," +
                 "total_price real," +
@@ -33,7 +33,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "longitude real)";
 
         String createOrderItemTable = "Create table order_items (" +
-                "id primary key autoincrement," +
+                "id integer primary key autoincrement," +
                 "order_id int," +
                 "item_id Text," +
                 "quantity int," +

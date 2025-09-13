@@ -54,14 +54,14 @@ public class CheckOutPage extends AppCompatActivity {
             Toast.makeText(this, "Selected Method: " + payMethod, Toast.LENGTH_SHORT).show();
         }));
 
-        radioGroup.setOnClickListener(v -> {
+        btnCheckOut.setOnClickListener(v -> {
             int selectedId = radioGroup.getCheckedRadioButtonId();
             if (selectedId == -1) {
                 Toast.makeText(this, "Please Select a payment method", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            String branchID = "branch89";
+            String branchID = "branch39";
             double latitude = 6.9271;
             double longitude = 79.8612;
 
@@ -99,6 +99,7 @@ public class CheckOutPage extends AppCompatActivity {
                 String cvv = txtCvv.getText().toString().trim();
 
                 Log.d(TAG, "Processing card payment: name=" + name + ", number=****" + number.substring(number.length() - 4));
+                Toast.makeText(this, "Processing card payment...", Toast.LENGTH_SHORT).show();
 
                 if(paymentGateway(name, number, expiry, cvv)){
                     OrderDTO order = new OrderDTO(orderID, userId, branchID, itemDTOList, totalPrice, "pending", createdAt, location);
@@ -116,11 +117,13 @@ public class CheckOutPage extends AppCompatActivity {
 
         if ((name.isEmpty()) || (number.length() != 16) || (cvv.length() != 3)) {
             Log.d(TAG, "Mock payment failed: Invalid input (name=" + name.isEmpty() + ", number=" + number.length() + ", cvv=" + cvv.length() + ")");
+            Toast.makeText(this, "Invalid payment input", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (!isValidCardNumber(number)) {
             Log.d(TAG, "Mock payment failed: Invalid card number (Luhn check)");
+            Toast.makeText(this, "Invalid card number", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -129,6 +132,7 @@ public class CheckOutPage extends AppCompatActivity {
             String[] expParts = expDate.split("/");
             if (expParts.length != 2) {
                 Log.d(TAG, "Mock payment failed: Invalid expiry format");
+                Toast.makeText(this, "Invalid expiry month", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -136,7 +140,8 @@ public class CheckOutPage extends AppCompatActivity {
             int year = Integer.parseInt(expParts[1].trim()) + 2000;
 
             if ((month < 1) || (month > 12)) {
-                Log.d(TAG, "Mock payment failed: Invalid month=" + month); // Temporary logging
+                Log.d(TAG, "Mock payment failed: Invalid month=" + month);
+                Toast.makeText(this, "Invalid expiry month", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -150,7 +155,8 @@ public class CheckOutPage extends AppCompatActivity {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (expiryDate.isBefore(currentDate)) {
-                    Log.d(TAG, "Mock payment failed: Card expired"); // Temporary logging
+                    Log.d(TAG, "Mock payment failed: Card expired");
+                    Toast.makeText(this, "Card has expired", Toast.LENGTH_SHORT).show();
                     return false;
                 }
             }
