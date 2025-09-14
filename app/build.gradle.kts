@@ -41,7 +41,16 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
+    implementation(libs.room.common.jvm)
+    implementation(libs.room.runtime)
+    implementation(libs.firebase.database)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    annotationProcessor(libs.room.compiler)
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.picasso:picasso:2.71828")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
