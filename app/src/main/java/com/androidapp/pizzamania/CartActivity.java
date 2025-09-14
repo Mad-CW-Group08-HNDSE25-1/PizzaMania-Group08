@@ -7,11 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
+
     private RecyclerView recyclerCart;
     private TextView tvTotal;
     private Button btnCheckout;
@@ -56,13 +53,12 @@ public class CartActivity extends AppCompatActivity {
         Cursor cursor = db.query("Cart", null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             String itemId = cursor.getString(cursor.getColumnIndexOrThrow("itemId"));
             String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
             double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
             int qty = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));
 
-            cartList.add(new CartItem(id, itemId, name, price, qty));
+            cartList.add(new CartItem(itemId, name, price, qty));
         }
         cursor.close();
         db.close();
@@ -77,11 +73,10 @@ public class CartActivity extends AppCompatActivity {
     private void updateTotal() {
         double total = 0;
         for (CartItem item : cartList) {
-            total += item.getPrice() * item.getQuantity();
+            total += item.getTotalPrice();
         }
         tvTotal.setText("Total: Rs. " + total);
     }
-
 
     private void placeOrder() {
         if (cartList.isEmpty()) {
@@ -97,7 +92,7 @@ public class CartActivity extends AppCompatActivity {
         double totalPrice = 0;
         for (CartItem item : cartList) {
             items.put(item.getItemId(), item.getQuantity());
-            totalPrice += item.getPrice() * item.getQuantity();
+            totalPrice += item.getTotalPrice();
         }
         orderMap.put("items", items);
         orderMap.put("totalPrice", totalPrice);
