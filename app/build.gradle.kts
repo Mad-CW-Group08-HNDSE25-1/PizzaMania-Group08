@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.androidapp.pizzamania"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -42,17 +42,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database)
     implementation(libs.play.services.maps)
-    implementation(libs.play.services.maps.v1810)
     implementation(libs.play.services.location)
-    implementation(libs.firebase.bom)
-    implementation(libs.generativeai)
-    implementation (libs.ai.generativeai.client)
     implementation(libs.guava)
     implementation(libs.reactive.streams)
-    implementation(libs.google.firebase.database)
-    implementation(libs.generativeai)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
