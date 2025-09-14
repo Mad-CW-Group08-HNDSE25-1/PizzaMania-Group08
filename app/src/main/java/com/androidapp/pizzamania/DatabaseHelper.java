@@ -6,12 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "pizza.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_USER_SESSION = "UserSession";
-    public static final String TABLE_CART = "Cart";           // <- Add this
-    public static final String TABLE_OFFLINE_ORDERS = "OfflineOrders"; // <- Add this
-
+    public static final String TABLE_CART = "Cart";
+    public static final String TABLE_OFFLINE_ORDERS = "OfflineOrders";
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

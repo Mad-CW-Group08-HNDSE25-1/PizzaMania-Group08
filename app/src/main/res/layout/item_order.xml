@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:background="#f0f0f0"
-    android:margin="4dp">
+    android:layout_margin="4dp">
 
     <TextView
         android:id="@+id/tvOrderId"

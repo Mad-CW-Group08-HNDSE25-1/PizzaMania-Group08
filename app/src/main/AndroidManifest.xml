@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PizzaMania"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".OrderManagementActivity"
             android:exported="false" />
         <activity
@@ -30,9 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
         <activity
             android:name=".StockManagementActivity"
             android:exported="true">

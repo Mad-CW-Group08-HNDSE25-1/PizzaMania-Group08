@@ -42,15 +42,18 @@ public class CartActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         orderRef = FirebaseDatabase.getInstance().getReference("orders");
 
+
+
         loadCart();
 
         btnCheckout.setOnClickListener(v -> placeOrder());
     }
 
+
     private void loadCart() {
         cartList.clear();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query("Cart", null, null, null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.TABLE_CART, null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             String itemId = cursor.getString(cursor.getColumnIndexOrThrow("itemId"));
@@ -63,7 +66,7 @@ public class CartActivity extends AppCompatActivity {
         cursor.close();
         db.close();
 
-        adapter = new CartAdapter(cartList, this::updateTotal);
+        adapter = new CartAdapter(this,cartList, this::updateTotal);
         recyclerCart.setLayoutManager(new LinearLayoutManager(this));
         recyclerCart.setAdapter(adapter);
 
@@ -112,7 +115,7 @@ public class CartActivity extends AppCompatActivity {
 
     private void clearCart() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete("Cart", null, null);
+        db.delete(DatabaseHelper.TABLE_CART, null, null);
         db.close();
         loadCart();
     }

@@ -5,8 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -14,9 +16,10 @@ import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
-    private List<OrderItem> orderList;
-    private OnReorderListener listener;
+    private final List<OrderItem> orderList;
+    private final OnReorderListener listener;
 
+    // Listener interface for reorder button
     public interface OnReorderListener { void onReorder(OrderItem order); }
 
     public OrderAdapter(List<OrderItem> orderList, OnReorderListener listener) {
@@ -35,29 +38,35 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderItem order = orderList.get(position);
-        holder.tvOrderId.setText("Order: " + order.getOrderId());
-        holder.tvTotal.setText("Total: Rs. " + order.getTotalPrice());
-        holder.tvStatus.setText("Status: " + order.getStatus());
+
+        holder.tvOrderId.setText("Order: " + order.getOrderID());
+        holder.tvOrderTotal.setText("Total: Rs. " + order.getTotalAmount());
+        holder.tvOrderStatus.setText("Status: " + order.getOrderStatus());
+
+        // Format timestamp
         String date = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                 .format(new Date(order.getCreatedAt()));
-        holder.tvDate.setText("Date: " + date);
+        holder.tvOrderDate.setText("Date: " + date);
 
+        // Reorder button
         holder.btnReorder.setOnClickListener(v -> listener.onReorder(order));
     }
 
     @Override
-    public int getItemCount() { return orderList.size(); }
+    public int getItemCount() {
+        return orderList.size();
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderId, tvTotal, tvStatus, tvDate;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvOrderId, tvOrderTotal, tvOrderStatus, tvOrderDate;
         Button btnReorder;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvOrderId = itemView.findViewById(R.id.tvOrderId);
-            tvTotal = itemView.findViewById(R.id.tvOrderTotal);
-            tvStatus = itemView.findViewById(R.id.tvOrderStatus);
-            tvDate = itemView.findViewById(R.id.tvOrderDate);
+            tvOrderTotal = itemView.findViewById(R.id.tvOrderTotal);
+            tvOrderStatus = itemView.findViewById(R.id.tvOrderStatus);
+            tvOrderDate = itemView.findViewById(R.id.tvOrderDate);
             btnReorder = itemView.findViewById(R.id.btnReorder);
         }
     }

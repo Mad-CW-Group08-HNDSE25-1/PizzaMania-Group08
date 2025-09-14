@@ -1,31 +1,70 @@
 package com.androidapp.pizzamania;
 
-import java.util.Map;
+import java.util.List;
 
 public class OrderItem {
-    private String orderId;
-    private String userId;
-    private Map<String, Integer> items; // itemId -> quantity
-    private double totalPrice;
-    private String status;
-    private long createdAt;
 
-    public OrderItem() { } // Required for Firebase
+    public static class Item {
+        private String itemID;
+        private int qty;
+        private double price;
 
-    public OrderItem(String orderId, String userId, Map<String, Integer> items,
-                     double totalPrice, String status, long createdAt) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.items = items;
-        this.totalPrice = totalPrice;
-        this.status = status;
-        this.createdAt = createdAt;
+        public Item() { }
+
+        public Item(String itemID, int qty, double price) {
+            this.itemID = itemID;
+            this.qty = qty;
+            this.price = price;
+        }
+
+        public String getItemID() { return itemID; }
+        public int getQty() { return qty; }
+        public double getPrice() { return price; }
     }
 
-    public String getOrderId() { return orderId; }
-    public String getUserId() { return userId; }
-    public Map<String, Integer> getItems() { return items; }
-    public double getTotalPrice() { return totalPrice; }
-    public String getStatus() { return status; }
-    public long getCreatedAt() { return createdAt; }
+    public static class Location {
+        private double latitude;
+        private double longitude;
+
+        public Location() { }
+        public Location(double latitude, double longitude) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+
+        public double getLatitude() { return latitude; }
+        public double getLongitude() { return longitude; }
+    }
+
+    private String orderID;
+    private String userID;
+    private String branchID;
+    private List<Item> itemList;
+    private double totalAmount;
+    private String orderStatus;
+    private String createdAt;
+    private Location location;
+
+    public OrderItem() { }
+
+    public OrderItem(String orderID, String userID, String branchID, List<Item> itemList,
+                     double totalAmount, String orderStatus, String createdAt, Location location) {
+        this.orderID = orderID;
+        this.userID = userID;
+        this.branchID = branchID;
+        this.itemList = itemList;
+        this.totalAmount = totalAmount;
+        this.orderStatus = orderStatus;
+        this.createdAt = createdAt;
+        this.location = location;
+    }
+
+    public String getOrderID() { return orderID; }
+    public String getUserID() { return userID; }
+    public String getBranchID() { return branchID; }
+    public List<Item> getItemList() { return itemList; }
+    public double getTotalAmount() { return totalAmount; }
+    public String getOrderStatus() { return orderStatus; }
+    public String getCreatedAt() { return createdAt; }
+    public Location getLocation() { return location;}
 }
