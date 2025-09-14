@@ -1,36 +1,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:padding="8dp"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/tvItemName"
-        android:text="Item Name"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Pizza Name"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvBranchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="8dp"
+        android:text="BranchA"
+        android:textSize="14sp"/>
+
+    <ImageButton
+        android:id="@+id/btnMinus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#03DAC5"
+        android:src="@drawable/ic_minus"
+        android:contentDescription="Minus"
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/tvQuantity"
-        android:text="Qty"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="0"
+        android:textSize="16sp"
+        android:gravity="center"/>
 
     <ImageButton
-        android:id="@+id/btnIncrease"
+        android:id="@+id/btnPlus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:backgroundTint="#03DAC5"
         android:src="@drawable/ic_plus"
-        app:tint="@android:color/white"
-        android:layout_width="40dp"
-        android:layout_height="40dp"/>
-
-    <ImageButton
-        android:id="@+id/btnDecrease"
-        android:backgroundTint="#03DAC5"
-        android:src="@drawable/ic_minus"
-        app:tint="@android:color/white"
-        android:layout_width="40dp"
-        android:layout_height="40dp"/>
+        android:contentDescription="Plus"
+        app:tint="@android:color/white" />
 </LinearLayout>

@@ -1,7 +1,8 @@
 package com.androidapp.pizzamania;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,28 +18,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StockManagementActivity extends AppCompatActivity {
+
+    private EditText etSearch;
     private RecyclerView recyclerStock;
     private StockAdapter adapter;
-    private List<StockModel> stockList = new ArrayList<>();
-    private List<StockModel> fullStockList = new ArrayList<>(); // For search filtering
-    private DatabaseHelper dbHelper;
+    private List<StockItem> stockList = new ArrayList<>();
     private DatabaseReference stockRef;
-    private EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_management);
 
+        etSearch = findViewById(R.id.etSearch);
         recyclerStock = findViewById(R.id.recyclerStock);
-        etSearch = findViewById(R.id.etSearch); // Add this EditText in XML
-        dbHelper = new DatabaseHelper(this);
-        stockRef = FirebaseDatabase.getInstance().getReference("BranchStock").child("branch1");
+
+        stockRef = FirebaseDatabase.getInstance().getReference("stock");
 
         loadStock();
 
-        // Search/filter functionality
-        etSearch.addTextChangedListener(new android.text.TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -48,60 +47,47 @@ public class StockManagementActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(android.text.Editable s) { }
+            public void afterTextChanged(Editable s) { }
         });
     }
 
     private void loadStock() {
+        stockList.clear();
         stockRef.get().addOnSuccessListener(snapshot -> {
-            stockList.clear();
-            fullStockList.clear();
+            for (DataSnapshot branchSnap : snapshot.getChildren()) {
+                String branchName = branchSnap.getKey();
+                for (DataSnapshot itemSnap : branchSnap.getChildren()) {
+                    String itemId = itemSnap.getKey();
+                    String itemName = itemSnap.child("name").getValue(String.class);
+                    int quantity = itemSnap.child("quantity").getValue(Integer.class);
 
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            db.delete("Cart", null, null); // Optional caching
-            db.close();
-
-            for (DataSnapshot itemSnap : snapshot.getChildren()) {
-                String itemId = itemSnap.getKey();
-                String name = itemSnap.child("name").getValue(String.class);
-                int qty = itemSnap.child("quantity").getValue(Integer.class);
-
-                StockModel item = new StockModel(itemId, name, qty);
-                stockList.add(item);
-                fullStockList.add(item);
+                    stockList.add(new StockItem(itemId, itemName, branchName, quantity));
+                }
             }
-
-            showStock();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Offline mode: showing cached stock", Toast.LENGTH_SHORT).show();
-            // TODO: load from SQLite if needed
-        });
+            adapter = new StockAdapter(stockList, this::updateStock);
+            recyclerStock.setLayoutManager(new LinearLayoutManager(this));
+            recyclerStock.setAdapter(adapter);
+        }).addOnFailureListener(e ->
+                Toast.makeText(this, "Failed to load stock: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void showStock() {
-        adapter = new StockAdapter(stockList, (item, newQty) -> updateStock(item, newQty));
-        recyclerStock.setLayoutManager(new LinearLayoutManager(this));
-        recyclerStock.setAdapter(adapter);
-    }
-
-    private void updateStock(StockModel item, int newQty) {
-        stockRef.child(item.getItemId()).child("quantity").setValue(newQty)
-                .addOnSuccessListener(unused -> Toast.makeText(this, "Updated stock", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed (offline)", Toast.LENGTH_SHORT).show());
+    private void updateStock(StockItem item, int newQuantity) {
+        stockRef.child(item.getBranchName())
+                .child(item.getItemId())
+                .child("quantity")
+                .setValue(newQuantity)
+                .addOnSuccessListener(a -> Toast.makeText(this, "Stock updated!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void filterStock(String query) {
-        stockList.clear();
-        if (query.isEmpty()) {
-            stockList.addAll(fullStockList);
-        } else {
-            String lowerQuery = query.toLowerCase();
-            for (StockModel item : fullStockList) {
-                if (item.getName().toLowerCase().contains(lowerQuery)) {
-                    stockList.add(item);
-                }
+        List<StockItem> filteredList = new ArrayList<>();
+        for (StockItem item : stockList) {
+            if (item.getName().toLowerCase().contains(query.toLowerCase()) ||
+                    item.getBranchName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(item);
             }
         }
-        adapter.notifyDataSetChanged();
+        adapter.updateList(filteredList);
     }
 }

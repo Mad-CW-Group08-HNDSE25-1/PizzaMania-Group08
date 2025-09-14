@@ -21,7 +21,7 @@
         android:backgroundTint="#03DAC5"
         android:src="@drawable/ic_minus"
         android:contentDescription="Minus"
-        android:tint="@android:color/white" />
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/tvQuantity"
@@ -39,7 +39,7 @@
         android:backgroundTint="#03DAC5"
         android:src="@drawable/ic_plus"
         android:contentDescription="Plus"
-        android:tint="@android:color/white" />
+        app:tint="@android:color/white" />
 
     <ImageButton
         android:id="@+id/btnDelete"
