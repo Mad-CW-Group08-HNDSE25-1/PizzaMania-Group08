@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".AIChatBot">
 
+    <ListView
+        android:id="@+id/chatListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/msgInputArea"
+        android:divider="@null"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"
+        android:padding="8dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ChatAdapter extends ArrayAdapter<ChatMsgAdapter> {
 
-    private ChatAdapter(@NonNull Context context, @NonNull List<ChatMsgAdapter> messages){
+    public ChatAdapter(@NonNull Context context, @NonNull List<ChatMsgAdapter> messages){
         super(context, 0, messages);
     }
 
