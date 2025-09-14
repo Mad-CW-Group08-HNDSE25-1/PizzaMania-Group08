@@ -1,42 +1,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="12dp"
-    android:background="@android:color/white"
-    android:layout_marginBottom="8dp"
-    android:elevation="2dp">
+    android:background="#f0f0f0"
+    android:margin="4dp">
 
     <TextView
         android:id="@+id/tvOrderId"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order #12345"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:text="Order ID"/>
 
     <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="match_parent"
+        android:id="@+id/tvOrderDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date: 2025-08-28"
-        android:textSize="14sp"/>
+        android:text="Date"/>
 
     <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
+        android:id="@+id/tvOrderTotal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Status: Completed"
-        android:textSize="14sp"
-        android:textColor="@android:color/holo_green_dark"/>
+        android:text="Total"/>
 
     <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="match_parent"
+        android:id="@+id/tvOrderStatus"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total: Rs. 1200"
-        android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:text="Status"/>
 
     <Button
         android:id="@+id/btnReorder"
@@ -45,5 +37,4 @@
         android:text="Reorder"
         android:layout_gravity="end"
         android:padding="8dp"/>
-
 </LinearLayout>

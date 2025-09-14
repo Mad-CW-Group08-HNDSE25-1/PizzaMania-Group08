@@ -9,6 +9,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_USER_SESSION = "UserSession";
+    public static final String TABLE_CART = "Cart";           // <- Add this
+    public static final String TABLE_OFFLINE_ORDERS = "OfflineOrders"; // <- Add this
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,16 +27,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "profileImageUrl TEXT," +
                 "isLoggedIn INTEGER)");
 
-        // Cart
-        db.execSQL("CREATE TABLE Cart (" +
+        db.execSQL("CREATE TABLE " + TABLE_CART + " (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "itemId TEXT," +
                 "name TEXT," +
                 "price REAL," +
                 "quantity INTEGER)");
 
-        // Offline Orders
-        db.execSQL("CREATE TABLE OfflineOrders (" +
+        db.execSQL("CREATE TABLE " + TABLE_OFFLINE_ORDERS + " (" +
                 "localId INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "orderId TEXT," +
                 "userId TEXT," +
@@ -44,11 +44,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "createdAt TEXT)");
     }
 
-
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_SESSION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OFFLINE_ORDERS);
         onCreate(db);
     }
 }

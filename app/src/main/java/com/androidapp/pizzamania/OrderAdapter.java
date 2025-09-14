@@ -5,21 +5,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
-    private List<OrderModel> orderList;
-    private OnReorderClickListener listener;
 
-    public interface OnReorderClickListener {
-        void onReorderClick(OrderModel order);
-    }
+    private List<OrderItem> orderList;
+    private OnReorderListener listener;
 
-    public OrderAdapter(List<OrderModel> orderList, OnReorderClickListener listener) {
+    public interface OnReorderListener { void onReorder(OrderItem order); }
+
+    public OrderAdapter(List<OrderItem> orderList, OnReorderListener listener) {
         this.orderList = orderList;
         this.listener = listener;
     }
@@ -34,46 +34,30 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        OrderModel order = orderList.get(position);
-        holder.tvOrderId.setText("Order #" + order.getOrderId());
+        OrderItem order = orderList.get(position);
+        holder.tvOrderId.setText("Order: " + order.getOrderId());
+        holder.tvTotal.setText("Total: Rs. " + order.getTotalPrice());
         holder.tvStatus.setText("Status: " + order.getStatus());
-        holder.tvPrice.setText("Total: Rs. " + order.getTotalPrice());
-        holder.tvDate.setText("Date: " + order.getCreatedAt());
+        String date = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                .format(new Date(order.getCreatedAt()));
+        holder.tvDate.setText("Date: " + date);
 
-        // Color code status
-        switch (order.getStatus().toLowerCase()) {
-            case "pending":
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(android.R.color.holo_orange_dark));
-                break;
-            case "preparing":
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(android.R.color.holo_blue_dark));
-                break;
-            case "delivered":
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(android.R.color.holo_green_dark));
-                break;
-            default:
-                holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(android.R.color.black));
-                break;
-        }
-
-        holder.btnReorder.setOnClickListener(v -> listener.onReorderClick(order));
+        holder.btnReorder.setOnClickListener(v -> listener.onReorder(order));
     }
-
 
     @Override
-    public int getItemCount() {
-        return orderList.size();
-    }
+    public int getItemCount() { return orderList.size(); }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderId, tvStatus, tvPrice, tvDate;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvOrderId, tvTotal, tvStatus, tvDate;
         Button btnReorder;
+
         public ViewHolder(View itemView) {
             super(itemView);
             tvOrderId = itemView.findViewById(R.id.tvOrderId);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
-            tvDate = itemView.findViewById(R.id.tvDate);
+            tvTotal = itemView.findViewById(R.id.tvOrderTotal);
+            tvStatus = itemView.findViewById(R.id.tvOrderStatus);
+            tvDate = itemView.findViewById(R.id.tvOrderDate);
             btnReorder = itemView.findViewById(R.id.btnReorder);
         }
     }
