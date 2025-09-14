@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/forgotPwd"
-                    android:text="I forgot my password"
+                    android:text="I forgot my password  "
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>
 

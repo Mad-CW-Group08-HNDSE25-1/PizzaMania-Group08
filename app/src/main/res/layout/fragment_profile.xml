@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#D05F12">
+
+            <TextView
+                android:id="@+id/nameTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customer Name"
+                android:textSize="70px"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginLeft="70px"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:src="@drawable/profile_icon"
+                android:background="#BCBCBC"
+                android:layout_marginVertical="40dp"
+                android:layout_marginRight="60px"
+                android:contentDescription="Profile Picture"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100px"/>
+
+        <LinearLayout
+            android:id="@+id/btnProfileInfo"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40px"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="70px"
+                android:layout_height="70px"
+                android:src="@drawable/info_icon"/>
+
+            <TextView
+                android:layout_width="500px"
+                android:layout_height="wrap_content"
+                android:text="Profile Info"
+                android:textSize="50px"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:src="@drawable/arrow_foward_icon"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40px"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="70px"
+                android:layout_height="70px"
+                android:src="@drawable/favorite_icon"/>
+
+            <TextView
+                android:layout_width="500px"
+                android:layout_height="wrap_content"
+                android:text="Favorites"
+                android:textSize="50px"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:src="@drawable/arrow_foward_icon"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnMyOrders"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40px"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            >
+
+            <ImageView
+                android:layout_width="70px"
+                android:layout_height="70px"
+                android:src="@drawable/order_icon"/>
+
+            <TextView
+                android:layout_width="500px"
+                android:layout_height="wrap_content"
+                android:text="My Orders"
+                android:textSize="50px"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:src="@drawable/arrow_foward_icon"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40px"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            >
+
+            <ImageView
+                android:layout_width="70px"
+                android:layout_height="70px"
+                android:src="@drawable/logout_icon"/>
+
+            <TextView
+                android:layout_width="500px"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textSize="50px"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="40px"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:src="@drawable/arrow_foward_icon"/>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+</ScrollView>

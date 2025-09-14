@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.cart.CartFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:background="#D05F12"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="122dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40px"
+                android:layout_weight="1"
+                android:text="My Cart"
+                android:textColor="@color/white"
+                android:textSize="70px"
+                android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:src="@drawable/delete_icon"
+            android:layout_marginRight="20px"/>
+
+    </LinearLayout>
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="40px">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cartItemsRv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="10px"
+        android:background="@color/backColor4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250px"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/deliveryLocationTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="100px"
+                android:text="Delivery Location"
+                android:textSize="45px"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/cartTotalTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="100px"
+                android:textSize="70px"
+                android:text="Total: $0.00"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/checkoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="170px"
+            android:text="Checkout"
+            android:textStyle="bold"
+            android:textSize="60px"
+            android:layout_marginHorizontal="20px"/>
+    </LinearLayout>
+
+</LinearLayout>

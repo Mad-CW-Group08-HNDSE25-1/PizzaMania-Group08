@@ -6,5 +6,9 @@
     <color name="backColor1">#E0770E</color>
     <color name="backColor2">#FAD3AC</color>
     <color name="backColor3">#331B03</color>
+    <color name="backColor4">#f9ddb1</color>
+    <color name="backColor5">#F3A671</color>
+    <color name="green">#10BC10</color>
+    <color name="red">#CC0000</color>
 
 </resources>

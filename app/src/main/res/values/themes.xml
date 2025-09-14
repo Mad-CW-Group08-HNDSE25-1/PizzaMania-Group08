@@ -19,7 +19,20 @@
 
         <!--Status bar color-->
         <item name="android:statusBarColor">@color/backColor1</item>
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+
     </style>
 
     <style name="Theme.PizzaMania" parent="Base.Theme.PizzaMania" />
+
+    <style name="Theme.PizzaMania.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.PizzaMania.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PizzaMania.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
