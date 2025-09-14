@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText etName, etEmail, etPhone, etPassword;
+    private Spinner spRole;
     private ImageView imgProfile;
     private Button btnRegister;
     private Uri profileUri;
@@ -42,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
+        spRole = findViewById(R.id.spRole);
         imgProfile = findViewById(R.id.imgProfile);
         btnRegister = findViewById(R.id.btnRegister);
 
@@ -50,11 +53,16 @@ public class RegisterActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference("profile_images");
         dbHelper = new DatabaseHelper(this);
 
+        // Setup Spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.user_roles, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spRole.setAdapter(adapter);
+
         imgProfile.setOnClickListener(v -> chooseImage());
         btnRegister.setOnClickListener(v -> registerUser());
     }
 
-    // Select profile picture
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -75,19 +83,18 @@ public class RegisterActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        String role = spRole.getSelectedItem().toString().toLowerCase(); // customer/staff/admin
 
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "All fields required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Phone validation: 10 digits
         if (!phone.matches("\\d{10}")) {
             Toast.makeText(this, "Enter a valid 10-digit phone number", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Email validation (simple)
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Enter a valid email address", Toast.LENGTH_SHORT).show();
             return;
@@ -97,33 +104,32 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnSuccessListener(result -> {
                     String userId = result.getUser().getUid();
                     if (profileUri != null) {
-                        uploadImage(userId, name, email, phone);
+                        uploadImage(userId, name, email, phone, role);
                     } else {
-                        saveUser(userId, name, email, phone, "");
+                        saveUser(userId, name, email, phone, "", role);
                     }
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void uploadImage(String userId, String name, String email, String phone) {
+    private void uploadImage(String userId, String name, String email, String phone, String role) {
         StorageReference ref = storageRef.child(userId + ".jpg");
         ref.putFile(profileUri)
                 .addOnSuccessListener(task -> ref.getDownloadUrl()
                         .addOnSuccessListener(uri ->
-                                saveUser(userId, name, email, phone, uri.toString())))
+                                saveUser(userId, name, email, phone, uri.toString(), role)))
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Image upload failed", Toast.LENGTH_SHORT).show());
     }
 
-    private void saveUser(String userId, String name, String email, String phone, String imageUrl) {
-        // Save in Realtime Database
+    private void saveUser(String userId, String name, String email, String phone, String imageUrl, String role) {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", name);
         userMap.put("email", email);
         userMap.put("phone", phone);
         userMap.put("profileImageUrl", imageUrl);
-        userMap.put("role", "customer");
+        userMap.put("role", role);
 
         dbRef.child(userId).setValue(userMap);
 
@@ -145,5 +151,3 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
     }
 }
-
-
