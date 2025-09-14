@@ -27,6 +27,8 @@ public class ChatAdapter extends ArrayAdapter<ChatMsgAdapter> {
 
         if (msg.isUser()) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.user_chat, parent, false);
+            TextView textView = view.findViewById(R.id.chatMsg);
+            textView.setText(msg.getMessage());
         }else{
             if (msg.getMessage().startsWith(("[PIZZA_CARD]"))){
                 view = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);

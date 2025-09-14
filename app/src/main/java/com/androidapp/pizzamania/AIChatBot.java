@@ -47,6 +47,8 @@ public class AIChatBot extends AppCompatActivity {
 
             if (!msg.isEmpty()){
                 addMsg(new ChatMsgAdapter(true, msg));
+                handleBotResponse(msg);
+                txtInput.setText("");
             }
         });
 
@@ -55,20 +57,22 @@ public class AIChatBot extends AppCompatActivity {
     private void addMsg(ChatMsgAdapter chatMsgAdapter){
         chatMsgsList.add(chatMsgAdapter);
         chatAdapter.notifyDataSetChanged();
-        chatList.setSelection(chatMsgsList.size() - 1);
+        chatList.post(() -> {
+            chatList.setSelection(chatMsgsList.size() - 1);
+        });
+
+        System.out.println("Added message: " + chatMsgAdapter.getMessage() + ", isUser: " + chatMsgAdapter.isUser());
     }
 
     private void handleBotResponse(String userMsg){
-
         if(userMsg.toLowerCase().contains("hello")){
             addMsg(new ChatMsgAdapter(false, "Hi there, how can i assist you today?"));
         } else if (userMsg.toLowerCase().contains("pizza")) {
             addMsg(new ChatMsgAdapter(false, "We have a delicious cheese chicken pizza, tap below to see details"));
             chatMsgsList.add(new ChatMsgAdapter(false, "[PIZZA_CARD]cheese chicken pizza\""));
-            chatAdapter.notifyDataSetChanged();
+          //  chatAdapter.notifyDataSetChanged();
         }else {
             addMsg(new ChatMsgAdapter(false, "Sorry, try asking about pizzas"));
         }
-
     }
 }
