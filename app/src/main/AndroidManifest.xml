@@ -30,10 +30,16 @@
             android:exported="false"
             android:label="@string/title_activity_maps" />
 
+        <!-- SplashScreen is now the launcher -->
         <activity
             android:name=".SplashScreen"
             android:exported="true"
-            android:theme="@style/SplashScreen" />
+            android:theme="@style/SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".AdminListActivity" android:exported="false" />
         <activity android:name=".AddAdminActivity" android:exported="true" />
@@ -42,12 +48,8 @@
         <activity android:name=".MenuManagementActivity" android:exported="false" />
         <activity android:name=".BranchManagementActivity" android:exported="false" />
 
-        <activity android:name=".AdminDashboardActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- AdminDashboardActivity is no longer the launcher -->
+        <activity android:name=".AdminDashboardActivity" android:exported="true" />
 
         <activity android:name=".StockManagementActivity" android:exported="true" />
         <activity android:name=".AdminProfileActivity" android:exported="true" />

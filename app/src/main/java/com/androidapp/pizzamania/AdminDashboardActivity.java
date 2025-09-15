@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AdminDashboardActivity extends AppCompatActivity {
@@ -38,11 +38,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile);
         btnSignOut = findViewById(R.id.btnSignOut);
 
+        // Load user role only if logged in
         loadUserRole();
 
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, AddBranchActivity.class));
             finish();
         });
 
@@ -51,7 +52,17 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadUserRole() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser == null) {
+            // No user logged in — redirect to login
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        String userId = currentUser.getUid();
+
         FirebaseDatabase.getInstance().getReference("Users")
                 .child(userId)
                 .get()
@@ -62,10 +73,15 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
                         updateDashboard(role, branch);
                     }
+                })
+                .addOnFailureListener(e -> {
+                    // Optional: handle DB read error
+                    tvAdminTitle.setText("Error loading role");
                 });
     }
 
     private void updateDashboard(String role, String branch) {
+        if (role == null) role = "User";
         tvAdminTitle.setText(role + " Dashboard");
 
         if ("super_admin".equals(role)) {
