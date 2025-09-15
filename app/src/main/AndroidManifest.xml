@@ -30,7 +30,6 @@
             android:exported="false"
             android:label="@string/title_activity_maps" />
 
-        <!-- SplashScreen is now the launcher -->
         <activity
             android:name=".SplashScreen"
             android:exported="true"
@@ -47,10 +46,7 @@
         <activity android:name=".OrderManagementActivity" android:exported="false" />
         <activity android:name=".MenuManagementActivity" android:exported="false" />
         <activity android:name=".BranchManagementActivity" android:exported="false" />
-
-        <!-- AdminDashboardActivity is no longer the launcher -->
         <activity android:name=".AdminDashboardActivity" android:exported="true" />
-
         <activity android:name=".StockManagementActivity" android:exported="true" />
         <activity android:name=".AdminProfileActivity" android:exported="true" />
         <activity android:name=".OrderHistoryActivity" android:exported="true" />

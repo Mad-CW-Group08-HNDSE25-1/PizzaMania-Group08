@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             authController.login(email, pass)
                     .addOnSuccessListener(aVoid -> {
-                        startActivity(new Intent(LoginActivity.this, SplashActivity.class));
+                        startActivity(new Intent(LoginActivity.this, SplashScreen.class));
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
                         finish();
                     })

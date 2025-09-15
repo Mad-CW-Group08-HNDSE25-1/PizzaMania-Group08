@@ -169,9 +169,37 @@ public class AdminProfileActivity extends AppCompatActivity {
         updates.put("branch", branch);
         if (profileUrl != null) updates.put("profileImageUrl", profileUrl);
 
+<<<<<<< HEAD
         usersRef.child(currentUserId).updateChildren(updates)
                 .addOnSuccessListener(aVoid -> Toast.makeText(this, "Profile updated", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+=======
+        // Update last login automatically
+        String lastLogin = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        map.put("lastLogin", lastLogin);
+        tvLastLogin.setText("Last Login: " + lastLogin);
+
+        userRef.updateChildren(map).addOnSuccessListener(unused -> {
+            saveToSQLite(userId, name, etEmail.getText().toString(), phone, imageUrl, branch);
+            progressDialog.dismiss();
+            Snackbar.make(btnUpdate, "Profile Updated!", Snackbar.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            progressDialog.dismiss();
+            Snackbar.make(btnUpdate, "Update failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+        });
+    }
+
+    private void saveToSQLite(String userId, String name, String email, String phone, @Nullable String imageUrl, String branch) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("email", email);
+        values.put("phone", phone);
+        if (imageUrl != null) values.put("profileImageUrl", imageUrl);
+
+        db.update(DatabaseHelper.TABLE_USER_SESSION, values, "userId=?", new String[]{userId});
+        db.close();
+>>>>>>> b1d0c51ace209f528fa6f898ba77cb02fc8d06b8
     }
 
     private void resetPassword() {

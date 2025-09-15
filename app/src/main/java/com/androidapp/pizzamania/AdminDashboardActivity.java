@@ -48,9 +48,23 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile);
         btnSignOut = findViewById(R.id.btnSignOut);
 
+<<<<<<< HEAD
         loadDashboardStats();
         setupRoleBasedVisibility();
         setupButtonClicks();
+=======
+        // Load user role only if logged in
+        loadUserRole();
+
+        btnSignOut.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        });
+
+        btnProfile.setOnClickListener(v ->
+                startActivity(new Intent(this, AdminProfileActivity.class)));
+>>>>>>> b1d0c51ace209f528fa6f898ba77cb02fc8d06b8
     }
 
     private void loadDashboardStats() {
