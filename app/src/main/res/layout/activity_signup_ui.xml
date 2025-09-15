@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".forgot_pwd">
+    tools:context=".Domain.signup">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,11 +30,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Forgot Your Password?"
+                android:text="Sign Up"
                 android:textStyle="bold"
                 android:textColor="@color/backColor1"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="70px"
+                android:textSize="80px"
                 android:padding="20px"/>
 
             <View
@@ -44,7 +44,43 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter Your Email"
+                android:text="Full Name"
+                android:textStyle="bold"
+                android:textSize="55px"
+                android:alpha="0.8"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/name_icon"
+                android:inputType="text" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="65px"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Number"
+                android:textStyle="bold"
+                android:textSize="55px"
+                android:alpha="0.8"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/phone_icon"
+                android:inputType="text" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="65px"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
                 android:textStyle="bold"
                 android:textSize="55px"
                 android:alpha="0.8"/>
@@ -57,12 +93,12 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="70px"/>
+                android:layout_height="65px"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter New Passward"
+                android:text="Passward"
                 android:textStyle="bold"
                 android:textSize="55px"
                 android:alpha="0.8"/>
@@ -75,12 +111,12 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="70px"/>
+                android:layout_height="65px"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm New Passward"
+                android:text="Confirm Passward"
                 android:textStyle="bold"
                 android:textSize="55px"
                 android:alpha="0.8"/>
@@ -93,13 +129,13 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="80px"/>
+                android:layout_height="75px"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="170px"
-                android:id="@+id/saveBtn"
-                android:text="Save"
+                android:id="@+id/signup"
+                android:text="Sign Up"
                 android:textStyle="bold"
                 android:textSize="65px"/>
 

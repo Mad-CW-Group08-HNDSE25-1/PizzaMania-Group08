@@ -1,9 +1,10 @@
-package com.androidapp.pizzamania;
+package com.androidapp.pizzamania.Domain;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,26 +12,49 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class signup extends AppCompatActivity {
+import com.androidapp.pizzamania.R;
 
-    private Button signupBtn;
+public class login extends AppCompatActivity {
+    private Button loginBtn;
+    private TextView forgotPwdBtn;
+
+    private TextView signupBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_login_ui);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        loginBtn = findViewById(R.id.btnLogin);
+        forgotPwdBtn = findViewById(R.id.forgotPwd);
         signupBtn = findViewById(R.id.signup);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login.this, MainActivity3.class));
+            }
+        });
+
+
+        forgotPwdBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(login.this, forgot_pwd.class));
+            }
+        });
+
+
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(signup.this, login.class));
+                startActivity(new Intent(login.this, signup.class));
             }
         });
     }

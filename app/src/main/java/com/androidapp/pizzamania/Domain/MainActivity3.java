@@ -1,7 +1,8 @@
-package com.androidapp.pizzamania;
+package com.androidapp.pizzamania.Domain;
 
 import android.os.Bundle;
 
+import com.androidapp.pizzamania.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

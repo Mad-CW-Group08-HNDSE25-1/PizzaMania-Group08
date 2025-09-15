@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login">
+    tools:context=".Domain.forgot_pwd">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,12 +30,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:fontFamily="sans-serif-medium"
-                android:padding="20px"
-                android:text="LOGIN"
+                android:text="Forgot Your Password?"
+                android:textStyle="bold"
                 android:textColor="@color/backColor1"
-                android:textSize="80px"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium"
+                android:textSize="70px"
+                android:padding="20px"/>
 
             <View
                 android:layout_width="wrap_content"
@@ -44,13 +44,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email Address"
+                android:text="Enter Your Email"
                 android:textStyle="bold"
                 android:textSize="55px"
                 android:alpha="0.8"/>
 
             <EditText
-                android:id="@+id/txtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/email_icon"
@@ -58,43 +57,39 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="80px"/>
+                android:layout_height="70px"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Passward"
+                android:text="Enter New Passward"
                 android:textStyle="bold"
                 android:textSize="55px"
                 android:alpha="0.8"/>
 
             <EditText
-                android:id="@+id/txtPwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/pwd_icon"
                 android:inputType="textPassword" />
 
-            <RelativeLayout
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="70px"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm New Passward"
+                android:textStyle="bold"
+                android:textSize="55px"
+                android:alpha="0.8"/>
+
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Remember me"
-                    android:layout_centerVertical="true"
-                    android:alpha="0.8"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/forgotPwd"
-                    android:text="I forgot my password  "
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"/>
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/pwd_icon"
+                android:inputType="textPassword" />
 
             <View
                 android:layout_width="wrap_content"
@@ -103,43 +98,14 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="170px"
-                android:id="@+id/btnLogin"
-                android:text="LOGIN"
+                android:id="@+id/saveBtn"
+                android:text="Save"
                 android:textStyle="bold"
                 android:textSize="65px"/>
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="80px"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50px"
-                    android:text="Don't have an account?"
-                    android:textStyle="bold"
-                    android:alpha="0.8"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/signup"
-                    android:layout_marginLeft="10px"
-                    android:text="Sign Up"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="wrap_content"
                 android:layout_height="100px"/>
-
-
 
         </LinearLayout>
 
