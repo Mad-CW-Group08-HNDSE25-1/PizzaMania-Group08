@@ -189,7 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
                 db.close();
 
                 Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
             } else {
                 Toast.makeText(this, "Failed to save user info!", Toast.LENGTH_SHORT).show();

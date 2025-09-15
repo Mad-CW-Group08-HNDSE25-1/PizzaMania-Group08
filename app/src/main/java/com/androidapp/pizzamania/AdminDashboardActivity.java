@@ -43,7 +43,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, AddBranchActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
 

@@ -155,7 +155,7 @@ public class ManagerProfileActivity extends AppCompatActivity {
                 userController.deleteUser(uid);
                 authController.logout();
                 authController.deleteAuth();
-                startActivity(new Intent(ManagerProfileActivity.this, SplashActivity.class));
+                startActivity(new Intent(ManagerProfileActivity.this, SplashScreen.class));
                 finish();
             });
 
