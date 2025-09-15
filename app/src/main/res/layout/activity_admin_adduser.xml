@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.profile.ProfileFragment"
+    tools:context=".admin_adduser"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -30,7 +31,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="40px"
             android:layout_marginRight="40px">
 
@@ -70,46 +71,69 @@
                 android:layout_marginTop="30px"/>
 
             <EditText
-                android:id="@+id/branchTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Branch"
-                android:layout_marginTop="30px"/>
-
-            <EditText
                 android:id="@+id/emailTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:layout_marginTop="30px"/>
 
-            <Button
-                android:id="@+id/saveBtn"
-                android:text="Save Details"
+            <EditText
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="170px"
-                android:textStyle="bold"
-                android:textSize="60px"
-                android:backgroundTint="@color/green"
-                android:layout_marginTop="150px"/>
+                android:layout_height="wrap_content"
+                android:hint="Passward"
+                android:layout_marginTop="30px"
+                android:inputType="textPassword"/>
+
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Passward"
+                android:layout_marginTop="30px"
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50px"
+                android:layout_marginLeft="14px"
+                android:text="Select Role :"
+                android:textSize="48px"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/spRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:prompt="@string/select_role"/>
+
+            <!-- Branch Selection -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14px"
+                android:text="Select Branch :"
+                android:textSize="48px"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/spBranch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:prompt="@string/select_branch"/>
 
             <Button
-                android:id="@+id/saveAuthBtn"
-                android:text="Send Passward Reset Link"
+                android:id="@+id/btnAddAdmin"
+                android:text="Add Member"
                 android:layout_width="match_parent"
                 android:layout_height="170px"
+                android:layout_marginTop="50px"
                 android:textStyle="bold"
                 android:textSize="60px"/>
 
-            <Button
-                android:id="@+id/deleteAccBtn"
-                android:text="Delete my account"
-                android:layout_width="match_parent"
-                android:layout_height="170px"
-                android:textStyle="bold"
-                android:textSize="60px"
-                android:backgroundTint="@color/red"
-                android:layout_marginBottom="100px"/>
         </LinearLayout>
 
     </ScrollView>
