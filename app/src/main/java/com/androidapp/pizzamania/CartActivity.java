@@ -42,18 +42,15 @@ public class CartActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         orderRef = FirebaseDatabase.getInstance().getReference("orders");
 
-
-
         loadCart();
 
         btnCheckout.setOnClickListener(v -> placeOrder());
     }
 
-
     private void loadCart() {
         cartList.clear();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_CART, null, null, null, null, null, null);
+        Cursor cursor = db.query("Cart", null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             String itemId = cursor.getString(cursor.getColumnIndexOrThrow("itemId"));
@@ -87,35 +84,48 @@ public class CartActivity extends AppCompatActivity {
             return;
         }
 
-        String orderId = orderRef.push().getKey();
-        Map<String, Object> orderMap = new HashMap<>();
-        orderMap.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        Map<String, Object> items = new HashMap<>();
-        double totalPrice = 0;
-        for (CartItem item : cartList) {
-            items.put(item.getItemId(), item.getQuantity());
-            totalPrice += item.getTotalPrice();
+        String orderId = orderRef.push().getKey(); // unique order id
+        if (orderId == null) {
+            Toast.makeText(this, "Failed to generate order ID", Toast.LENGTH_SHORT).show();
+            return;
         }
-        orderMap.put("items", items);
-        orderMap.put("totalPrice", totalPrice);
+
+        Map<String, Object> orderMap = new HashMap<>();
+        orderMap.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
         orderMap.put("status", "pending");
         orderMap.put("createdAt", System.currentTimeMillis());
 
-        if (orderId != null) {
-            orderRef.child(orderId).setValue(orderMap)
-                    .addOnSuccessListener(a -> {
-                        clearCart();
-                        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Order failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        List<Map<String, Object>> itemList = new ArrayList<>();
+        double totalAmount = 0;
+
+        for (CartItem item : cartList) {
+            Map<String, Object> itemMap = new HashMap<>();
+            itemMap.put("itemID", item.getItemId());
+            itemMap.put("name", item.getName());
+            itemMap.put("price", item.getPrice());
+            itemMap.put("qty", item.getQuantity());
+            itemMap.put("totalPerItem", item.getTotalPrice());
+
+            totalAmount += item.getTotalPrice();
+            itemList.add(itemMap);
         }
+
+        orderMap.put("itemList", itemList);
+        orderMap.put("totalAmount", totalAmount);
+        orderMap.put("orderID", orderId);
+
+        orderRef.child(orderId).setValue(orderMap)
+                .addOnSuccessListener(a -> {
+                    clearCart();
+                    Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Order failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void clearCart() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(DatabaseHelper.TABLE_CART, null, null);
+        db.delete("Cart", null, null);
         db.close();
         loadCart();
     }

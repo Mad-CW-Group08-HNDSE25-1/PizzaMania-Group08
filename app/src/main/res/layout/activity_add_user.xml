@@ -9,6 +9,7 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <!-- Profile Image -->
         <ImageView
             android:id="@+id/imgProfile"
             android:layout_width="120dp"
@@ -26,6 +27,7 @@
             android:text="Choose Profile Picture"
             android:layout_marginBottom="24dp" />
 
+        <!-- Admin Info -->
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
@@ -65,10 +67,39 @@
             android:inputType="textPassword"
             android:layout_marginBottom="24dp"/>
 
-        <Button
-            android:id="@+id/btnRegister"
+        <!-- Role Selection -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register" />
+            android:text="Select Role:"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Branch Selection -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Branch:"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spBranch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Add Button -->
+        <Button
+            android:id="@+id/btnAddUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Admin / Staff" />
     </LinearLayout>
 </ScrollView>

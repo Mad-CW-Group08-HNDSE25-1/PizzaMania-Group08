@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">PizzaMania</string>
-
-    <string-array name="user_roles">
-        <item>Customer</item>
-        <item>Staff</item>
+    <string-array name="admin_staff_roles">
         <item>Admin</item>
+        <item>Staff</item>
+    </string-array>
+
+    <string-array name="admin_branches">
+        <item>Colombo</item>
+        <item>Negombo</item>
     </string-array>
 </resources>

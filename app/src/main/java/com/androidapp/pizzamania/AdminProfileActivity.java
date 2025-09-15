@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -23,14 +25,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AdminProfileActivity extends AppCompatActivity {
 
     private ImageView imgProfile;
     private EditText etName, etEmail, etPhone;
-    private TextView tvRole, tvBranch, tvLastLogin;
+    private TextView tvRole, tvLastLogin;
+    private Spinner spBranch;
     private Button btnChangePic, btnUpdate, btnResetPassword;
 
     private Uri imageUri;
@@ -46,13 +52,13 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         // Initialize views
         imgProfile = findViewById(R.id.imgProfile);
-        btnChangePic = findViewById(R.id.btnChangePic);
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
         tvRole = findViewById(R.id.tvRole);
-        tvBranch = findViewById(R.id.tvBranch);
         tvLastLogin = findViewById(R.id.tvLastLogin);
+        spBranch = findViewById(R.id.spBranch);
+        btnChangePic = findViewById(R.id.btnChangePic);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnResetPassword = findViewById(R.id.btnResetPassword);
 
@@ -63,6 +69,12 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
+
+        // Setup Branch Spinner
+        ArrayAdapter<CharSequence> branchAdapter = ArrayAdapter.createFromResource(
+                this, R.array.admin_branches, android.R.layout.simple_spinner_item);
+        branchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spBranch.setAdapter(branchAdapter);
 
         loadProfile();
 
@@ -79,16 +91,17 @@ public class AdminProfileActivity extends AppCompatActivity {
                 etEmail.setText(snapshot.child("email").getValue(String.class));
                 etPhone.setText(snapshot.child("phone").getValue(String.class));
                 tvRole.setText("Role: " + snapshot.child("role").getValue(String.class));
-                tvBranch.setText("Branch: " + snapshot.child("branch").getValue(String.class));
                 tvLastLogin.setText("Last Login: " + snapshot.child("lastLogin").getValue(String.class));
+
+                String branch = snapshot.child("branch").getValue(String.class);
+                if (branch != null) {
+                    int position = ((ArrayAdapter) spBranch.getAdapter()).getPosition(branch);
+                    spBranch.setSelection(position);
+                }
 
                 String profileUrl = snapshot.child("profileImageUrl").getValue(String.class);
                 if (profileUrl != null && !profileUrl.isEmpty()) {
-                    Picasso.get()
-                            .load(profileUrl)
-                            .placeholder(R.drawable.ic_person)
-                            .error(R.drawable.ic_person)
-                            .into(imgProfile);
+                    Picasso.get().load(profileUrl).placeholder(R.drawable.ic_person).into(imgProfile);
                 }
             }
         });
@@ -112,6 +125,7 @@ public class AdminProfileActivity extends AppCompatActivity {
     private void updateProfile() {
         String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
+        String branch = spBranch.getSelectedItem().toString();
 
         if (name.isEmpty() || phone.isEmpty()) {
             Snackbar.make(etName, "Name and Phone cannot be empty", Snackbar.LENGTH_SHORT).show();
@@ -129,27 +143,32 @@ public class AdminProfileActivity extends AppCompatActivity {
         String userId = auth.getCurrentUser().getUid();
 
         if (imageUri != null) {
-            StorageReference storageRef = FirebaseStorage.getInstance()
-                    .getReference("profiles/" + userId + ".jpg");
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference("profiles/" + userId + ".jpg");
             storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot ->
-                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> saveToFirebase(userId, name, phone, uri.toString()))
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> saveToFirebase(userId, name, phone, branch, uri.toString()))
             ).addOnFailureListener(e -> {
                 progressDialog.dismiss();
                 Snackbar.make(btnUpdate, "Image upload failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
             });
         } else {
-            saveToFirebase(userId, name, phone, null);
+            saveToFirebase(userId, name, phone, branch, null);
         }
     }
 
-    private void saveToFirebase(String userId, String name, String phone, @Nullable String imageUrl) {
+    private void saveToFirebase(String userId, String name, String phone, String branch, @Nullable String imageUrl) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", name);
         map.put("phone", phone);
+        map.put("branch", branch);
         if (imageUrl != null) map.put("profileImageUrl", imageUrl);
 
+        // Update last login automatically
+        String lastLogin = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        map.put("lastLogin", lastLogin);
+        tvLastLogin.setText("Last Login: " + lastLogin);
+
         userRef.updateChildren(map).addOnSuccessListener(unused -> {
-            saveToSQLite(userId, name, etEmail.getText().toString(), phone, imageUrl);
+            saveToSQLite(userId, name, etEmail.getText().toString(), phone, imageUrl, branch);
             progressDialog.dismiss();
             Snackbar.make(btnUpdate, "Profile Updated!", Snackbar.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
@@ -158,12 +177,13 @@ public class AdminProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void saveToSQLite(String userId, String name, String email, String phone, @Nullable String imageUrl) {
+    private void saveToSQLite(String userId, String name, String email, String phone, @Nullable String imageUrl, String branch) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("email", email);
         values.put("phone", phone);
+        values.put("branch", branch);
         if (imageUrl != null) values.put("profileImageUrl", imageUrl);
 
         db.update(DatabaseHelper.TABLE_USER_SESSION, values, "userId=?", new String[]{userId});
@@ -181,7 +201,7 @@ public class AdminProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused ->
                         Snackbar.make(btnResetPassword, "Password reset email sent!", Snackbar.LENGTH_SHORT).show()
                 ).addOnFailureListener(e ->
-                        Snackbar.make(btnResetPassword, "Failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show()
-                );
+                                Snackbar.make(btnResetPassword, "Failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show()
+                        );
     }
 }

@@ -20,6 +20,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private OnCartChangeListener listener;
     private DatabaseHelper dbHelper;
 
+    // Listener interface for CartActivity to update total
     public interface OnCartChangeListener {
         void onCartChanged();
     }
@@ -42,14 +43,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CartItem item = cartList.get(position);
 
+        // Set item data
         holder.tvName.setText(item.getName());
         holder.tvQty.setText(String.valueOf(item.getQuantity()));
         holder.tvPrice.setText("Rs. " + item.getTotalPrice());
 
-        //  Increase quantity (+)
+        // Increase quantity (+)
         holder.btnPlus.setOnClickListener(v -> {
             item.setQuantity(item.getQuantity() + 1);
-            updateItemInDB(item); //  Update SQLite
+            updateItemInDB(item);
             notifyItemChanged(position);
             listener.onCartChanged();
         });
@@ -58,15 +60,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.btnMinus.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.setQuantity(item.getQuantity() - 1);
-                updateItemInDB(item); // Update SQLite
+                updateItemInDB(item);
                 notifyItemChanged(position);
                 listener.onCartChanged();
             }
         });
 
-        //  Delete item
+        // Delete item
         holder.btnDelete.setOnClickListener(v -> {
-            removeItemFromDB(item); //  Remove from SQLite
+            removeItemFromDB(item);
             cartList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, cartList.size());
@@ -79,7 +81,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return cartList.size();
     }
 
-    //  Update existing item in SQLite
+    // Update existing item in SQLite
     private void updateItemInDB(CartItem item) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -88,7 +90,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         db.close();
     }
 
-    //  Remove item from SQLite
+    // Remove item from SQLite
     private void removeItemFromDB(CartItem item) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete("Cart", "itemId=?", new String[]{item.getItemId()});

@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,12 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
+
     private EditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
-    private Spinner spRole;
     private ImageView imgProfile;
     private Button btnRegister, btnChoosePic;
-    private Uri profileUri;
 
+    private Uri profileUri;
     private FirebaseAuth auth;
     private DatabaseReference dbRef;
     private StorageReference storageRef;
@@ -39,18 +39,19 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private static final String DEFAULT_PROFILE_URL = "https://i.pravatar.cc/150";
+    private static final String ROLE_CUSTOMER = "customer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // Init views
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        spRole = findViewById(R.id.spRole);
         imgProfile = findViewById(R.id.imgProfile);
         btnRegister = findViewById(R.id.btnRegister);
         btnChoosePic = findViewById(R.id.btnChoosePic);
@@ -59,20 +60,31 @@ public class RegisterActivity extends AppCompatActivity {
         dbRef = FirebaseDatabase.getInstance().getReference("Users");
         storageRef = FirebaseStorage.getInstance().getReference("profile_images");
         dbHelper = new DatabaseHelper(this);
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-
-        // Setup Spinner
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.user_roles, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spRole.setAdapter(adapter);
 
         // Click listeners
         imgProfile.setOnClickListener(v -> chooseImage());
         btnChoosePic.setOnClickListener(v -> chooseImage());
         btnRegister.setOnClickListener(v -> registerUser());
+
+        // Optional: Toggle password visibility (long press)
+        etPassword.setOnLongClickListener(v -> {
+            togglePasswordVisibility(etPassword);
+            return true;
+        });
+        etConfirmPassword.setOnLongClickListener(v -> {
+            togglePasswordVisibility(etConfirmPassword);
+            return true;
+        });
+    }
+
+    private void togglePasswordVisibility(EditText passwordField) {
+        if (passwordField.getTransformationMethod() instanceof PasswordTransformationMethod) {
+            passwordField.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
     }
 
     private void chooseImage() {
@@ -96,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
         String phone = etPhone.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
-        String role = spRole.getSelectedItem().toString().toLowerCase();
+        String role = ROLE_CUSTOMER; // automatically set
 
         // Validation
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
@@ -160,29 +172,28 @@ public class RegisterActivity extends AppCompatActivity {
         userMap.put("profileImageUrl", imageUrl);
         userMap.put("role", role);
 
-        dbRef.child(userId).setValue(userMap)
-                .addOnCompleteListener(task -> {
-                    progressDialog.dismiss();
-                    if (task.isSuccessful()) {
-                        // Save session in SQLite
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        db.delete(DatabaseHelper.TABLE_USER_SESSION, null, null);
-                        ContentValues values = new ContentValues();
-                        values.put("userId", userId);
-                        values.put("name", name);
-                        values.put("email", email);
-                        values.put("phone", phone);
-                        values.put("profileImageUrl", imageUrl);
-                        values.put("isLoggedIn", 1);
-                        db.insert(DatabaseHelper.TABLE_USER_SESSION, null, values);
-                        db.close();
+        dbRef.child(userId).setValue(userMap).addOnCompleteListener(task -> {
+            progressDialog.dismiss();
+            if (task.isSuccessful()) {
+                // Save session in SQLite
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.delete(DatabaseHelper.TABLE_USER_SESSION, null, null);
+                ContentValues values = new ContentValues();
+                values.put("userId", userId);
+                values.put("name", name);
+                values.put("email", email);
+                values.put("phone", phone);
+                values.put("profileImageUrl", imageUrl);
+                values.put("isLoggedIn", 1);
+                db.insert(DatabaseHelper.TABLE_USER_SESSION, null, values);
+                db.close();
 
-                        Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, MainActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(this, "Failed to save user info!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        }
+                Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Failed to save user info!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+}
