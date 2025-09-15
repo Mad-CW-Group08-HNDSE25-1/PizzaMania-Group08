@@ -19,8 +19,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private final List<OrderItem> orderList;
     private final OnReorderListener listener;
 
-    // Listener interface for reorder button
-    public interface OnReorderListener { void onReorder(OrderItem order); }
+    public interface OnReorderListener {
+        void onReorder(OrderItem order);
+    }
 
     public OrderAdapter(List<OrderItem> orderList, OnReorderListener listener) {
         this.orderList = orderList;
@@ -39,22 +40,32 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderItem order = orderList.get(position);
 
-        holder.tvOrderId.setText("Order: " + order.getOrderID());
+        holder.tvOrderId.setText("Order: " + safeString(order.getOrderID()));
         holder.tvOrderTotal.setText("Total: Rs. " + order.getTotalAmount());
-        holder.tvOrderStatus.setText("Status: " + order.getOrderStatus());
+        holder.tvOrderStatus.setText("Status: " + safeString(order.getOrderStatus()));
 
-        // Format timestamp
-        String date = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                .format(new Date(order.getCreatedAt()));
-        holder.tvOrderDate.setText("Date: " + date);
+        String dateText = "Unknown date";
+        try {
+            long timeStamp = Long.parseLong(order.getCreatedAt());
+            if (timeStamp > 0) {
+                dateText = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                        .format(new Date(timeStamp));
+            }
+        } catch (Exception e) {
+            dateText = "Unknown date";
+        }
+        holder.tvOrderDate.setText("Date: " + dateText);
 
-        // Reorder button
         holder.btnReorder.setOnClickListener(v -> listener.onReorder(order));
     }
 
     @Override
     public int getItemCount() {
         return orderList.size();
+    }
+
+    private String safeString(String value) {
+        return value != null ? value : "";
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -183,7 +183,6 @@ public class AdminProfileActivity extends AppCompatActivity {
         values.put("name", name);
         values.put("email", email);
         values.put("phone", phone);
-        values.put("branch", branch);
         if (imageUrl != null) values.put("profileImageUrl", imageUrl);
 
         db.update(DatabaseHelper.TABLE_USER_SESSION, values, "userId=?", new String[]{userId});

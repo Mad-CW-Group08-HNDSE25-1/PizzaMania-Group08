@@ -1,7 +1,5 @@
 package com.androidapp.pizzamania;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,8 +24,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private static final String TAG = "OrderHistoryActivity";
 
     private RecyclerView recyclerOrders;
-    private DatabaseHelper dbHelper;
-    private List<OrderItem> orderList = new ArrayList<>();
+    private SqlLiteHelper dbHelper;
+    private final List<OrderItem> orderList = new ArrayList<>();
     private OrderAdapter adapter;
     private DatabaseReference ordersRef;
     private DatabaseReference menuRef;
@@ -38,7 +36,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_history);
 
         recyclerOrders = findViewById(R.id.recyclerOrders);
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new SqlLiteHelper(this);
 
         ordersRef = FirebaseDatabase.getInstance().getReference("orders");
         menuRef = FirebaseDatabase.getInstance().getReference("MenuItems");
@@ -53,34 +51,49 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private void loadOrders() {
         orderList.clear();
 
-        // ⿡ Load offline orders from SQLite
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_OFFLINE_ORDERS,
-                null, null, null, null, null, "createdAt DESC");
-
-        Log.d(TAG, "Offline orders count: " + cursor.getCount());
-
-        while (cursor.moveToNext()) {
-            String orderId = cursor.getString(cursor.getColumnIndexOrThrow("orderId"));
-            String userId = cursor.getString(cursor.getColumnIndexOrThrow("userId"));
-            String itemsStr = cursor.getString(cursor.getColumnIndexOrThrow("items"));
-            double totalPrice = cursor.getDouble(cursor.getColumnIndexOrThrow("totalPrice"));
-            String status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
-            String createdAt = cursor.getString(cursor.getColumnIndexOrThrow("createdAt"));
-
-            List<OrderItem.Item> itemsList = Utils.parseItemsString(itemsStr);
-
-            orderList.add(new OrderItem(orderId, userId, null, itemsList, totalPrice, status, createdAt, null));
-            Log.d(TAG, "Loaded offline order: " + orderId + " | items: " + (itemsList != null ? itemsList.size() : 0));
-        }
-        cursor.close();
-        db.close();
-
-        adapter.notifyDataSetChanged(); // update RecyclerView for offline orders
-
-        // ⿢ Load online orders from Firebase
+        String uid = "-OZnUrNQXlTG5QcMsU5R";
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // real user
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
+
+        if (uid != null) {
+            List<OrderDTO> offlineOrders = dbHelper.getOrderByUser(uid);
+            Log.d(TAG, "Offline orders count: " + offlineOrders.size());
+
+            for (OrderDTO dto : offlineOrders) {
+                List<OrderItem.Item> itemsList = new ArrayList<>();
+                if (dto.getItemList() != null) {
+                    for (ItemDTO itemDTO : dto.getItemList()) {
+                        itemsList.add(new OrderItem.Item(
+                                itemDTO.getItemID(),
+                                itemDTO.getQty(),
+                                itemDTO.getPrice()
+                        ));
+                    }
+                }
+
+                OrderDTO.Location dtoLoc = dto.getLocation();
+                OrderItem.Location itemLoc = null;
+                if (dtoLoc != null) {
+                    itemLoc = new OrderItem.Location(dtoLoc.getLatitude(), dtoLoc.getLongitude());
+                }
+
+                orderList.add(new OrderItem(
+                        dto.getOrderID(),
+                        dto.getUserID(),
+                        dto.getBranchID(),
+                        itemsList,
+                        dto.getTotalAmount(),
+                        dto.getOrderStatus(),
+                        dto.getCreatedAt(),
+                        itemLoc
+                ));
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        if (uid != null) {
             ordersRef.orderByChild("userID").equalTo(uid)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -97,7 +110,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                     Log.d(TAG, "Firebase order is null!");
                                 }
                             }
-                            adapter.notifyDataSetChanged(); // update RecyclerView for online orders
+                            adapter.notifyDataSetChanged();
                         }
 
                         @Override
@@ -107,18 +120,18 @@ public class OrderHistoryActivity extends AppCompatActivity {
                             Log.e(TAG, "Firebase error: " + error.getMessage());
                         }
                     });
+        } else {
+            Log.w(TAG, "No logged-in user — skipping Firebase order load");
         }
     }
 
-    // Reorder: clears cart and adds items from selected order
     private void reorder(OrderItem order) {
         if (order.getItemList() == null || order.getItemList().isEmpty()) {
             Toast.makeText(this, "No items to reorder!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(DatabaseHelper.TABLE_CART, null, null); // clear previous cart
+        dbHelper.getWritableDatabase().delete(DatabaseHelper.TABLE_CART, null, null);
 
         for (OrderItem.Item item : order.getItemList()) {
             String itemId = item.getItemID();
@@ -129,7 +142,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 Double price = snapshot.child("price").getValue(Double.class);
 
                 if (name != null && price != null) {
-                    db.execSQL("INSERT INTO Cart(itemId, name, price, quantity) VALUES(?,?,?,?)",
+                    dbHelper.getWritableDatabase().execSQL(
+                            "INSERT INTO Cart(itemId, name, price, quantity) VALUES(?,?,?,?)",
                             new Object[]{itemId, name, price, qty});
                 }
             }).addOnFailureListener(e -> {
@@ -137,7 +151,6 @@ public class OrderHistoryActivity extends AppCompatActivity {
             });
         }
 
-        db.close();
         Toast.makeText(this, "Reorder items added to cart!", Toast.LENGTH_SHORT).show();
     }
 }
