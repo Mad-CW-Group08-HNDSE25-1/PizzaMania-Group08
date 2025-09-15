@@ -1,79 +1,102 @@
 package com.androidapp.pizzamania;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
+import java.util.Map;
 
-public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> {
+public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
+    private Context context;
     private List<StockItem> stockList;
-    private OnStockChangeListener listener;
+    private Map<String, BranchesDTO> branchMap;
+    private int lowStockThreshold = 5;
 
-    public interface OnStockChangeListener {
-        void onStockChanged(StockItem item, int newQuantity);
-    }
-
-    public StockAdapter(List<StockItem> stockList, OnStockChangeListener listener) {
+    public StockAdapter(Context context, List<StockItem> stockList, Map<String, BranchesDTO> branchMap) {
+        this.context = context;
         this.stockList = stockList;
-        this.listener = listener;
+        this.branchMap = branchMap;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_stock, parent, false);
-        return new ViewHolder(view);
+    public StockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_stock, parent, false);
+        return new StockViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        StockItem item = stockList.get(position);
-        holder.tvName.setText(item.getName());
-        holder.tvBranch.setText(item.getBranchName());
-        holder.tvQty.setText(String.valueOf(item.getQuantity()));
+    public void onBindViewHolder(@NonNull StockViewHolder holder, int position) {
+        StockItem stock = stockList.get(position);
+        holder.tvItemName.setText(stock.getItemName());
+        holder.tvQuantity.setText("Qty: " + stock.getQuantity());
 
-        holder.btnPlus.setOnClickListener(v -> {
-            item.setQuantity(item.getQuantity() + 1);
-            notifyItemChanged(position);
-            listener.onStockChanged(item, item.getQuantity());
-        });
-
-        holder.btnMinus.setOnClickListener(v -> {
-            if (item.getQuantity() > 0) {
-                item.setQuantity(item.getQuantity() - 1);
-                notifyItemChanged(position);
-                listener.onStockChanged(item, item.getQuantity());
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() { return stockList.size(); }
-
-    public void updateList(List<StockItem> newList) {
-        stockList = newList;
-        notifyDataSetChanged();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvBranch, tvQty;
-        ImageButton btnPlus, btnMinus;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            tvName = itemView.findViewById(R.id.tvItemName);
-            tvBranch = itemView.findViewById(R.id.tvBranchName);
-            tvQty = itemView.findViewById(R.id.tvQuantity);
-            btnPlus = itemView.findViewById(R.id.btnPlus);
-            btnMinus = itemView.findViewById(R.id.btnMinus);
+        // Low stock highlighting
+        if (stock.getQuantity() <= lowStockThreshold) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FFCDD2"));
+        } else {
+            holder.itemView.setBackgroundColor(Color.WHITE);
         }
+
+        // Display nearest branch
+        BranchesDTO branch = branchMap.get(stock.getBranchId());
+        if (branch != null) {
+            holder.tvNearestBranch.setText("Available at: " + branch.getBranchName());
+        }
+
+        // Increase stock
+        holder.btnIncrease.setOnClickListener(v -> updateStock(stock, stock.getQuantity() + 1));
+
+        // Decrease stock
+        holder.btnDecrease.setOnClickListener(v -> {
+            int newQty = stock.getQuantity() - 1;
+            if (newQty >= 0) updateStock(stock, newQty);
+        });
     }
+
+    private void updateStock(StockItem stock, int newQty) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("BranchStock")
+                .child(stock.getStockId());
+        ref.child("quantity").setValue(newQty)
+                .addOnSuccessListener(aVoid -> {
+                    stock.setQuantity(newQty);
+                    notifyDataSetChanged();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(context, "Failed to update stock", Toast.LENGTH_SHORT).show()
+                );
+    }
+
+    @Override
+    public int getItemCount() {
+        return stockList.size();
+    }
+
+    static class StockViewHolder extends RecyclerView.ViewHolder {
+        TextView tvItemName, tvQuantity, tvNearestBranch;
+        Button btnIncrease, btnDecrease;
+
+        public StockViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvItemName = itemView.findViewById(R.id.tvItemName);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            tvNearestBranch = itemView.findViewById(R.id.tvNearestBranch);
+            btnIncrease = itemView.findViewById(R.id.btnIncrease);
+            btnDecrease = itemView.findViewById(R.id.btnDecrease);
+ }
+}
 }

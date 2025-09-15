@@ -1,93 +1,86 @@
 package com.androidapp.pizzamania;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StockManagementActivity extends AppCompatActivity {
 
-    private EditText etSearch;
     private RecyclerView recyclerStock;
     private StockAdapter adapter;
     private List<StockItem> stockList = new ArrayList<>();
-    private DatabaseReference stockRef;
+    private Map<String, BranchesDTO> branchMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_management);
 
-        etSearch = findViewById(R.id.etSearch);
         recyclerStock = findViewById(R.id.recyclerStock);
+        recyclerStock.setLayoutManager(new LinearLayoutManager(this));
 
-        stockRef = FirebaseDatabase.getInstance().getReference("stock");
+        adapter = new StockAdapter(this, stockList, branchMap);
+        recyclerStock.setAdapter(adapter);
 
-        loadStock();
+        fetchBranches();
+    }
 
-        etSearch.addTextChangedListener(new TextWatcher() {
+    private void fetchBranches() {
+        DatabaseReference branchRef = FirebaseDatabase.getInstance().getReference("branches");
+        branchRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterStock(s.toString());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                branchMap.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    BranchesDTO branch = snap.getValue(BranchesDTO.class);
+                    if (branch != null) branchMap.put(snap.getKey(), branch);
+                }
+                fetchStock();
             }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(StockManagementActivity.this, "Failed to load branches", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
-    private void loadStock() {
-        stockList.clear();
-        stockRef.get().addOnSuccessListener(snapshot -> {
-            for (DataSnapshot branchSnap : snapshot.getChildren()) {
-                String branchName = branchSnap.getKey();
-                for (DataSnapshot itemSnap : branchSnap.getChildren()) {
-                    String itemId = itemSnap.getKey();
-                    String itemName = itemSnap.child("name").getValue(String.class);
-                    int quantity = itemSnap.child("quantity").getValue(Integer.class);
-
-                    stockList.add(new StockItem(itemId, itemName, branchName, quantity));
+    private void fetchStock() {
+        DatabaseReference stockRef = FirebaseDatabase.getInstance().getReference("BranchStock");
+        stockRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                stockList.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    StockItem stock = snap.getValue(StockItem.class);
+                    if (stock != null) {
+                        stock.setStockId(snap.getKey());
+                        stockList.add(stock);
+                    }
                 }
+                adapter.notifyDataSetChanged();
             }
-            adapter = new StockAdapter(stockList, this::updateStock);
-            recyclerStock.setLayoutManager(new LinearLayoutManager(this));
-            recyclerStock.setAdapter(adapter);
-        }).addOnFailureListener(e ->
-                Toast.makeText(this, "Failed to load stock: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
 
-    private void updateStock(StockItem item, int newQuantity) {
-        stockRef.child(item.getBranchName())
-                .child(item.getItemId())
-                .child("quantity")
-                .setValue(newQuantity)
-                .addOnSuccessListener(a -> Toast.makeText(this, "Stock updated!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
-    private void filterStock(String query) {
-        List<StockItem> filteredList = new ArrayList<>();
-        for (StockItem item : stockList) {
-            if (item.getName().toLowerCase().contains(query.toLowerCase()) ||
-                    item.getBranchName().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(item);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(StockManagementActivity.this, "Failed to fetch stock", Toast.LENGTH_SHORT).show();
             }
-        }
-        adapter.updateList(filteredList);
+        });
     }
 }
+
