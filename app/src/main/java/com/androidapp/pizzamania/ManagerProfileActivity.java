@@ -16,17 +16,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.controller.AuthController;
 import com.androidapp.pizzamania.controller.UserController;
 import com.androidapp.pizzamania.model.User;
 
 public class ManagerProfileActivity extends AppCompatActivity {
-    private ImageView imgDp;
-    private EditText txtName, txtPhone, txtBranch, txtEmail, txtCurrentPass, txtNewPass, txtConfirmPass;
-    private String uid, name, phone, branch, currentEmail, email, currentPass, newPass, confPass;
-    private Button saveBtn, saveAuthBtn, deleteAccBtn;
-    private UserController userController;
+    private Button backBtn, editImageBtn, saveBtn, passResetBtn, deleteAccBtn;
+    private ImageView profileImage;
+    private EditText nameTxt, phoneTxt, branchTxt, emailTxt;
+    private String uid, name, phone, role, branch, email;
     private AuthController authController;
+    private UserController userController;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,124 +41,139 @@ public class ManagerProfileActivity extends AppCompatActivity {
             return insets;
         });
 
-        imgDp = findViewById(R.id.imgDp);
-        txtName = findViewById(R.id.txtName);
-        txtPhone = findViewById(R.id.txtPhone);
-        txtBranch = findViewById(R.id.txtBranch);
-        txtEmail = findViewById(R.id.txtEmail);
-        txtCurrentPass = findViewById(R.id.txtCurrentPass);
-        txtNewPass = findViewById(R.id.txtNewPass);
-        txtConfirmPass = findViewById(R.id.txtConfirmPass);
+        backBtn = findViewById(R.id.backBtn);
+        editImageBtn = findViewById(R.id.editImageBtn);
         saveBtn = findViewById(R.id.saveBtn);
-        saveAuthBtn = findViewById(R.id.saveAuthBtn);
+        passResetBtn = findViewById(R.id.passResetBtn);
         deleteAccBtn = findViewById(R.id.deleteAccBtn);
-        userController = new UserController();
+        profileImage = findViewById(R.id.profileImage);
+        nameTxt= findViewById(R.id.nameTxt);
+        phoneTxt= findViewById(R.id.phoneTxt);
+        branchTxt = findViewById(R.id.branchTxt);
+        emailTxt= findViewById(R.id.emailTxt);
         authController = new AuthController();
-        uid = authController.getAuthId();
+        userController = new UserController();
 
-        userController.readUserById(uid)
-                .addOnSuccessListener(user -> {
-                    txtName.setText(user.getName());
-                    txtPhone.setText(user.getPhone());
-                    txtBranch.setText(user.getBranch());
-                    txtEmail.setText(user.getEmail());
-                    currentEmail = user.getEmail().toString();
-                })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Failed to load data", Toast.LENGTH_SHORT).show();
-                            Log.d("Error", "Failed to load data"+e);
-                        });
+        uid = authController.getCurrentUserId();
+        userController.getUserById(uid, new OnResultListener<User>() {
+            @Override
+            public void onSuccess(User result) {
+                user = result;
+                nameTxt.setText(user.getName());
+                phoneTxt.setText(user.getPhone());
+                branchTxt.setText(user.getBranchId());
+                emailTxt.setText(user.getEmail());
+                role = user.getRole();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(ManagerProfileActivity.this, "Error loading data", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        backBtn.setOnClickListener(view -> onBackPressed());
+
+        editImageBtn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Edit Image");
+            builder.setMessage("Do you want to remove this image?");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton("Remove", (DialogInterface.OnClickListener)(dialog, which) -> {
+                dialog.cancel();
+            });
+
+            builder.setNegativeButton("Edit", (DialogInterface.OnClickListener)(dialog, which) -> {
+                dialog.cancel();
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        });
 
         saveBtn.setOnClickListener(view -> {
-            name = txtName.getText().toString();
-            phone = txtPhone.getText().toString();
-            branch = txtBranch.getText().toString();
-            email = txtEmail.getText().toString();
+            name = nameTxt.getText().toString();
+            phone = phoneTxt.getText().toString();
+            branch = branchTxt.getText().toString();
+            email = emailTxt.getText().toString();
 
-            User updatedUser = new User();
-            updatedUser.setName(name);
-            updatedUser.setPhone(phone);
-            updatedUser.setBranch(branch);
-            updatedUser.setEmail(email);
+            if(name.isEmpty()){
+                nameTxt.setError("Please enter your full name");
+            }
+            else if(phone.isEmpty()){
+                phoneTxt.setError("Please enter your phone number");
+            }
+            else if(email.isEmpty()){
+                emailTxt.setError("Please enter the email address");
+            }
+            else {
+                User updatedUser = new User(uid, name, phone, email, role, branch, null);
+                userController.updateUser(updatedUser, new OnResultListener<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        Toast.makeText(ManagerProfileActivity.this, "Data updated successfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new  Intent(getIntent()));
+                    }
 
-            userController.updateUser(uid, updatedUser)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Details updated successfuly", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(ManagerProfileActivity.this, "Error updating data", Toast.LENGTH_SHORT).show();
+                        Log.d("Error", "Error updating data "+e);
+                    }
+                });
+            }
+        });
+
+        passResetBtn.setOnClickListener(view -> {
+            authController.resetPass(email)
+                    .addOnSuccessListener(task -> {
+                        Toast.makeText(ManagerProfileActivity.this, "Link sent to your email address", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Failed to update data", Toast.LENGTH_SHORT).show();
-                        Log.d("Error", "Failed to update data"+e);
+                        Toast.makeText(ManagerProfileActivity.this, "Error sending the reset link", Toast.LENGTH_SHORT).show();
                     });
         });
 
-        saveAuthBtn.setOnClickListener(view -> {
-            email = txtEmail.getText().toString();
-            currentPass = txtCurrentPass.getText().toString();
-            newPass = txtNewPass.getText().toString();
-            confPass = txtConfirmPass.getText().toString();
-
-            if (email.isEmpty() || currentPass.isEmpty() || newPass.isEmpty() || confPass.isEmpty()) {
-                Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(!email.equals(currentEmail)){
-                if(newPass.equals(currentPass)){
-                    Toast.makeText(this, "The new password cannot be the current password", Toast.LENGTH_SHORT).show();
-                }
-                else if(!confPass.equals(newPass)) {
-                    Toast.makeText(this, "Both passwords should be same", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    authController.updateAuthEmail(email)
-                            .addOnSuccessListener(task -> {
-                                Toast.makeText(this, "Auth reset successful", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(this, "Auth reset failed", Toast.LENGTH_SHORT).show();
-                                Log.d("Error", "Pass reset failed"+e);
-                            });
-                }
-            }
-            else{
-                authController.checkCredentials(email, currentPass)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, "Credentials are correct", Toast.LENGTH_SHORT).show();
-                            if(newPass.equals(currentPass)){
-                                Toast.makeText(this, "The new password cannot be the current password", Toast.LENGTH_SHORT).show();
-                            }
-                            else if(!confPass.equals(newPass)) {
-                                Toast.makeText(this, "Both passwords should be same", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                authController.updateAuthPass(newPass)
-                                        .addOnSuccessListener(task -> {
-                                            Toast.makeText(this, "Pass reset successful", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(this, "Pass reset failed", Toast.LENGTH_SHORT).show();
-                                            Log.d("Error", "Pass reset failed"+e);
-                                        });
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Credentials are incorrect", Toast.LENGTH_SHORT).show();
-                            Log.d("Error", "Credentials are incorrect"+e);
-                        });
-            }
-        });
-
         deleteAccBtn.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ManagerProfileActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Warning!!");
             builder.setMessage("Do you want to delete this account?");
             builder.setCancelable(false);
 
             builder.setPositiveButton("Yes", (DialogInterface.OnClickListener)(dialog, which) -> {
-                userController.deleteUser(uid);
-                authController.logout();
-                authController.deleteAuth();
-                startActivity(new Intent(ManagerProfileActivity.this, SplashScreen.class));
-                finish();
+                authController.deleteAuth()
+                        .addOnSuccessListener(task2 -> {
+                            Toast.makeText(ManagerProfileActivity.this, "Auth deleted", Toast.LENGTH_SHORT).show();
+                            userController.deleteUser(uid, new OnResultListener<Void>() {
+                                @Override
+                                public void onSuccess(Void result) {
+                                    Toast.makeText(ManagerProfileActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                                    authController.logout()
+                                            .addOnSuccessListener(task -> {
+                                                startActivity(new Intent(ManagerProfileActivity.this, SplashScreen.class));
+                                                finish();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(ManagerProfileActivity.this, "logout failed", Toast.LENGTH_SHORT).show();
+                                                Log.d("Error", "logout failed "+e);
+                                            });
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(ManagerProfileActivity.this, "Error deleting data", Toast.LENGTH_SHORT).show();
+                                    Log.d("Error", "Error deleting data "+e);
+                                }
+                            });
+                        })
+                        .addOnFailureListener(e2 -> {
+                            Toast.makeText(ManagerProfileActivity.this, "Auth delete failed", Toast.LENGTH_SHORT).show();
+                            Log.d("Error", "Auth delete failed "+e2);
+                        });
+
+
+
             });
 
             builder.setNegativeButton("No", (DialogInterface.OnClickListener)(dialog, which) -> {
