@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.profile.ProfileFragment"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/arrow_backward_icon"
+            android:contentDescription="Back"
+            app:tint="@color/black" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:src="@drawable/profile_icon"
+                android:background="#BCBCBC"
+                android:contentDescription="Profile Picture"/>
+
+            <Button
+                android:id="@+id/changeImageBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textSize="50px"
+                android:textStyle="bold"
+                android:textColor="@color/backColor1"
+                android:backgroundTint="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <EditText
+                android:id="@+id/nameTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:layout_marginTop="40px"/>
+
+            <EditText
+                android:id="@+id/phoneTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:layout_marginTop="30px"/>
+
+            <EditText
+                android:id="@+id/branchTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Branch"
+                android:layout_marginTop="30px"/>
+
+            <EditText
+                android:id="@+id/emailTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:layout_marginTop="30px"/>
+
+            <Button
+                android:id="@+id/saveBtn"
+                android:text="Save Details"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"
+                android:backgroundTint="@color/green"
+                android:layout_marginTop="150px"/>
+
+            <Button
+                android:id="@+id/saveAuthBtn"
+                android:text="Send Passward Reset Link"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"/>
+
+            <Button
+                android:id="@+id/deleteAccBtn"
+                android:text="Delete my account"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"
+                android:backgroundTint="@color/red"
+                android:layout_marginBottom="100px"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

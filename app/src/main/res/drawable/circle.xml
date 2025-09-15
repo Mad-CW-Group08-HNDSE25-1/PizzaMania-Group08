@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="oval">
+
+        <!-- Fill color for the circle -->
+        <solid android:color="@color/backColor5"/>
+
+        <!-- Optional: add shadow/border -->
+        <stroke
+            android:width="0dp"
+            android:color="#EF8B47"/>
+    </shape>
+
