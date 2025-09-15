@@ -6,19 +6,24 @@
     android:padding="16dp"
     android:background="#F5F5F5">
 
+    <!-- Title -->
     <TextView
         android:id="@+id/tvAdminListTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Admins &amp; Staff"
+        android:text="Admin List"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
 
+    <!-- RecyclerView for Admins -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAdmins"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp"/>
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        android:scrollbars="vertical"/>
+
 </LinearLayout>

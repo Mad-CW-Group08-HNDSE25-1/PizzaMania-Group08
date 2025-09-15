@@ -23,14 +23,8 @@
     <string name="view_location">View Location</string>
     <string name="delete_branch">Delete Branch</string>
     <string name="add_branch">Add Branch</string>
-    <string-array name="admin_staff_roles">
-        <item>Admin</item>
-        <item>Staff</item>
-    </string-array>
-
-    <string-array name="admin_branches">
-        <item>Colombo</item>
-        <item>Negombo</item>
-    </string-array>
+    <string name="role_admin" />
+    <string name="select_branch" />
+    <string name="select_role" />
 </resources>
 

@@ -1,50 +1,55 @@
 package com.androidapp.pizzamania;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Patterns;
+import android.provider.MediaStore;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddAdminActivity extends AppCompatActivity {
 
-    private ImageView imgProfile;
     private EditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
     private Spinner spRole, spBranch;
-    private Button btnChoosePic, btnAddUser;
+    private Button btnAddUser, btnChoosePic;
+    private ImageView imgProfile;
 
     private Uri imageUri;
+    private String selectedRole, selectedBranch;
     private FirebaseAuth auth;
-    private DatabaseReference usersRef;
-    private ProgressDialog progressDialog;
+    private DatabaseReference usersRef, branchesRef;
+    private List<String> branchList = new ArrayList<>();
+    private ArrayAdapter<String> branchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
-        // Initialize views
-        imgProfile = findViewById(R.id.imgProfile);
+        auth = FirebaseAuth.getInstance();
+        usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        branchesRef = FirebaseDatabase.getInstance().getReference("branches");
+
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
@@ -52,41 +57,52 @@ public class AddAdminActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         spRole = findViewById(R.id.spRole);
         spBranch = findViewById(R.id.spBranch);
-        btnChoosePic = findViewById(R.id.btnChoosePic);
         btnAddUser = findViewById(R.id.btnAddUser);
+        btnChoosePic = findViewById(R.id.btnChoosePic);
+        imgProfile = findViewById(R.id.imgProfile);
 
-        auth = FirebaseAuth.getInstance();
-        usersRef = FirebaseDatabase.getInstance().getReference("Users");
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-
-        // Setup Spinners
-        ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(this,
-                R.array.admin_staff_roles, android.R.layout.simple_spinner_item);
+        // Role spinner
+        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"admin"});
         roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spRole.setAdapter(roleAdapter);
 
-        ArrayAdapter<CharSequence> branchAdapter = ArrayAdapter.createFromResource(this,
-                R.array.admin_branches, android.R.layout.simple_spinner_item);
+        // Branch spinner
+        branchAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, branchList);
         branchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBranch.setAdapter(branchAdapter);
 
-        // Click listeners
-        imgProfile.setOnClickListener(v -> chooseImage());
+        loadBranches();
+
         btnChoosePic.setOnClickListener(v -> chooseImage());
+
         btnAddUser.setOnClickListener(v -> addAdmin());
     }
 
+    private void loadBranches() {
+        branchesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                branchList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String branchName = ds.child("branchName").getValue(String.class);
+                    branchList.add(branchName);
+                }
+                branchAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
     private void chooseImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 100);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 101);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == 101 && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             imgProfile.setImageURI(imageUri);
         }
@@ -98,71 +114,45 @@ public class AddAdminActivity extends AppCompatActivity {
         String phone = etPhone.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
-        String role = spRole.getSelectedItem().toString();
-        String branch = spBranch.getSelectedItem().toString();
+        selectedRole = spRole.getSelectedItem().toString();
+        selectedBranch = spBranch.getSelectedItem().toString();
 
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Snackbar.make(etName, "All fields are required", Snackbar.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Snackbar.make(etEmail, "Enter a valid email", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            Snackbar.make(etConfirmPassword, "Passwords do not match", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        progressDialog.setMessage("Adding " + role + "...");
-        progressDialog.show();
-
-        // Create Firebase Auth user
-        auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
-            FirebaseUser user = authResult.getUser();
-            if (user != null) {
-                String userId = user.getUid();
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference("profiles/" + userId + ".jpg");
-
-                if (imageUri != null) {
-                    storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot ->
-                            storageRef.getDownloadUrl().addOnSuccessListener(uri ->
-                                    saveToDatabase(userId, name, email, phone, role, branch, uri.toString())
-                            )
-                    ).addOnFailureListener(e -> {
-                        progressDialog.dismiss();
-                        Snackbar.make(btnAddUser, "Image upload failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
-                    });
-                } else {
-                    saveToDatabase(userId, name, email, phone, role, branch, "");
-                }
-
-            }
-        }).addOnFailureListener(e -> {
-            progressDialog.dismiss();
-            Snackbar.make(btnAddUser, "Failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
-        });
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> {
+                    String userId = authResult.getUser().getUid();
+                    uploadProfileImage(userId, name, email, phone);
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void saveToDatabase(String userId, String name, String email, String phone, String role, String branch, String profileUrl) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", name);
-        map.put("email", email);
-        map.put("phone", phone);
-        map.put("role", role);
-        map.put("branch", branch);
-        map.put("profileImageUrl", profileUrl);
-        map.put("lastLogin", "null"); // initially null
-
-        usersRef.child(userId).setValue(map).addOnSuccessListener(unused -> {
-            progressDialog.dismiss();
-            Snackbar.make(btnAddUser, role + " added successfully!", Snackbar.LENGTH_SHORT).show();
-            finish(); // close activity
-        }).addOnFailureListener(e -> {
-            progressDialog.dismiss();
-            Snackbar.make(btnAddUser, "Database error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
-       });
+    private void uploadProfileImage(String userId, String name, String email, String phone) {
+        if (imageUri != null) {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference("profileImages/" + userId);
+            storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot ->
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> saveAdminData(userId, name, email, phone, uri.toString()))
+            ).addOnFailureListener(e -> saveAdminData(userId, name, email, phone, ""));
+        } else {
+            saveAdminData(userId, name, email, phone, "");
+        }
     }
+
+    private void saveAdminData(String userId, String name, String email, String phone, String profileUrl) {
+        AdminModel admin = new AdminModel(name, email, phone, selectedBranch, selectedRole, userId, profileUrl);
+        usersRef.child(userId).setValue(admin)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Admin added successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+       }
 }

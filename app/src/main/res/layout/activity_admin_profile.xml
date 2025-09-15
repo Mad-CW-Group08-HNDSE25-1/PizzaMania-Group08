@@ -52,28 +52,53 @@
             android:inputType="phone"
             android:layout_marginBottom="12dp"/>
 
-        <!-- Role Display -->
+        <!-- Role -->
         <TextView
-            android:id="@+id/tvRole"
+            android:id="@+id/tvRoleLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Role:"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="4dp"/>
 
-        <!-- Branch Selection -->
-        <TextView
+        <Spinner
+            android:id="@+id/spRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Branch:"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"/> <!-- Super Admin only -->
+
+        <TextView
+            android:id="@+id/tvRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Admin"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="12dp"/> <!-- Normal Admin -->
+
+        <!-- Branch -->
+        <TextView
+            android:id="@+id/tvBranchLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Branch:"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp"/>
 
         <Spinner
             android:id="@+id/spBranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"/> <!-- Super Admin only -->
+
+        <TextView
+            android:id="@+id/tvBranch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Branch Name"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"/> <!-- Normal Admin -->
 
         <!-- Last Login -->
         <TextView

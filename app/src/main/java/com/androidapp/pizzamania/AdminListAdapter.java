@@ -2,17 +2,17 @@ package com.androidapp.pizzamania;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.*;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.*;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,83 +20,57 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
 
     private Context context;
     private List<AdminModel> adminList;
-    private String currentUserRole = "Admin"; // default
+    private String currentUserRole; // to check if Super Admin
 
-    public AdminListAdapter(Context context, List<AdminModel> adminList) {
+    public AdminListAdapter(Context context, List<AdminModel> adminList, String currentUserRole) {
         this.context = context;
         this.adminList = adminList;
-    }
-
-    public void setCurrentUserRole(String role) {
-        this.currentUserRole = role;
+        this.currentUserRole = currentUserRole;
     }
 
     @NonNull
     @Override
     public AdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_admin, parent, false);
-        return new AdminViewHolder(v);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_admin, parent, false);
+        return new AdminViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdminViewHolder holder, int position) {
         AdminModel admin = adminList.get(position);
-
-        holder.tvName.setText(admin.getName());
-        holder.tvEmail.setText(admin.getEmail());
-        holder.tvRole.setText("Role: " + admin.getRole());
+        holder.tvAdminName.setText(admin.getName());
+        holder.tvAdminEmail.setText(admin.getEmail());
+        holder.tvAdminRole.setText("Role: " + admin.getRole());
 
         if (admin.getProfileImageUrl() != null && !admin.getProfileImageUrl().isEmpty()) {
-            Picasso.get().load(admin.getProfileImageUrl()).into(holder.imgAdmin);
+            Glide.with(context).load(admin.getProfileImageUrl()).into(holder.imgAdmin);
         } else {
             holder.imgAdmin.setImageResource(R.drawable.ic_person);
         }
 
-        holder.itemView.setOnClickListener(v -> showOptionsDialog(admin));
+        // Remove button visible only to Super Admin
+        if ("super_admin".equals(currentUserRole) && !"super_admin".equals(admin.getRole())) {
+            holder.btnRemove.setVisibility(View.VISIBLE);
+            holder.btnRemove.setOnClickListener(v -> removeAdmin(admin.getUserId(), position));
+        } else {
+            holder.btnRemove.setVisibility(View.GONE);
+        }
     }
 
-    private void showOptionsDialog(AdminModel admin) {
-        // Restrict actions for non-SuperAdmin
-        if (!"SuperAdmin".equals(currentUserRole)) {
-            new AlertDialog.Builder(context)
-                    .setTitle("Access Denied")
-                    .setMessage("Only Super Admin can modify admins.")
-                    .setPositiveButton("OK", null)
-                    .show();
-            return;
-        }
-
-        String[] options = {"Edit", "Delete"};
-
+    private void removeAdmin(String userId, int position) {
         new AlertDialog.Builder(context)
-                .setTitle("Select Action for " + admin.getName())
-                .setItems(options, (dialog, which) -> {
-                    if (which == 0) {
-                        // Edit Admin
-                        Intent intent = new Intent(context, AddAdminActivity.class);
-                        intent.putExtra("adminId", admin.getEmail().replace(".", "_"));
-                        intent.putExtra("name", admin.getName());
-                        intent.putExtra("email", admin.getEmail());
-                        intent.putExtra("role", admin.getRole());
-                        context.startActivity(intent);
-
-                    } else if (which == 1) {
-                        // Prevent self-delete
-                        String currentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                        if (admin.getEmail().equals(currentEmail)) {
-                            new AlertDialog.Builder(context)
-                                    .setTitle("Not Allowed")
-                                    .setMessage("You cannot delete your own Super Admin account.")
-                                    .setPositiveButton("OK", null)
-                                    .show();
-                            return;
-                        }
-
-                        // Delete other admins
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Admins");
-                        ref.child(admin.getEmail().replace(".", "_")).removeValue();
-                    }
+                .setTitle("Remove Admin")
+                .setMessage("Are you sure you want to remove this admin?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    FirebaseDatabase.getInstance().getReference("Users").child(userId).removeValue()
+                            .addOnSuccessListener(aVoid -> {
+                                adminList.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(context, "Admin removed successfully", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(context, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                 })
+                .setNegativeButton("No", null)
                 .show();
     }
 
@@ -105,16 +79,19 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
         return adminList.size();
     }
 
-    public static class AdminViewHolder extends RecyclerView.ViewHolder {
+    static class AdminViewHolder extends RecyclerView.ViewHolder {
         ImageView imgAdmin;
-        TextView tvName, tvEmail, tvRole;
+        TextView tvAdminName, tvAdminEmail, tvAdminRole;
+        Button btnRemove;
 
         public AdminViewHolder(@NonNull View itemView) {
             super(itemView);
             imgAdmin = itemView.findViewById(R.id.imgAdmin);
-            tvName = itemView.findViewById(R.id.tvAdminName);
-            tvEmail = itemView.findViewById(R.id.tvAdminEmail);
-            tvRole = itemView.findViewById(R.id.tvAdminRole);
- }
+            tvAdminName = itemView.findViewById(R.id.tvAdminName);
+            tvAdminEmail = itemView.findViewById(R.id.tvAdminEmail);
+            tvAdminRole = itemView.findViewById(R.id.tvAdminRole);
+            btnRemove = itemView.findViewById(R.id.btnRemoveAdmin);
+       }
+    }
 }
-}
+
