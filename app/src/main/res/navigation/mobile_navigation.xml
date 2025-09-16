@@ -21,7 +21,7 @@
         android:id="@+id/navigation_cart"
         android:name="com.androidapp.pizzamania.ui.cart.CartFragment"
         android:label="Cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart_ui" />
 
     <fragment
         android:id="@+id/navigation_profile"

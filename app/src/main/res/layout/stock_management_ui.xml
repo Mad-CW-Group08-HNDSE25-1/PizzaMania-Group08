@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.menu.MenuFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -15,22 +13,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Menu"
+            android:text="Stock"
             android:textColor="@color/black"
             android:textSize="60px"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/arrow_backward_icon"
+            android:contentDescription="Back"
+            app:tint="@color/black" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20px">
 
         <SearchView
-            android:id="@+id/searchView"
+            android:id="@+id/searchStock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:queryHint="Search your favourites.."
+            android:queryHint="Search Items..."
             android:iconifiedByDefault="false"
             android:background="@drawable/search_background"
             android:layout_margin="25px"
@@ -38,26 +47,27 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40px"
-        android:layout_marginLeft="18dp"
-        android:text="Category"
-        android:textSize="44px"
-        android:textStyle="bold"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cartItemsRv"
+            android:id="@+id/recyclerStock"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scrollbars="vertical"/>
+            android:layout_height="match_parent"/>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/addStockItemBtn"
+        android:text="Add New Item"
+        android:textStyle="bold"
+        android:textSize="50px"
+        android:layout_width="match_parent"
+        android:layout_height="160px"
+        android:layout_margin="40px"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"/>
+
 </LinearLayout>

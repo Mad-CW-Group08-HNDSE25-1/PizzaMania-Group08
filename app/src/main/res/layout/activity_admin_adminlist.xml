@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewBranches"
-    android:background="#F5F5F5"
-    android:orientation="vertical">
+    tools:context=".Domain.admin_adminlist"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -27,32 +27,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Manage Branches"
+            android:text="Admin List"
             android:textColor="@color/black"
             android:textSize="60px"
             android:textStyle="bold" />
 
-    </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
 
-
+    <!-- RecyclerView for Admins -->
     <androidx.recyclerview.widget.RecyclerView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:padding="20dp"
-       android:layout_above="@id/fabAddBranch"
-       android:id="@+id/recyclerViewBranches"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fabAddBranch"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        app:srcCompat= "@drawable/baseline_add_24"
-        app:tint = "@color/white"
-        android:contentDescription="@string/add_branch"
-        android:onClick="fabButtonOnClick"/>
+        android:id="@+id/recyclerAdmins"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:scrollbars="vertical"/>
 
 </LinearLayout>

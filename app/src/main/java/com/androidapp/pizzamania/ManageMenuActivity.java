@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageMenuActivity extends AppCompatActivity {
-    private Button backBtn, filterBtn, addMenuItemBtn;
-    private EditText searchTxt;
+    private Button addMenuItemBtn;
+    private SearchView searchTxt;
     private String search;
     private RecyclerView manageMenuItemRv;
     private ProgressBar progressBar;
@@ -44,18 +45,17 @@ public class ManageMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_manage_menu);
+        setContentView(R.layout.activity_menu_management);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        backBtn = findViewById(R.id.backBtn);
-        filterBtn = findViewById(R.id.filterBtn);
+
         addMenuItemBtn = findViewById(R.id.addMenuItemBtn);
-        searchTxt = findViewById(R.id.searchTxt);
-        manageMenuItemRv = findViewById(R.id.manageMenuItemRv);
+        searchTxt = findViewById(R.id.searchItem);
+        manageMenuItemRv = findViewById(R.id.rvMenuItems);
         progressBar = findViewById(R.id.progressBar);
         menuItemController = new MenuItemController();
 
@@ -77,20 +77,17 @@ public class ManageMenuActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(ManageMenuActivity.this, "No data found in Database", Toast.LENGTH_SHORT).show();
                 }
-            }
 
+
+            }
             @Override
             public void onFailure(Exception e) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(ManageMenuActivity.this, "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                Log.d("Error", "Fail to get the data. "+e);
+                Log.d("Error", "Fail to get the data. " + e);
             }
         });
 
-        filterBtn.setOnClickListener(view -> {
-            String search = searchTxt.getText().toString().toLowerCase();
-        });
-
-        backBtn.setOnClickListener(view -> {onBackPressed();});
 
         addMenuItemBtn.setOnClickListener(view -> {
             startActivity(new Intent(ManageMenuActivity.this, EditMenuItemActivity.class));

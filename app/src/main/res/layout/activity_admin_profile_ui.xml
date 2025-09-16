@@ -3,7 +3,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -77,31 +78,24 @@
 
             <!-- Role -->
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tvUserRole"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50px"
-                android:layout_marginLeft="14px"
-                android:text="Role : <Admin>"
-                android:textSize="48px"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <Spinner
-                android:id="@+id/spRole"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:visibility="gone"/>
+                android:layout_marginTop="16dp"
+                android:text="Role"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
             <!-- Branch -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
-                android:text="<Branch_Name>"
+                android:text="&lt;Branch_Name&gt;"
                 android:textSize="48px"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvBranch"/>
 
             <Spinner
                 android:id="@+id/spBranch"
@@ -114,10 +108,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
-                android:text="Last Login : <N/A>"
+                android:text="Last Login : &lt;N/A&gt;"
                 android:textSize="48px"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvLastLogin"/>
 
             <Button
                 android:id="@+id/saveBtn"
