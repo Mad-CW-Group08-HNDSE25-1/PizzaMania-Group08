@@ -27,6 +27,11 @@
     <string name="role_admin" />
     <string name="select_branch" />
     <string name="select_role" />
+<<<<<<< Updated upstream
+=======
+    <string name="role_admin" />
+</resources>
+>>>>>>> Stashed changes
 
 
 
