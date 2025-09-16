@@ -23,11 +23,12 @@
             android:contentDescription="Admin Profile Picture"/>
 
         <LinearLayout
-            android:layout_width="500px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="20dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/tvAdminName"
@@ -53,7 +54,7 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="100px"
             android:layout_height="match_parent"
             android:gravity="center">
 

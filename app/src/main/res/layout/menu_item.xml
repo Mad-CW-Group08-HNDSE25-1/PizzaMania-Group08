@@ -53,8 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Delete"
+            android:textStyle="bold"
             android:id="@+id/deleteBtn"
-            />
+            android:backgroundTint="@color/red"/>
 
     </LinearLayout>
 

@@ -104,10 +104,10 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
     static class BranchViewHolder extends RecyclerView.ViewHolder { ;
         TextView txtBranchName;
         TextView txtBranchAddress;
-        Button btnViewLocation;
+        TextView btnViewLocation;
 
-        Button updateBtn;
-        Button btnDelete;
+        TextView updateBtn;
+        TextView btnDelete;
 
         BranchViewHolder(@NonNull View itemView) {
             super(itemView);
