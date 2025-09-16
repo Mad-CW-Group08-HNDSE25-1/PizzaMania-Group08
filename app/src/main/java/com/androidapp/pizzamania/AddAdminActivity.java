@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,10 +42,11 @@ public class AddAdminActivity extends AppCompatActivity {
     private List<String> branchList = new ArrayList<>();
     private ArrayAdapter<String> branchAdapter;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_user);
+        setContentView(R.layout.activity_admin_adduser);
 
         auth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference("Users");

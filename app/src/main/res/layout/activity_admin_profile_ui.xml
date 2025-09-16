@@ -1,8 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="#F7F7F7"
     android:padding="16dp">
+=======
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+>>>>>>> d7bdd37f250b0914f406f1ed2a3d26486cd2878b
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,21 +102,75 @@
                 android:id="@+id/tvBranch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:text="Branch: N/A"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"
                 android:textStyle="bold"/>
+=======
+                android:layout_marginLeft="14px"
+                android:text="&lt;Branch_Name&gt;"
+                android:textSize="48px"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvBranch"/>
+
+            <Spinner
+                android:id="@+id/spBranch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"/>
+>>>>>>> d7bdd37f250b0914f406f1ed2a3d26486cd2878b
 
             <!-- Last Login -->
             <TextView
                 android:id="@+id/tvLastLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:text="Last Login: N/A"
                 android:textColor="#777777"
                 android:textSize="14sp"
                 android:layout_marginBottom="16dp"/>
+=======
+                android:layout_marginLeft="14px"
+                android:text="Last Login : &lt;N/A&gt;"
+                android:textSize="48px"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvLastLogin"/>
+
+            <Button
+                android:id="@+id/saveBtn"
+                android:text="Save Details"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"
+                android:backgroundTint="@color/green"
+                android:layout_marginTop="70px"/>
+
+            <Button
+                android:id="@+id/saveAuthBtn"
+                android:text="Reset Passward"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"/>
+
+            <Button
+                android:id="@+id/deleteAccBtn"
+                android:text="Delete my account"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"
+                android:backgroundTint="@color/red"
+                android:layout_marginBottom="100px"/>
+
+>>>>>>> d7bdd37f250b0914f406f1ed2a3d26486cd2878b
         </LinearLayout>
 
         <!-- Buttons -->

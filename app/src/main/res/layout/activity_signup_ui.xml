@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Domain.signup">
+    tools:context=".RegisterActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/name_icon"
-                android:inputType="text" />
+                android:inputType="text"
+                android:id="@+id/etName"/>
 
             <View
                 android:layout_width="wrap_content"
@@ -71,7 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/phone_icon"
-                android:inputType="text" />
+                android:inputType="text"
+                android:id="@+id/etPhone"/>
 
             <View
                 android:layout_width="wrap_content"
@@ -89,7 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/email_icon"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:id="@+id/etEmail"/>
 
             <View
                 android:layout_width="wrap_content"
@@ -107,7 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/pwd_icon"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:id="@+id/etPassword"/>
 
             <View
                 android:layout_width="wrap_content"
@@ -125,7 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/pwd_icon"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:id="@+id/etConfirmPassword"/>
 
             <View
                 android:layout_width="wrap_content"

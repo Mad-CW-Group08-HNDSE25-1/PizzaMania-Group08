@@ -47,7 +47,7 @@
         <activity android:name=".Domain.admin_adminlist" android:exported="false" />
         <activity android:name=".Domain.admin_adduser" android:exported="false" />
         <activity android:name=".Domain.Admin_Dashboard" android:exported="true" />
-        <activity android:name=".Domain.menu_management" android:exported="false" />
+
 
         <activity android:name=".Domain.forgot_pwd" android:exported="false" />
         <activity android:name=".Domain.signup" android:exported="false" />
@@ -56,7 +56,7 @@
         <activity android:name=".AddAdminActivity" android:exported="true" />
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".OrderManagementActivity" android:exported="false" />
-        <activity android:name=".MenuManagementActivity" android:exported="false" />
+        <activity android:name=".MenuManagementActivity" android:exported="true" />
 
         <activity android:name=".AdminDashboardActivity" android:exported="true" />
         <activity android:name=".StockManagementActivity" android:exported="true" />
