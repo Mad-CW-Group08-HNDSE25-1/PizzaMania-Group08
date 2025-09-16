@@ -25,31 +25,39 @@
         android:layout_marginTop="4dp"
         android:textStyle="bold" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center">
 
-        <Button
+        <TextView
             android:id="@+id/btnViewLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/view_location" />
+            android:text="@string/view_location"
+            android:textStyle="bold"
+            android:textColor="@color/green"/>
 
-        <Button
+            <TextView
             android:id="@+id/btnUpdateBranch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/update_branch" />
+            android:text="@string/update_branch"
+                android:textStyle="bold"
+                android:textColor="@color/backColor1"/>
 
-        <Button
+        <TextView
             android:id="@+id/btnDeleteBranch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/delete_branch" />
+            android:text="@string/delete_branch"
+            android:textStyle="bold"
+            android:textColor="@color/red"/>
     </LinearLayout>
 </LinearLayout>

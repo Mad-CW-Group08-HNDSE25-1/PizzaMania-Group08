@@ -45,7 +45,7 @@
                 android:layout_marginRight="25px"
                 android:baselineAligned="false"
                 android:text="Detect Location"
-                android:background="@drawable/rectangle"
+               android:background="@drawable/rectangle"
                 android:textColor="#FFFFFF"
                 android:textSize="35px"
                 android:textStyle="bold" />

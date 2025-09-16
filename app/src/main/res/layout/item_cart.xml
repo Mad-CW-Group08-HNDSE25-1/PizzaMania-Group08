@@ -18,10 +18,10 @@
         android:id="@+id/btnMinus"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:backgroundTint="#03DAC5"
+        android:backgroundTint="@color/backColor1"
         android:src="@drawable/ic_minus"
         android:contentDescription="Minus"
-        app:tint="@android:color/white" />
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/tvQuantity"
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="1"
+        android:textStyle="bold"
         android:textSize="16sp"
         android:gravity="center" />
 
@@ -36,17 +37,17 @@
         android:id="@+id/btnPlus"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:backgroundTint="#03DAC5"
+        android:backgroundTint="@color/backColor1"
         android:src="@drawable/ic_plus"
         android:contentDescription="Plus"
-        app:tint="@android:color/white" />
+        app:tint="@color/white" />
 
     <ImageButton
         android:id="@+id/btnDelete"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:backgroundTint="#FF5252"
-        android:src="@drawable/ic_delete"
+        android:src="@drawable/delete_icon"
         android:contentDescription="Delete"
         app:tint="@android:color/white" />
 

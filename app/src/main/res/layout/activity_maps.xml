@@ -35,7 +35,9 @@
         <Button
             android:id="@+id/btnConfirm"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150px"
+            android:textStyle="bold"
+            android:textSize="50px"
             android:layout_gravity="bottom"
             android:layout_margin="16dp"
             android:text="@string/confirm_location" />

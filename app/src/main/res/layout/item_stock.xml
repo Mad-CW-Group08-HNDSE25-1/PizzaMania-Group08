@@ -46,18 +46,20 @@
             <Button
                 android:id="@+id/btnIncrease"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100px"
                 android:text="+"
-                android:backgroundTint="@android:color/holo_green_light"
+                android:textStyle="bold"
+                android:backgroundTint="@color/green"
                 android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btnDecrease"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="100px"
                 android:text="-"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="@color/red"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>

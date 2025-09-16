@@ -53,8 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/name_icon"
-                android:inputType="text"
-                android:id="@+id/etName"/>
+                android:inputType="text" />
 
             <View
                 android:layout_width="wrap_content"
@@ -72,8 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/phone_icon"
-                android:inputType="text"
-                android:id="@+id/etPhone"/>
+                android:inputType="text" />
 
             <View
                 android:layout_width="wrap_content"
@@ -91,8 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/email_icon"
-                android:inputType="textEmailAddress"
-                android:id="@+id/etEmail"/>
+                android:inputType="textEmailAddress" />
 
             <View
                 android:layout_width="wrap_content"
@@ -110,8 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/pwd_icon"
-                android:inputType="textPassword"
-                android:id="@+id/etPassword"/>
+                android:inputType="textPassword" />
 
             <View
                 android:layout_width="wrap_content"
@@ -129,8 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/pwd_icon"
-                android:inputType="textPassword"
-                android:id="@+id/etConfirmPassword"/>
+                android:inputType="textPassword" />
 
             <View
                 android:layout_width="wrap_content"

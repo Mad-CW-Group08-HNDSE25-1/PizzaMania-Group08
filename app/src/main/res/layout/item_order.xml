@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,40 +8,37 @@
     android:layout_marginVertical="8dp"
     android:elevation="4dp">
 
-    <TextView
-        android:id="@+id/tvOrderId"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Order #1234"
-        android:textStyle="bold"
-        android:textColor="#d32f2f"
-        android:textSize="16sp"/>
+        android:orientation="vertical"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/tvOrderDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sep 16, 2025"
-        android:textColor="#555555"
-        android:layout_marginTop="2dp"/>
+        <TextView
+            android:id="@+id/tvOrderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order #1234"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/tvOrderTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total: LKR 2500"
-        android:textColor="#388e3c"
-        android:textStyle="bold"
-        android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/tvOrderDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sep 16, 2025"
+            android:textColor="#555555"
+            android:layout_marginTop="2dp"/>
 
-    <TextView
-        android:id="@+id/tvOrderStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delivered"
-        android:textColor="#f57c00"
-        android:textStyle="italic"
-        android:layout_marginTop="2dp"/>
+        <TextView
+            android:id="@+id/tvOrderTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total: LKR 2500"
+            android:textColor="#388e3c"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"/>
+
 
     <Button
         android:id="@+id/btnReorder"
@@ -54,4 +52,16 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
         app:cardCornerRadius="12dp"/>
+
+        <TextView
+            android:id="@+id/tvOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivered"
+            android:textColor="#f57c00"
+            android:textStyle="italic"
+            android:layout_marginTop="2dp"/>
+
+    </LinearLayout>
+
 </LinearLayout>
