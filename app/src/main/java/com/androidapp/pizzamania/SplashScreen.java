@@ -10,11 +10,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
 public class SplashScreen extends AppCompatActivity {
+
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private FireBaseHelper fireBaseHelper;
 
@@ -30,21 +33,29 @@ public class SplashScreen extends AppCompatActivity {
             return insets;
         });
 
+        SessionManager session = new SessionManager(SplashScreen.this);
+
         new Handler().postDelayed(() -> {
-            SessionManager session = new SessionManager(SplashScreen.this);
 
             if (session.isLoggedIn()) {
                 String role = session.getUserRole();
                 if ("super_admin".equals(role) || "admin".equals(role)) {
                     startActivity(new Intent(SplashScreen.this, AdminDashboardActivity.class));
                 } else {
-                    startActivity(new Intent(SplashScreen.this, AddBranchActivity.class));
+                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 }
             } else {
                 startActivity(new Intent(SplashScreen.this, LoginActivity.class));
             }
             finish();
         }, 3000);
+
+//        FirebaseAuth.getInstance().signOut();
+//        session.clearSession();
+//        startActivity(new Intent(this, LoginActivity.class));
+//        finish();
+
+
     }
 
 }

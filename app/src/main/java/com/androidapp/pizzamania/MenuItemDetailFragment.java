@@ -106,6 +106,12 @@ public class MenuItemDetailFragment extends Fragment {
                 total = price * qty;
                 totalTxt.setText("Total: "+String.valueOf(total)+".00");
 
+                OptionRvAdapter<Size> sizeAdapter = new OptionRvAdapter<>(sizes, selectedSizes -> {
+                    recalcTotal(selectedSizes, null);
+                });
+                sizesRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                sizesRv.setAdapter(sizeAdapter);
+
                 menuItemController.getSizesByItemId(itemId, new OnResultListener<List<String>>() {
                     @Override
                     public void onSuccess(List<String> result) {
@@ -115,6 +121,7 @@ public class MenuItemDetailFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Size result) {
                                     sizes.add(result);
+                                    sizeAdapter.notifyDataSetChanged();
                                 }
 
                                 @Override
@@ -123,11 +130,7 @@ public class MenuItemDetailFragment extends Fragment {
                                 }
                             });
                         }
-                        OptionRvAdapter<Size> sizeAdapter = new OptionRvAdapter<>(sizes, selectedSizes -> {
-                            recalcTotal(selectedSizes, null);
-                        });
-                        sizesRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                        sizesRv.setAdapter(sizeAdapter);
+
                     }
 
                     @Override
@@ -135,6 +138,12 @@ public class MenuItemDetailFragment extends Fragment {
 
                     }
                 });
+
+                OptionRvAdapter<Topping> toppingAdapter = new OptionRvAdapter<>(toppings, selectedToppings -> {
+                    recalcTotal(null, selectedToppings);
+                });
+                toppingsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                toppingsRv.setAdapter(toppingAdapter);
 
                 menuItemController.getToppingsByItemId(itemId, new OnResultListener<List<String>>() {
                     @Override
@@ -153,11 +162,7 @@ public class MenuItemDetailFragment extends Fragment {
                                 }
                             });
                         }
-                        OptionRvAdapter<Topping> toppingAdapter = new OptionRvAdapter<>(toppings, selectedToppings -> {
-                            recalcTotal(null, selectedToppings);
-                        });
-                        sizesRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                        sizesRv.setAdapter(toppingAdapter);
+
                     }
 
                     @Override
