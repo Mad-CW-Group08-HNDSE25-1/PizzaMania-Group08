@@ -217,13 +217,24 @@
             </LinearLayout>
         </HorizontalScrollView>
 
+
+        <TextView
+            android:id="@+id/tv_offers_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offers"
+            android:textStyle="bold"
+            android:textSize="48px"
+            android:textColor="@color/black"
+            android:layout_marginLeft="40px"/>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoryView"
+            android:id="@+id/rv_offers"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            android:paddingTop="8dp"/>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -254,22 +265,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_recent_label" />
 
-        <TextView
-            android:id="@+id/tv_offers_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Offers"
-            android:textStyle="bold"
-            android:textSize="48px"
-            android:textColor="@color/black"
-            android:layout_marginLeft="40px"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_offers"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"/>
 
 
     </LinearLayout>

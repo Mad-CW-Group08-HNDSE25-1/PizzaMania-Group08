@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -52,5 +53,5 @@
         android:layout_marginTop="8dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        android:cornerRadius="12dp"/>
+        app:cardCornerRadius="12dp"/>
 </LinearLayout>

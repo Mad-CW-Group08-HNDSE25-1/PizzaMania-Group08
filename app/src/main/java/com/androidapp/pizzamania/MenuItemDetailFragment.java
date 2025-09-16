@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class MenuItemDetailFragment extends Fragment {
     private ToppingController toppingController = new ToppingController();
     private List<Size> sizes = new ArrayList<>();
     private List<Topping>  toppings = new ArrayList<>();
+    private MenuItem menuItem = new MenuItem();
 
     private int qty = 1, price, total;
 
@@ -98,6 +100,7 @@ public class MenuItemDetailFragment extends Fragment {
         menuItemController.getItemById(itemId, new OnResultListener<MenuItem>() {
             @Override
             public void onSuccess(MenuItem result) {
+                menuItem = result;
                 nameTxt.setText(result.getName());
                 priceTxt.setText(result.getPrice());
                 descriptionTxt.setText(result.getDescription());
@@ -197,7 +200,12 @@ public class MenuItemDetailFragment extends Fragment {
         });
 
         addToCartBtn.setOnClickListener(v -> {
-            // TODO: send this item to cart (via ViewModel, shared prefs, or callback)
+            Intent intent = new Intent(requireActivity(), CartActivity.class);
+            intent.putExtra("itemId", itemId);
+            intent.putExtra("itemName", menuItem.getName());
+            intent.putExtra("total", total);
+            intent.putExtra("qty", qty);
+            startActivity(intent);
         });
     }
 

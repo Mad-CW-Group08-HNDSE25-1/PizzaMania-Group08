@@ -1,9 +1,6 @@
 package com.androidapp.pizzamania.model;
 
 
-import com.google.firebase.firestore.Exclude;
-
-import java.io.Serializable;
 import java.util.Map;
 
 public class MenuItem {
