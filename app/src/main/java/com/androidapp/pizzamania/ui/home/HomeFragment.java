@@ -1,30 +1,23 @@
 package com.androidapp.pizzamania.ui.home;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidapp.pizzamania.MainActivity;
-import com.androidapp.pizzamania.MenuItemDetailFragment;
 import com.androidapp.pizzamania.R;
 import com.androidapp.pizzamania.adapter.OffersRvAdapter;
 import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.controller.MenuItemController;
 import com.androidapp.pizzamania.databinding.FragmentHomeBinding;
 import com.androidapp.pizzamania.model.MenuItem;
-import com.androidapp.pizzamania.ui.menu.MenuFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -61,15 +54,23 @@ public class HomeFragment extends Fragment {
         binding.DesImage.setOnClickListener(v -> openMenuFragment());
         binding.DesTxt.setOnClickListener(v -> openMenuFragment());
 
-        MenuItemController menuItemController = new MenuItemController();
-
+        // Setup Offers RecyclerView
         itemArrayList = new ArrayList<>();
         rv_offers.setHasFixedSize(true);
-        rv_offers.setLayoutManager(new LinearLayoutManager(requireContext()));
-        OffersRvAdapter adapter = new OffersRvAdapter(requireContext(), itemArrayList);
+        rv_offers.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        );
+        // pass ArrayList and context according to your adapter constructor
+        OffersRvAdapter adapter = new OffersRvAdapter(itemArrayList, requireContext());
         rv_offers.setAdapter(adapter);
 
-        menuItemController.getAllItemsByCategoryId("-O_IzpzhDQYxlJwpTV2q", new OnResultListener<List<MenuItem>>() {
+        // Category IDs
+        String offersID = "-O_IzpzhDQYxlJwpTV2q"; // Offers category
+        String veggiID = "-O_Ixaf8_97pPzra5YbT";  // Veggie category
+
+        MenuItemController menuItemController = new MenuItemController();
+
+        menuItemController.getAllItemsByCategoryId(veggiID, new OnResultListener<List<MenuItem>>() {
             @Override
             public void onSuccess(List<MenuItem> result) {
                 if (!result.isEmpty()) {
@@ -84,7 +85,6 @@ public class HomeFragment extends Fragment {
                 // handle error
             }
         });
-
 
         return root;
     }
