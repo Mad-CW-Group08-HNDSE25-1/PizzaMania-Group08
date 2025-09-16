@@ -19,6 +19,7 @@ import com.androidapp.pizzamania.controller.CategoryController;
 import com.androidapp.pizzamania.controller.MenuItemController;
 import com.androidapp.pizzamania.model.Category;
 import com.androidapp.pizzamania.model.MenuItem;
+import com.androidapp.pizzamania.ui.menu.MenuItemCardRvAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

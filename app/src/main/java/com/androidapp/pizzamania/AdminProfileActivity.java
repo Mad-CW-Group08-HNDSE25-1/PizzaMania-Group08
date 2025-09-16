@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,25 +43,26 @@ public class AdminProfileActivity extends AppCompatActivity {
     private DatabaseReference usersRef;
     private String currentUserId;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_profile);
+        setContentView(R.layout.activity_admin_profile_ui);
 
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
         // Initialize views
-        imgProfile = findViewById(R.id.imgProfile);
-        etName = findViewById(R.id.etName);
-        etPhone = findViewById(R.id.etPhone);
-        tvEmail = findViewById(R.id.etEmail);
-        tvRole = findViewById(R.id.tvRole);
+        imgProfile = findViewById(R.id.profileImage);
+        etName = findViewById(R.id.txtName);
+        etPhone = findViewById(R.id.txtPhone);
+        tvEmail = findViewById(R.id.txtEmail);
+        tvRole = findViewById(R.id.tvUserRole);
         tvLastLogin = findViewById(R.id.tvLastLogin);
         tvBranch = findViewById(R.id.tvBranch);
         btnChangePic = findViewById(R.id.btnChangePic);
-        btnUpdate = findViewById(R.id.btnUpdate);
+        btnUpdate = findViewById(R.id.saveBtn);
         btnResetPassword = findViewById(R.id.btnResetPassword);
 
         loadProfileData();
