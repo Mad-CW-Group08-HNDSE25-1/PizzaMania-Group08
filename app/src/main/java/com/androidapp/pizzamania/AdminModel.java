@@ -1,21 +1,29 @@
 package com.androidapp.pizzamania;
 
 public class AdminModel {
-    private String name, email, phone, branch, role, userId, profileImageUrl;
+    private String id;
+    private String name;
+    private String email;
+    private String phone;
+    private String role;
+    private String branch;
+    private String profileUrl;
 
-    public AdminModel() { }
+    public AdminModel() {} // Required for Firebase
 
-    public AdminModel(String name, String email, String phone, String branch, String role, String userId, String profileImageUrl) {
+    public AdminModel(String id, String name, String email, String phone, String role, String branch, String profileUrl) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.branch = branch;
         this.role = role;
-        this.userId = userId;
-        this.profileImageUrl = profileImageUrl;
+        this.branch = branch;
+        this.profileUrl = profileUrl;
     }
 
-    // Getters and Setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -25,15 +33,12 @@ public class AdminModel {
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    public String getBranch() { return branch; }
-    public void setBranch(String branch) { this.branch = branch; }
-
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public String getBranch() { return branch; }
+    public void setBranch(String branch) { this.branch = branch; }
 
-    public String getProfileImageUrl() { return profileImageUrl; }
-    public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl;}
+    public String getProfileUrl() { return profileUrl; }
+    public void setProfileUrl(String profileUrl) { this.profileUrl =profileUrl;}
 }

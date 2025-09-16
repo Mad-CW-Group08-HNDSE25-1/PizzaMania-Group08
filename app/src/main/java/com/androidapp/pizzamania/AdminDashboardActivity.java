@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,41 +12,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
     private TextView tvPendingOrders, tvLowStock, tvBranches;
-    private Button btnAddAdmin, btnAdminList, btnManageBranches, btnManageMenu,
-            btnManageStock, btnManageOrders, btnProfile, btnSignOut;
-    private FirebaseAuth auth;
-    private FirebaseDatabase database;
-    private String currentUserId;
+    private Button btnMenu, btnStock, btnOrders, btnProfile, btnSignOut;
+    private Button btnAddAdmin, btnViewAdmins, btnManageBranches;
+
+    private DatabaseReference ordersRef, stockRef, branchesRef, usersRef;
+    private String currentUserId, currentUserRole = "admin"; // default admin
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
-        auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        currentUserId = auth.getCurrentUser().getUid();
+        // Firebase refs
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ordersRef = database.getReference("Orders");
+        stockRef = database.getReference("BranchStock");
+        branchesRef = database.getReference("Branches");
+        usersRef = database.getReference("Users");
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Initialize views
+        // UI
         tvPendingOrders = findViewById(R.id.tvPendingOrders);
         tvLowStock = findViewById(R.id.tvLowStock);
         tvBranches = findViewById(R.id.tvBranches);
 
-        btnAddAdmin = findViewById(R.id.btnAddAdmin);
-        btnAdminList = findViewById(R.id.btnAdminList);
-        btnManageBranches = findViewById(R.id.btnManageBranches);
-        btnManageMenu = findViewById(R.id.btnManageMenu);
-        btnManageStock = findViewById(R.id.btnManageStock);
-        btnManageOrders = findViewById(R.id.btnManageOrders);
+        btnMenu = findViewById(R.id.btnManageMenu);
+        btnStock = findViewById(R.id.btnManageStock);
+        btnOrders = findViewById(R.id.btnManageOrders);
         btnProfile = findViewById(R.id.btnProfile);
         btnSignOut = findViewById(R.id.btnSignOut);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         loadDashboardStats();
         setupRoleBasedVisibility();
@@ -55,86 +57,119 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // Load user role only if logged in
         loadUserRole();
+=======
+        btnAddAdmin = findViewById(R.id.btnAddAdmin);
+        btnViewAdmins = findViewById(R.id.btnAdminList);
+        btnManageBranches = findViewById(R.id.btnManageBranches);
+>>>>>>> 94d6ac9139d1ce67962f68f8a8720fe2550852c5
 
+        // Load role & dashboard data
+        loadUserRole();
+        loadPendingOrders();
+        loadLowStock();
+        loadBranches();
+
+        // Button clicks
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
 
-        btnProfile.setOnClickListener(v ->
-                startActivity(new Intent(this, AdminProfileActivity.class)));
->>>>>>> b1d0c51ace209f528fa6f898ba77cb02fc8d06b8
+        btnOrders.setOnClickListener(v -> startActivity(new Intent(this, OrderManagementActivity.class)));
+        btnStock.setOnClickListener(v -> startActivity(new Intent(this, StockManagementActivity.class)));
+        btnMenu.setOnClickListener(v -> startActivity(new Intent(this, MenuManagementActivity.class)));
+        btnProfile.setOnClickListener(v -> startActivity(new Intent(this, AdminProfileActivity.class)));
     }
 
-    private void loadDashboardStats() {
-        // Pending Orders
-        database.getReference("orders").orderByChild("orderStatus").equalTo("pending")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        tvPendingOrders.setText("Pending\n" + snapshot.getChildrenCount());
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
-                });
-
-        // Branches
-        database.getReference("branches").addListenerForSingleValueEvent(new ValueEventListener() {
+    private void loadUserRole() {
+        usersRef.child(currentUserId).child("role").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvBranches.setText("Branches\n" + snapshot.getChildrenCount());
+                if (snapshot.exists()) {
+                    currentUserRole = snapshot.getValue(String.class);
+                    if ("super_admin".equals(currentUserRole)) {
+                        // Show Super Admin buttons
+                        btnAddAdmin.setVisibility(View.VISIBLE);
+                        btnViewAdmins.setVisibility(View.VISIBLE);
+                        btnManageBranches.setVisibility(View.VISIBLE);
+
+                        // Link buttons
+                        btnAddAdmin.setOnClickListener(v -> {
+                            Intent intent = new Intent(AdminDashboardActivity.this, AddAdminActivity.class);
+                            intent.putExtra("mode", "add"); // optional: indicate add mode
+                            startActivity(intent);
+                        });
+
+                        btnViewAdmins.setOnClickListener(v -> startActivity(
+                                new Intent(AdminDashboardActivity.this, AdminListActivity.class)
+                        ));
+
+                        btnManageBranches.setOnClickListener(v -> startActivity(
+                                new Intent(AdminDashboardActivity.this, BranchManagementActivity.class)
+                        ));
+                    } else {
+                        // Normal Admin: hide super admin buttons
+                        btnAddAdmin.setVisibility(View.GONE);
+                        btnViewAdmins.setVisibility(View.GONE);
+                        btnManageBranches.setVisibility(View.GONE);
+                    }
+                }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-        // Low Stock (assuming "stock" node in DB)
-        database.getReference("stock").orderByChild("quantity").endAt(5) // quantity ≤ 5
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        tvLowStock.setText("Low Stock\n" + snapshot.getChildrenCount());
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
-                });
     }
 
-    private void setupRoleBasedVisibility() {
-        database.getReference("Users").child(currentUserId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String role = snapshot.child("role").getValue(String.class);
-                        if (role != null && role.equals("super_admin")) {
-                            btnAddAdmin.setVisibility(View.VISIBLE);
-                            btnAdminList.setVisibility(View.VISIBLE);
-                            btnManageBranches.setVisibility(View.VISIBLE);
-                        } else if (role != null && role.equals("admin")) {
-                            // Admin cannot add other admins
-                            btnAddAdmin.setVisibility(View.GONE);
-                            btnAdminList.setVisibility(View.GONE);
-                            btnManageBranches.setVisibility(View.VISIBLE); // optional
-                        }
+    private void loadPendingOrders() {
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int pendingCount = 0;
+                for (DataSnapshot orderSnap : snapshot.getChildren()) {
+                    String status = orderSnap.child("status").getValue(String.class);
+                    if ("pending".equalsIgnoreCase(status)) {
+                        pendingCount++;
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
-                });
-    }
+                }
+                tvPendingOrders.setText(String.valueOf(pendingCount));
+            }
 
-    private void setupButtonClicks() {
-        btnAddAdmin.setOnClickListener(v -> startActivity(new Intent(this, AddAdminActivity.class)));
-        btnAdminList.setOnClickListener(v -> startActivity(new Intent(this, AdminListActivity.class)));
-        btnManageBranches.setOnClickListener(v -> Toast.makeText(this, "Branch management coming soon", Toast.LENGTH_SHORT).show());
-        btnManageMenu.setOnClickListener(v -> Toast.makeText(this, "Menu management coming soon", Toast.LENGTH_SHORT).show());
-        btnManageStock.setOnClickListener(v -> Toast.makeText(this, "Stock management coming soon", Toast.LENGTH_SHORT).show());
-        btnManageOrders.setOnClickListener(v -> Toast.makeText(this, "Order management coming soon", Toast.LENGTH_SHORT).show());
-        btnProfile.setOnClickListener(v -> startActivity(new Intent(this, AdminProfileActivity.class)));
-        btnSignOut.setOnClickListener(v -> {
-            auth.signOut();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
+
+    private void loadLowStock() {
+        stockRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int lowStockCount = 0;
+                for (DataSnapshot branchSnap : snapshot.getChildren()) {
+                    for (DataSnapshot itemSnap : branchSnap.getChildren()) {
+                        Long qty = itemSnap.child("quantity").getValue(Long.class);
+                        if (qty != null && qty < 5) { // threshold
+                            lowStockCount++;
+                        }
+                    }
+                }
+                tvLowStock.setText(String.valueOf(lowStockCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void loadBranches() {
+        branchesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvBranches.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+   });
+}
 }

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.*;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
 
     private Context context;
     private List<AdminModel> adminList;
-    private String currentUserRole; // to check if Super Admin
+    private String currentUserRole;
 
     public AdminListAdapter(Context context, List<AdminModel> adminList, String currentUserRole) {
         this.context = context;
@@ -42,16 +42,16 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
         holder.tvAdminEmail.setText(admin.getEmail());
         holder.tvAdminRole.setText("Role: " + admin.getRole());
 
-        if (admin.getProfileImageUrl() != null && !admin.getProfileImageUrl().isEmpty()) {
-            Glide.with(context).load(admin.getProfileImageUrl()).into(holder.imgAdmin);
+        if (admin.getProfileUrl() != null && !admin.getProfileUrl().isEmpty()) {
+            Glide.with(context).load(admin.getProfileUrl()).into(holder.imgAdmin);
         } else {
             holder.imgAdmin.setImageResource(R.drawable.ic_person);
         }
 
-        // Remove button visible only to Super Admin
+        // Remove button only for Super Admin (cannot remove other Super Admins)
         if ("super_admin".equals(currentUserRole) && !"super_admin".equals(admin.getRole())) {
             holder.btnRemove.setVisibility(View.VISIBLE);
-            holder.btnRemove.setOnClickListener(v -> removeAdmin(admin.getUserId(), position));
+            holder.btnRemove.setOnClickListener(v -> removeAdmin(admin.getId(), position));
         } else {
             holder.btnRemove.setVisibility(View.GONE);
         }
@@ -62,11 +62,13 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
                 .setTitle("Remove Admin")
                 .setMessage("Are you sure you want to remove this admin?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    FirebaseDatabase.getInstance().getReference("Users").child(userId).removeValue()
+                    FirebaseDatabase.getInstance().getReference("Users")
+                            .child(userId)
+                            .removeValue()
                             .addOnSuccessListener(aVoid -> {
                                 adminList.remove(position);
                                 notifyItemRemoved(position);
-                                Toast.makeText(context, "Admin removed successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Admin removed", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> Toast.makeText(context, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                 })
@@ -91,7 +93,6 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
             tvAdminEmail = itemView.findViewById(R.id.tvAdminEmail);
             tvAdminRole = itemView.findViewById(R.id.tvAdminRole);
             btnRemove = itemView.findViewById(R.id.btnRemoveAdmin);
-       }
-    }
 }
-
+}
+}
