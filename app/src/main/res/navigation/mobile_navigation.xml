@@ -9,13 +9,13 @@
         android:id="@+id/navigation_home"
         android:name="com.androidapp.pizzamania.ui.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home_ui" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_menu"
         android:name="com.androidapp.pizzamania.ui.menu.MenuFragment"
         android:label="Menu"
-        tools:layout="@layout/fragment_menu_ui" />
+        tools:layout="@layout/fragment_menu" />
 
     <fragment
         android:id="@+id/navigation_cart"

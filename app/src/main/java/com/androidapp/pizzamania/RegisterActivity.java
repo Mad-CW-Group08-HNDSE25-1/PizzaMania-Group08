@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -28,23 +29,23 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
-    private ImageView imgProfile;
-    private Button btnRegister, btnChoosePic;
+
+    private Button btnRegister;
 
     private Uri profileUri;
     private FirebaseAuth auth;
     private DatabaseReference dbRef;
-    private StorageReference storageRef;
     private DatabaseHelper dbHelper;
     private ProgressDialog progressDialog;
 
     private static final String DEFAULT_PROFILE_URL = "https://i.pravatar.cc/150";
     private static final String ROLE_CUSTOMER = "customer";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_signup_ui);
 
         // Init views
         etName = findViewById(R.id.etName);
@@ -52,20 +53,17 @@ public class RegisterActivity extends AppCompatActivity {
         etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        imgProfile = findViewById(R.id.imgProfile);
-        btnRegister = findViewById(R.id.btnRegister);
-        btnChoosePic = findViewById(R.id.btnChoosePic);
+        btnRegister = findViewById(R.id.signup);
+
 
         auth = FirebaseAuth.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference("Users");
-        storageRef = FirebaseStorage.getInstance().getReference("profile_images");
         dbHelper = new DatabaseHelper(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
         // Click listeners
-        imgProfile.setOnClickListener(v -> chooseImage());
-        btnChoosePic.setOnClickListener(v -> chooseImage());
+
         btnRegister.setOnClickListener(v -> registerUser());
 
         // Optional: Toggle password visibility (long press)
@@ -87,18 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void chooseImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 100);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             profileUri = data.getData();
-            imgProfile.setImageURI(profileUri);
         }
     }
 
@@ -134,11 +126,8 @@ public class RegisterActivity extends AppCompatActivity {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
                     String userId = result.getUser().getUid();
-                    if (profileUri != null) {
-                        uploadImage(userId, name, email, phone, role);
-                    } else {
                         saveUser(userId, name, email, phone, DEFAULT_PROFILE_URL, role);
-                    }
+
                 })
                 .addOnFailureListener(e -> {
                     progressDialog.dismiss();
@@ -150,18 +139,6 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    private void uploadImage(String userId, String name, String email, String phone, String role) {
-        progressDialog.setMessage("Uploading profile image...");
-        StorageReference ref = storageRef.child(userId + ".jpg");
-        ref.putFile(profileUri)
-                .addOnSuccessListener(task -> ref.getDownloadUrl()
-                        .addOnSuccessListener(uri ->
-                                saveUser(userId, name, email, phone, uri.toString(), role)))
-                .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "Image upload failed", Toast.LENGTH_SHORT).show();
-                });
-    }
 
     private void saveUser(String userId, String name, String email, String phone, String imageUrl, String role) {
         Map<String, Object> userMap = new HashMap<>();

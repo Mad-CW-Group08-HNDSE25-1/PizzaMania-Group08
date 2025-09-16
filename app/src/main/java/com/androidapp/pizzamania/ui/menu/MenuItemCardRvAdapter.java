@@ -1,18 +1,28 @@
 package com.androidapp.pizzamania.ui.menu;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidapp.pizzamania.EditMenuItemActivity;
 import com.androidapp.pizzamania.R;
+import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.controller.MenuItemController;
 import com.androidapp.pizzamania.model.MenuItem;
 import com.bumptech.glide.Glide;
@@ -81,9 +91,14 @@ public class MenuItemCardRvAdapter extends RecyclerView.Adapter<MenuItemCardRvAd
 
                 if (position != RecyclerView.NO_POSITION){
                     MenuItem menuItem = itemArrayList.get(getAdapterPosition());
-                    Intent intent = new Intent(context, MenuItemDetailActivity.class);
-                    intent.putExtra("itemId", menuItem.getId());
-                    context.startActivity(intent);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("itemId", menuItem.getId());
+                    bundle.putInt("itemQty", qty);
+
+                    NavController navController = Navigation.findNavController((Activity) context, R.id.nav_host_fragment_activity_main);
+                    navController.navigate(R.id.action_menu_to_menuItemDetail, bundle);
+
                 }
 
             });
@@ -110,11 +125,13 @@ public class MenuItemCardRvAdapter extends RecyclerView.Adapter<MenuItemCardRvAd
 
                 if (position != RecyclerView.NO_POSITION) {
                     MenuItem menuItem = itemArrayList.get(getAdapterPosition());
-                    Intent intent = new Intent(context, MenuItemDetailActivity.class);
-                    intent.putExtra("itemId", menuItem.getId());
-                    intent.putExtra("itemPrice", menuItem.getPrice());
-                    intent.putExtra("itemQty", qty);
-                    context.startActivity(intent);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("itemId", menuItem.getId());
+                    bundle.putInt("itemQty", qty);
+
+                    NavController navController = Navigation.findNavController((Activity) context, R.id.nav_host_fragment_activity_main);
+                    navController.navigate(R.id.action_menu_to_menuItemDetail, bundle);
                 }
             });
         }

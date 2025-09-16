@@ -94,7 +94,8 @@
                 android:text="&lt;Branch_Name&gt;"
                 android:textSize="48px"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvBranch"/>
 
             <Spinner
                 android:id="@+id/spBranch"
@@ -110,7 +111,8 @@
                 android:text="Last Login : &lt;N/A&gt;"
                 android:textSize="48px"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvLastLogin"/>
 
             <Button
                 android:id="@+id/saveBtn"

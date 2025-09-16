@@ -50,10 +50,10 @@ public class LoginActivity extends AppCompatActivity {
         authController = new AuthController();
         usersRef= FirebaseDatabase.getInstance().getReference("Users");
 
-        inputEmail = findViewById(R.id.inputEmail);
-        inputPassword = findViewById(R.id.inputPassword);
+        inputEmail = findViewById(R.id.txtEmail);
+        inputPassword = findViewById(R.id.txtPwd);
         btnLogin = findViewById(R.id.btnLogin);
-        linkRegister = findViewById(R.id.linkRegister);
+        linkRegister = findViewById(R.id.signup);
 
         btnLogin.setOnClickListener(view -> {
             String email = inputEmail.getText().toString();
@@ -66,9 +66,9 @@ public class LoginActivity extends AppCompatActivity {
             authController.login(email, pass)
                     .addOnSuccessListener(aVoid -> {
                         checkUserRole(authController.getCurrentUserId());
-                        //startActivity(new Intent(LoginActivity.this, SplashScreen.class));
+
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-                        finish();
+
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
