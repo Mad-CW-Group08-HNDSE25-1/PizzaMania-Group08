@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/arrow_backward_icon"
+            android:contentDescription="Back"
+            app:tint="@color/black" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/profile_icon"
+                android:layout_gravity="center"
+                android:background="#BCBCBC"/>
+
+            <Button
+                android:id="@+id/changeImageBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textSize="50px"
+                android:textStyle="bold"
+                android:textColor="@color/backColor1"
+                android:backgroundTint="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <EditText
+                android:id="@+id/txtName"
+                android:hint="Full Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40px"/>
+
+            <EditText
+                android:id="@+id/txtPhone"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30px"/>
+
+            <EditText
+                android:id="@+id/txtEmail"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30px"/>
+
+            <!-- Role -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50px"
+                android:layout_marginLeft="14px"
+                android:text="Role : <Admin>"
+                android:textSize="48px"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/spRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"/>
+
+            <!-- Branch -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14px"
+                android:text="<Branch_Name>"
+                android:textSize="48px"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/spBranch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14px"
+                android:text="Last Login : <N/A>"
+                android:textSize="48px"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/saveBtn"
+                android:text="Save Details"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"
+                android:backgroundTint="@color/green"
+                android:layout_marginTop="70px"/>
+
+            <Button
+                android:id="@+id/saveAuthBtn"
+                android:text="Reset Passward"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"/>
+
+            <Button
+                android:id="@+id/deleteAccBtn"
+                android:text="Delete my account"
+                android:layout_width="match_parent"
+                android:layout_height="170px"
+                android:textStyle="bold"
+                android:textSize="60px"
+                android:backgroundTint="@color/red"
+                android:layout_marginBottom="100px"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
