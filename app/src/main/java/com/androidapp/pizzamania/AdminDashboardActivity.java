@@ -49,33 +49,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile);
         btnSignOut = findViewById(R.id.btnSignOut);
 
-<<<<<<< Updated upstream
-//        loadDashboardStats();
-//        setupRoleBasedVisibility();
-//        setupButtonClicks();
-=======
->>>>>>> Stashed changes
 
         // Load user role only if logged in
 
-        //loadUserRole();
-
-<<<<<<< HEAD
-        loadUserRole();
-<<<<<<< Updated upstream
-=======
-        //loadUserRole();
->>>>>>> 3befb47695b2bc5f8b6f7bd4722a0c78c2b01fbd
+        //loadUserRole()
 
         btnAddAdmin = findViewById(R.id.btnAddAdmin);
         btnViewAdmins = findViewById(R.id.btnAdminList);
         btnManageBranches = findViewById(R.id.btnManageBranches);
 
-=======
         btnAddAdmin = findViewById(R.id.btnAddAdmin);
         btnViewAdmins = findViewById(R.id.btnAdminList);
         btnManageBranches = findViewById(R.id.btnManageBranches);
->>>>>>> Stashed changes
+
 
         // Load role & dashboard data
         loadUserRole();

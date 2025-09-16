@@ -70,7 +70,6 @@ public class AddAdminActivity extends AppCompatActivity {
         // Role spinner
         List<String> roles = new ArrayList<>();
         roles.add("admin");
-        roles.add("super_admin");
         ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roles);
         roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spRole.setAdapter(roleAdapter);
