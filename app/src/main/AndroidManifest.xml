@@ -35,8 +35,13 @@
             android:name=".SplashScreen"
             android:exported="true"
             android:theme="@style/SplashScreen"/>
+<<<<<<< HEAD
         <activity
 
+=======
+
+        <activity
+>>>>>>> efe268f7f64cf7194ee4dcc78977947146d721ac
             android:name=".Domain.admin_adminlist"
             android:exported="false" />
         <activity
@@ -50,7 +55,12 @@
             android:exported="false" />
         <activity
             android:name=".Domain.MainActivity3"
+<<<<<<< HEAD
             android:exported="false" />
+=======
+            android:exported="false"
+            android:label="@string/title_activity_main3" />
+>>>>>>> efe268f7f64cf7194ee4dcc78977947146d721ac
         <activity
             android:name=".Domain.forgot_pwd"
             android:exported="false" />

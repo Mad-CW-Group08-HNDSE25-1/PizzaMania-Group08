@@ -25,7 +25,11 @@ roomCommonJvm = "2.8.0"
 roomRuntime = "2.8.0"
 roomCompiler = "2.8.0"
 recyclerview = "1.4.0"
+<<<<<<< HEAD
 navigationFragment = "2.4.2"
+=======
+navigationFragment = "2.9.4"
+>>>>>>> efe268f7f64cf7194ee4dcc78977947146d721ac
 navigationUi = "2.9.4"
 
 

@@ -21,7 +21,6 @@ public class AdminListActivity extends AppCompatActivity {
     private RecyclerView recyclerAdmins;
     private AdminListAdapter adapter;
     private List<AdminModel> adminList = new ArrayList<>();
-    private FirebaseDatabase database;
     private String currentUserRole = "";
 
     @Override
@@ -31,42 +30,52 @@ public class AdminListActivity extends AppCompatActivity {
 
         recyclerAdmins = findViewById(R.id.recyclerAdmins);
         recyclerAdmins.setLayoutManager(new LinearLayoutManager(this));
-        database = FirebaseDatabase.getInstance();
 
-        loadCurrentUserRole();
+        checkCurrentUserRole();
     }
 
-    private void loadCurrentUserRole() {
+    // Check if current user is Super Admin
+    private void checkCurrentUserRole() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        database.getReference("Users").child(currentUserId).child("role")
+        FirebaseDatabase.getInstance().getReference("Users")
+                .child(currentUserId)
+                .child("role")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         currentUserRole = snapshot.getValue(String.class);
-                        loadAdminList();
+
+                        if (!"super_admin".equals(currentUserRole)) {
+                            finish(); // Normal admins cannot access this screen
+                        } else {
+                            loadAdminList();
+                        }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
     }
 
     private void loadAdminList() {
-        database.getReference("Users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                adminList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    String role = ds.child("role").getValue(String.class);
-                    if ("admin".equals(role) || "super_admin".equals(role)) {
-                        AdminModel admin = ds.getValue(AdminModel.class);
-                        adminList.add(admin);
+        FirebaseDatabase.getInstance().getReference("Users")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        adminList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String role = ds.child("role").getValue(String.class);
+                            if ("admin".equals(role) || "super_admin".equals(role)) {
+                                AdminModel admin = ds.getValue(AdminModel.class);
+                                adminList.add(admin);
+                            }
+                        }
+                        adapter = new AdminListAdapter(AdminListActivity.this, adminList, currentUserRole);
+                        recyclerAdmins.setAdapter(adapter);
                     }
-                }
-                adapter = new AdminListAdapter(AdminListActivity.this, adminList, currentUserRole);
-                recyclerAdmins.setAdapter(adapter);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-      });
-   }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+    });
+}
 }

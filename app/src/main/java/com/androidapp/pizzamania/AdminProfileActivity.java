@@ -26,17 +26,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AdminProfileActivity extends AppCompatActivity {
 
     private ImageView imgProfile;
     private EditText etName, etPhone;
-    private TextView tvEmail, tvRole, tvLastLogin;
-    private Spinner spBranch;
+    private TextView tvEmail, tvRole, tvLastLogin, tvBranch;
+    private Spinner spRole, spBranch;
     private Button btnChangePic, btnUpdate, btnResetPassword;
 
     private Uri imageUri;
@@ -63,12 +66,14 @@ public class AdminProfileActivity extends AppCompatActivity {
         tvEmail = findViewById(R.id.etEmail);
         tvRole = findViewById(R.id.tvRole);
         tvLastLogin = findViewById(R.id.tvLastLogin);
+        tvBranch = findViewById(R.id.tvBranch);
+        spRole = findViewById(R.id.spRole);
         spBranch = findViewById(R.id.spBranch);
         btnChangePic = findViewById(R.id.btnChangePic);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnResetPassword = findViewById(R.id.btnResetPassword);
 
-        // Load branches into spinner
+        // Setup branch spinner
         branchAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, branchList);
         branchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBranch.setAdapter(branchAdapter);
@@ -92,6 +97,7 @@ public class AdminProfileActivity extends AppCompatActivity {
                 }
                 branchAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
@@ -112,15 +118,48 @@ public class AdminProfileActivity extends AppCompatActivity {
                 etName.setText(name);
                 etPhone.setText(phone);
                 tvEmail.setText(email);
-                tvRole.setText("Role: " + role);
                 tvLastLogin.setText("Last Login: " + (lastLogin != null ? lastLogin : "N/A"));
 
-                selectedBranch = branch;
-                if (branchList.contains(branch)) spBranch.setSelection(branchList.indexOf(branch));
-
+                // Profile image
                 if (profileUrl != null && !profileUrl.isEmpty()) {
                     Glide.with(AdminProfileActivity.this).load(profileUrl).into(imgProfile);
                 }
+
+                // Role-based UI
+                if ("super_admin".equals(role)) {
+                    // Show editable spinners
+                    spRole.setVisibility(android.view.View.VISIBLE);
+                    spBranch.setVisibility(android.view.View.VISIBLE);
+                    tvRole.setVisibility(android.view.View.GONE);
+                    tvBranch.setVisibility(android.view.View.GONE);
+
+                    // Load role spinner
+                    List<String> roles = new ArrayList<>();
+                    roles.add("admin");
+                    roles.add("super_admin");
+                    ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(AdminProfileActivity.this, android.R.layout.simple_spinner_item, roles);
+                    roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spRole.setAdapter(roleAdapter);
+                    spRole.setSelection(roles.indexOf(role));
+
+                    // Load branch spinner
+                    if (branch != null && branchList.contains(branch)) {
+                        spBranch.setSelection(branchList.indexOf(branch));
+                    }
+                } else {
+                    // Normal admin: show text only
+                    tvRole.setText("Role: " + role);
+                    tvBranch.setText(branch != null ? branch : "N/A");
+                    spRole.setVisibility(android.view.View.GONE);
+                    spBranch.setVisibility(android.view.View.GONE);
+                    tvRole.setVisibility(android.view.View.VISIBLE);
+                    tvBranch.setVisibility(android.view.View.VISIBLE);
+                }
+
+                // Update last login automatically
+                String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+                usersRef.child(currentUserId).child("lastLogin").setValue(currentTime);
+                tvLastLogin.setText("Last Login: " + currentTime);
             }
 
             @Override
@@ -145,7 +184,8 @@ public class AdminProfileActivity extends AppCompatActivity {
     private void updateProfile() {
         String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
-        selectedBranch = spBranch.getSelectedItem().toString();
+        String branch = spBranch.getVisibility() == android.view.View.VISIBLE ? spBranch.getSelectedItem().toString() : tvBranch.getText().toString();
+        String role = spRole.getVisibility() == android.view.View.VISIBLE ? spRole.getSelectedItem().toString() : tvRole.getText().toString().replace("Role: ", "");
 
         if (name.isEmpty() || phone.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -155,57 +195,36 @@ public class AdminProfileActivity extends AppCompatActivity {
         if (imageUri != null) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference("profileImages/" + currentUserId);
             storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot ->
-                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> saveProfileData(name, phone, selectedBranch, uri.toString()))
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> saveProfileData(name, phone, branch, role, uri.toString()))
             );
         } else {
-            saveProfileData(name, phone, selectedBranch, null);
+            saveProfileData(name, phone, branch, role, null);
         }
     }
 
-    private void saveProfileData(String name, String phone, String branch, String profileUrl) {
+    private void saveProfileData(String name, String phone, String branch, String role, @Nullable String profileUrl) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
         updates.put("phone", phone);
+        updates.put("role", role);
         updates.put("branch", branch);
+
+        // Update last login
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        updates.put("lastLogin", currentTime);
+        tvLastLogin.setText("Last Login: " + currentTime);
+
         if (profileUrl != null) updates.put("profileImageUrl", profileUrl);
 
-<<<<<<< HEAD
         usersRef.child(currentUserId).updateChildren(updates)
                 .addOnSuccessListener(aVoid -> Toast.makeText(this, "Profile updated", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-=======
-        // Update last login automatically
-        String lastLogin = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
-        map.put("lastLogin", lastLogin);
-        tvLastLogin.setText("Last Login: " + lastLogin);
-
-        userRef.updateChildren(map).addOnSuccessListener(unused -> {
-            saveToSQLite(userId, name, etEmail.getText().toString(), phone, imageUrl, branch);
-            progressDialog.dismiss();
-            Snackbar.make(btnUpdate, "Profile Updated!", Snackbar.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            progressDialog.dismiss();
-            Snackbar.make(btnUpdate, "Update failed: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
-        });
-    }
-
-    private void saveToSQLite(String userId, String name, String email, String phone, @Nullable String imageUrl, String branch) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("name", name);
-        values.put("email", email);
-        values.put("phone", phone);
-        if (imageUrl != null) values.put("profileImageUrl", imageUrl);
-
-        db.update(DatabaseHelper.TABLE_USER_SESSION, values, "userId=?", new String[]{userId});
-        db.close();
->>>>>>> b1d0c51ace209f528fa6f898ba77cb02fc8d06b8
     }
 
     private void resetPassword() {
         String email = tvEmail.getText().toString();
-        auth.sendPasswordResetEmail(email)
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnSuccessListener(aVoid -> Toast.makeText(this, "Password reset email sent", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-     }
+      }
 }

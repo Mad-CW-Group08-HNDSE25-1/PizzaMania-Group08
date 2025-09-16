@@ -18,23 +18,20 @@
             android:scaleType="centerCrop"
             android:background="@drawable/circle_bg"
             android:padding="4dp"
-            android:contentDescription="Profile Image"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"/>
 
         <Button
             android:id="@+id/btnChoosePic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose Profile Picture"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Admin Info -->
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Full Name"
-            android:inputType="textPersonName"
             android:layout_marginBottom="12dp"/>
 
         <EditText
@@ -69,42 +66,36 @@
             android:inputType="textPassword"
             android:layout_marginBottom="24dp"/>
 
-        <!-- Role Selection -->
+        <!-- Role -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select Role:"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"/>
-
         <Spinner
             android:id="@+id/spRole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:prompt="@string/select_role"/>
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Branch Selection -->
+        <!-- Branch -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select Branch:"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"/>
-
         <Spinner
             android:id="@+id/spBranch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:prompt="@string/select_branch"/>
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Add Admin Button -->
         <Button
             android:id="@+id/btnAddAdmin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Admin" />
-
+            android:text="Add Admin"/>
     </LinearLayout>
 </ScrollView>
