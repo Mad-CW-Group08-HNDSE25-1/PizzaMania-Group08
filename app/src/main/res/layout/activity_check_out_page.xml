@@ -38,12 +38,14 @@
             android:id="@+id/cardDetails"
             android:orientation="vertical"
             android:paddingTop="12dp"
+            android:background="@color/backColor4"
             android:visibility="gone">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/card_holder_name"
+                android:layout_marginHorizontal="40px"
                 android:id="@+id/txtCardName"/>
 
             <EditText
@@ -51,12 +53,14 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/card_number"
                 android:inputType="number"
+                android:layout_marginHorizontal="40px"
                 android:id="@+id/txtCardNumber"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtExpireDate"
+                android:layout_marginHorizontal="40px"
                 android:hint="@string/mm_yy"/>
 
             <EditText
@@ -64,14 +68,18 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/cvv"
                 android:inputType="numberPassword"
+                android:layout_marginHorizontal="40px"
+                android:layout_marginBottom="40px"
                 android:id="@+id/txtCvv"/>
 
         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150px"
             android:text="@string/place_order"
+            android:textStyle="bold"
+            android:textSize="45px"
             android:layout_marginTop="20dp"
             android:id="@+id/btnPlaceOrder"/>
 

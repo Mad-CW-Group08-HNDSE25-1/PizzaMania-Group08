@@ -27,7 +27,10 @@
     <string name="select_branch" />
     <string name="select_role" />
 
+<<<<<<< HEAD
+=======
     <string name="role_admin" />
+>>>>>>> e4f93da38ffb91bd75de2eae0ff3a38a306243e9
 
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>

@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:text="My Cart"
             android:textColor="@color/black"
-            android:textSize="60px"
+            android:textSize="55px"
             android:textStyle="bold" />
 
         <ImageButton
@@ -72,7 +72,7 @@
                 android:id="@+id/cartTotalTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="100px"
-                android:textSize="70px"
+                android:textSize="60px"
                 android:text="Total: $0.00"
                 android:textStyle="bold"/>
 
@@ -84,7 +84,7 @@
             android:layout_height="170px"
             android:text="Checkout"
             android:textStyle="bold"
-            android:textSize="60px"
+            android:textSize="55px"
             android:layout_marginHorizontal="20px"/>
     </LinearLayout>
 
