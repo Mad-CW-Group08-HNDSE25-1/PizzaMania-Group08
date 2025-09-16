@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +23,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidapp.pizzamania.adapter.ToggleRvAdapter;
+import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.controller.AuthController;
+import com.androidapp.pizzamania.controller.CategoryController;
 import com.androidapp.pizzamania.controller.MenuItemController;
+import com.androidapp.pizzamania.controller.SizeController;
+import com.androidapp.pizzamania.controller.ToppingController;
 import com.androidapp.pizzamania.controller.UserController;
+import com.androidapp.pizzamania.model.Category;
 import com.androidapp.pizzamania.model.MenuItem;
+import com.androidapp.pizzamania.model.Size;
+import com.androidapp.pizzamania.model.Topping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +62,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
     private ToppingController toppingController;
     private boolean itemLoaded, sizesLoaded, toppingsLoaded;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

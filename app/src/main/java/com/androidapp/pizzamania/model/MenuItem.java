@@ -4,44 +4,38 @@ package com.androidapp.pizzamania.model;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
+import java.util.Map;
 
-public class MenuItem implements Serializable {
-    @Exclude
-    private String id;
-    private String name, description, price, branch, imageURL;
-
+public class MenuItem {
+    private String id, name, description, price, image, branchId, categoryId;
+    private Map<String, Boolean> sizes, toppings;
 
     public MenuItem() {
     }
 
-    public MenuItem(String id, String name, String description, String price, String branch, String imageURL) {
+    public MenuItem(String id, String name, String description, String price, String branchId, String categoryId, Map<String, Boolean> sizes, Map<String, Boolean> toppings, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.branch = branch;
-        this.imageURL = imageURL;
+        this.image = image;
+        this.branchId = branchId;
+        this.categoryId = categoryId;
+        this.sizes = sizes;
+        this.toppings = toppings;
     }
 
-    public MenuItem(String name, String description, String price, String branch) {
+    public MenuItem(String id, String name, String categoryId) {
+        this.id = id;
         this.name = name;
-        this.description = description;
-        this.price = price;
-        this.branch = branch;
+        this.categoryId = categoryId;
+
     }
 
-    public MenuItem(String name, String description, String price) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
-
-    @Exclude
     public String getId() {
         return id;
     }
 
-    @Exclude
     public void setId(String id) {
         this.id = id;
     }
@@ -52,7 +46,6 @@ public class MenuItem implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-
     }
 
     public String getDescription() {
@@ -63,7 +56,6 @@ public class MenuItem implements Serializable {
         this.description = description;
     }
 
-
     public String getPrice() {
         return price;
     }
@@ -72,20 +64,44 @@ public class MenuItem implements Serializable {
         this.price = price;
     }
 
-    public String getBranch() {
-        return branch;
+    public String getImage() {
+        return image;
     }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Map<String, Boolean> getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(Map<String, Boolean> sizes) {
+        this.sizes = sizes;
+    }
+
+    public Map<String, Boolean> getToppings() {
+        return toppings;
+    }
+
+    public void setToppings(Map<String, Boolean> toppings) {
+        this.toppings = toppings;
+    }
 }
+

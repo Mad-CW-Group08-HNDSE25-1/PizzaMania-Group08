@@ -1,5 +1,7 @@
 package com.androidapp.pizzamania.model;
 
+import com.androidapp.pizzamania.adapter.ToggleRvAdapter;
+
 public class Topping implements ToggleRvAdapter.ToggleItem {
     private String id, name, price;
 

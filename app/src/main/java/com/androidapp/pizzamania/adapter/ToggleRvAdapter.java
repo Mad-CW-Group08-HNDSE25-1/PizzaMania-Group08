@@ -1,5 +1,7 @@
 package com.androidapp.pizzamania.adapter;
 
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,7 @@ public class ToggleRvAdapter<T extends ToggleRvAdapter.ToggleItem>
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.it, parent, false);
+                .inflate(R.layout.item_vidu, parent, false);
         return new ViewHolder(view);
     }
 
