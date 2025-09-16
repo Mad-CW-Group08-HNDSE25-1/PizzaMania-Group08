@@ -1,10 +1,12 @@
 package com.androidapp.pizzamania;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidapp.pizzamania.adapter.MenuItemRvAdapter;
+import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.controller.AuthController;
 import com.androidapp.pizzamania.controller.MenuItemController;
 import com.androidapp.pizzamania.controller.UserController;
@@ -27,16 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageMenuActivity extends AppCompatActivity {
-    private String branch;
-    private Button addMenuItemBtn;
-    private RecyclerView rvMenuItems;
+    private Button backBtn, filterBtn, addMenuItemBtn;
+    private EditText searchTxt;
+    private String search;
+    private RecyclerView manageMenuItemRv;
     private ProgressBar progressBar;
-    private ArrayList<MenuItem> menuItemsArrayList;
+    private ArrayList<MenuItem> itemArrayList;
     private MenuItemRvAdapter menuItemRvAdapter;
     private MenuItemController menuItemController;
-    private UserController userController;
-    private AuthController authController;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,49 +51,49 @@ public class ManageMenuActivity extends AppCompatActivity {
             return insets;
         });
 
+        backBtn = findViewById(R.id.backBtn);
+        filterBtn = findViewById(R.id.filterBtn);
         addMenuItemBtn = findViewById(R.id.addMenuItemBtn);
-        rvMenuItems = findViewById(R.id.rvMenuItems);
+        searchTxt = findViewById(R.id.searchTxt);
+        manageMenuItemRv = findViewById(R.id.manageMenuItemRv);
         progressBar = findViewById(R.id.progressBar);
         menuItemController = new MenuItemController();
-        userController = new UserController();
-        authController = new AuthController();
 
-        menuItemsArrayList = new ArrayList<>();
-        rvMenuItems.setHasFixedSize(true);
-        rvMenuItems.setLayoutManager(new LinearLayoutManager(this));
+        itemArrayList = new ArrayList<>();
+        manageMenuItemRv.setHasFixedSize(true);
+        manageMenuItemRv.setLayoutManager(new LinearLayoutManager(this));
 
-        menuItemRvAdapter = new MenuItemRvAdapter(menuItemsArrayList, this);
-        rvMenuItems.setAdapter(menuItemRvAdapter);
+        menuItemRvAdapter = new MenuItemRvAdapter(itemArrayList, this);
+        manageMenuItemRv.setAdapter(menuItemRvAdapter);
 
-        userController.getUserBranchById(authController.getAuthId())
-                .addOnSuccessListener( branchName -> {
-                    branch = branchName;
+        menuItemController.getAllItems(new OnResultListener<List<MenuItem>>() {
+            @Override
+            public void onSuccess(List<MenuItem> result) {
+                progressBar.setVisibility(View.GONE);
+                if (!result.isEmpty()) {
+                    itemArrayList.clear();
+                    itemArrayList.addAll(result);
+                    menuItemRvAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(ManageMenuActivity.this, "No data found in Database", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-                    menuItemController.readAllMenuItemsByBranch(branch)
-                            .addOnSuccessListener(items -> {
-                                progressBar.setVisibility(View.GONE);
-                                if(!items.isEmpty()){
-                                    menuItemsArrayList.clear();
-                                    menuItemsArrayList.addAll(items);
-                                    menuItemRvAdapter.notifyDataSetChanged();
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(ManageMenuActivity.this, "Fail to get the data.", Toast.LENGTH_SHORT).show();
+                Log.d("Error", "Fail to get the data. "+e);
+            }
+        });
 
-                                }
-                                else {
-                                    Toast.makeText(ManageMenuActivity.this, "No data found in Database", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(ManageMenuActivity.this, "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                                Log.d("Error", "Fail to get the data. "+e);
-                            });
+        filterBtn.setOnClickListener(view -> {
+            String search = searchTxt.getText().toString().toLowerCase();
+        });
 
-                })
-                .addOnFailureListener(e -> {
-                    Log.d("Error", "Error fetching branch", e);
-                });
+        backBtn.setOnClickListener(view -> {onBackPressed();});
 
         addMenuItemBtn.setOnClickListener(view -> {
-            startActivity(new Intent(ManageMenuActivity.this, AddMenuItemActivity.class));
+            startActivity(new Intent(ManageMenuActivity.this, EditMenuItemActivity.class));
         });
     }
 }
