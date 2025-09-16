@@ -133,6 +133,7 @@
             android:textStyle="bold"
             android:textSize="50px"/>
 
+<<<<<<< HEAD
             <Button
                 android:id="@+id/deleteMenuItemBtn"
                 android:layout_width="match_parent"
@@ -141,6 +142,16 @@
                 android:textStyle="bold"
                 android:textSize="50px"
                 android:backgroundTint="@color/red"/>
+=======
+<!--            <Button-->
+<!--                android:id="@+id/deleteMenuItemBtn"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="160px"-->
+<!--                android:text="Delete Item"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="50px"-->
+<!--                android:backgroundTint="@color/red"/>-->
+>>>>>>> 49defae6509d246f2bc869d5237413a4be32383d
 
         </LinearLayout>
     </LinearLayout>

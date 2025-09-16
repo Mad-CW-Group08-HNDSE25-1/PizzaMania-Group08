@@ -36,9 +36,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // Firebase refs
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ordersRef = database.getReference("Orders");
+        ordersRef = database.getReference("orders");
         stockRef = database.getReference("BranchStock");
-        branchesRef = database.getReference("Branches");
+        branchesRef = database.getReference("branches");
         usersRef = database.getReference("Users");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -137,12 +137,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int pendingCount = 0;
                 for (DataSnapshot orderSnap : snapshot.getChildren()) {
-                    String status = orderSnap.child("status").getValue(String.class);
+                    String status = orderSnap.child("orderStatus").getValue(String.class);
                     if ("pending".equalsIgnoreCase(status)) {
                         pendingCount++;
                     }
                 }
-                tvPendingOrders.setText(String.valueOf(pendingCount));
+                tvPendingOrders.setText("Pending\n" +pendingCount);
             }
 
             @Override
@@ -158,12 +158,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 for (DataSnapshot branchSnap : snapshot.getChildren()) {
                     for (DataSnapshot itemSnap : branchSnap.getChildren()) {
                         Long qty = itemSnap.child("quantity").getValue(Long.class);
-                        if (qty != null && qty < 5) { // threshold
+                        if (qty != null && qty < 5) {
                             lowStockCount++;
                         }
                     }
                 }
-                tvLowStock.setText(String.valueOf(lowStockCount));
+                tvLowStock.setText("Low Stock\n" +lowStockCount);
             }
 
             @Override
@@ -175,7 +175,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         branchesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvBranches.setText(String.valueOf(snapshot.getChildrenCount()));
+                tvBranches.setText("Branches\n" +snapshot.getChildrenCount());
             }
 
             @Override

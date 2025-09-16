@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     if ("super_admin".equals(role) || "admin".equals(role)) {
                         startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
                     } else {
-                        startActivity(new Intent(LoginActivity.this, OrderHistoryActivity.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     }
                     finish();
                 } else {

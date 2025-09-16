@@ -69,10 +69,10 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         // Initialize views
         imgProfile = findViewById(R.id.profileImage);
-        etName = findViewById(R.id.txtName);
-        etPhone = findViewById(R.id.txtPhone);
+        etName = findViewById(R.id.etName);
+        etPhone = findViewById(R.id.etPhone);
         tvEmail = findViewById(R.id.txtEmail);
-        tvRole = findViewById(R.id.tvUserRole);
+        tvRole = findViewById(R.id.tvRole);
         tvLastLogin = findViewById(R.id.tvLastLogin);
         tvBranch = findViewById(R.id.tvBranch);
 
