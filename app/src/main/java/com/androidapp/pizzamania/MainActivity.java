@@ -7,18 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-<<<<<<< HEAD
-
-
-public class MainActivity extends AppCompatActivity {
-=======
-import com.androidapp.pizzamania.R;
 
 
 
 public class MainActivity extends AppCompatActivity {
-
->>>>>>> efe268f7f64cf7194ee4dcc78977947146d721ac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
