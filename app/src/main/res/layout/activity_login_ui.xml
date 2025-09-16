@@ -34,7 +34,7 @@
                 android:padding="20px"
                 android:text="LOGIN"
                 android:textColor="@color/backColor1"
-                android:textSize="70px"
+                android:textSize="80px"
                 android:textStyle="bold" />
 
             <View
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="Email Address"
                 android:textStyle="bold"
-                android:textSize="50px"
+                android:textSize="55px"
                 android:alpha="0.8"/>
 
             <EditText
@@ -58,14 +58,14 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="50px"/>
+                android:layout_height="80px"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Passward"
                 android:textStyle="bold"
-                android:textSize="50px"
+                android:textSize="55px"
                 android:alpha="0.8"/>
 
             <EditText
@@ -102,11 +102,11 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="150px"
+                android:layout_height="170px"
                 android:id="@+id/btnLogin"
                 android:text="LOGIN"
                 android:textStyle="bold"
-                android:textSize="50px"/>
+                android:textSize="65px"/>
 
             <View
                 android:layout_width="wrap_content"
