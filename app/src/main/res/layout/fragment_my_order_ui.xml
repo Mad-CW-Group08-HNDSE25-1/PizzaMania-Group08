@@ -88,7 +88,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="<id>"
+                                android:text="&lt;id&gt;"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
@@ -105,7 +105,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="<total>"
+                                android:text="&lt;total&gt;"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
@@ -122,7 +122,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="<status>"
+                                android:text="&lt;status&gt;"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
