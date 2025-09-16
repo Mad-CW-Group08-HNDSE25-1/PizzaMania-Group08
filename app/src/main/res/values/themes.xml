@@ -1,11 +1,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PizzaMania" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!--Primary bar color-->
+        <item name="colorPrimary">@color/backColor1</item>
+        <item name="colorPrimaryVariant">@color/backColor1</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!--Secondary bar color-->
+        <item name="colorSecondary">@color/backColor2</item>
+        <item name="colorSecondaryVariant">@color/backColor2</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!--Tertiary bar color-->
+        <item name="colorTertiary">@color/backColor2</item>
+        <item name="colorOnTertiaryFixedVariant">@color/backColor2</item>
+        <item name="colorOnTertiary">@color/black</item>
+
+        <!--Status bar color-->
+        <item name="android:statusBarColor">@color/backColor1</item>
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+
     </style>
 
     <style name="Theme.PizzaMania" parent="Base.Theme.PizzaMania" />
+
 
     <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:windowBackground">
@@ -15,4 +36,14 @@
             ?attr/colorPrimary
         </item>
     </style>
+
+    <style name="Theme.PizzaMania.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.PizzaMania.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PizzaMania.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

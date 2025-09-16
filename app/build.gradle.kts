@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
 
+
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+
 
 }
 
@@ -44,6 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database)
     implementation(libs.play.services.maps)
@@ -57,6 +60,8 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.firebase.database)
     implementation(libs.recyclerview)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -67,4 +72,5 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
 }

@@ -24,7 +24,7 @@ public class MenuItemController {
     }
 
     public Task<Void> createMenuItem(String name, String description, String price, String branch){
-        menuItem = new MenuItem(name, description, price, branch);
+        //menuItem = new MenuItem(name, description, price, branch);
         CollectionReference menuItemCollection = db.collection("menuItems");
         return menuItemCollection.add(menuItem)
                 .continueWithTask(task -> {
@@ -119,6 +119,4 @@ public class MenuItemController {
                     return Tasks.forResult(null);
                 });
     }
-
-
 }

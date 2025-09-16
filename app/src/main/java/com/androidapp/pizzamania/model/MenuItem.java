@@ -1,5 +1,6 @@
 package com.androidapp.pizzamania.model;
 
+
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ public class MenuItem implements Serializable {
     @Exclude
     private String id;
     private String name, description, price, branch, imageURL;
+
 
     public MenuItem() {
     }
@@ -50,6 +52,7 @@ public class MenuItem implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+
     }
 
     public String getDescription() {
@@ -59,6 +62,7 @@ public class MenuItem implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public String getPrice() {
         return price;
@@ -83,4 +87,5 @@ public class MenuItem implements Serializable {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
+
 }
