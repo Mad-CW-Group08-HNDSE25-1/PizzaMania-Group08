@@ -82,7 +82,7 @@ public class UserController {
     }
 
     public void getUserBranchById(String id, OnResultListener<String> listener) {
-        dr.child(id).child("branchId").get()
+        dr.child(id).child("branch").get()
                 .addOnSuccessListener(dataSnapshot -> {
                     String branchId = dataSnapshot.getValue(String.class);
                     listener.onSuccess(branchId);

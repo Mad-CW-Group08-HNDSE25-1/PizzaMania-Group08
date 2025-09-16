@@ -57,6 +57,8 @@
         <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".OrderManagementActivity" android:exported="false" />
         <activity android:name=".ManageMenuActivity" android:exported="true" />
+        <activity android:name=".MainActivity" android:exported="true" />
+        <activity android:name=".EditMenuItemActivity" android:exported="false"/>
 
         <activity android:name=".AdminDashboardActivity" android:exported="true" />
         <activity android:name=".StockManagementActivity" android:exported="true" />

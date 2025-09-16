@@ -170,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                 sessionManager.createSession(userId, email, role);
 
                 Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, AddBranchActivity.class); // replace with your actual home activity
+                Intent intent = new Intent(this, MainActivity.class); // replace with your actual home activity
                 startActivity(intent);
                 finish();
 

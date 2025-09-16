@@ -137,7 +137,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int pendingCount = 0;
                 for (DataSnapshot orderSnap : snapshot.getChildren()) {
-                    String status = orderSnap.child("status").getValue(String.class);
+                    String status = orderSnap.child("orderStatus").getValue(String.class);
                     if ("pending".equalsIgnoreCase(status)) {
                         pendingCount++;
                     }
@@ -158,7 +158,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 for (DataSnapshot branchSnap : snapshot.getChildren()) {
                     for (DataSnapshot itemSnap : branchSnap.getChildren()) {
                         Long qty = itemSnap.child("quantity").getValue(Long.class);
-                        if (qty != null && qty < 5) { // threshold
+                        if (qty != null && qty < 5) {
                             lowStockCount++;
                         }
                     }
