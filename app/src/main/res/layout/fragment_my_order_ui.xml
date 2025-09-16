@@ -66,7 +66,8 @@
                     app:cardCornerRadius="10dp"
                     android:layout_margin="10dp"
                     app:strokeColor="@color/backColor1"
-                    app:strokeWidth="3dp">
+                    app:strokeWidth="3dp"
+                    android:backgroundTint="@color/backColor4">
 
                     <LinearLayout
                         android:layout_width="wrap_content"

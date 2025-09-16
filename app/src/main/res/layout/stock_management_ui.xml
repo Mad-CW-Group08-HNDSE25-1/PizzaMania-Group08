@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Domain.menu_management"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -16,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Menu"
+            android:text="Stock"
             android:textColor="@color/black"
             android:textSize="60px"
             android:textStyle="bold" />
@@ -36,10 +33,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="20px">
+        android:layout_marginHorizontal="20px">
 
         <SearchView
-            android:id="@+id/searchItem"
+            android:id="@+id/searchStock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:queryHint="Search Items..."
@@ -50,35 +47,20 @@
 
     </LinearLayout>
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerStock"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal" >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvMenuItems"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-
-        </LinearLayout>
+            android:layout_height="match_parent"/>
 
     </ScrollView>
 
     <Button
-        android:id="@+id/addMenuItemBtn"
+        android:id="@+id/addStockItemBtn"
         android:text="Add New Item"
         android:textStyle="bold"
         android:textSize="50px"
@@ -87,6 +69,5 @@
         android:layout_margin="40px"
         android:layout_marginLeft="20px"
         android:layout_marginRight="20px"/>
-
 
 </LinearLayout>
