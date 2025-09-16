@@ -50,10 +50,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit"
-                android:textSize="50px"
+                android:textSize="40px"
                 android:textStyle="bold"
                 android:textColor="@color/backColor1"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="#F5F5F5"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"/>
 
@@ -130,7 +130,7 @@
                 android:id="@+id/btnAddAdmin"
                 android:text="Add Member"
                 android:layout_width="match_parent"
-                android:layout_height="170px"
+                android:layout_height="150px"
                 android:layout_marginTop="50px"
                 android:textStyle="bold"
                 android:textSize="50px"/>

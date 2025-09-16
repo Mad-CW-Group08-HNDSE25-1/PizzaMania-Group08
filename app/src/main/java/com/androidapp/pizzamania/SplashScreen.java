@@ -23,22 +23,28 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splashscreen_ui);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        fireBaseHelper = new FireBaseHelper("message");
-        fireBaseHelper.writeDate("Hello");
+        new Handler().postDelayed(() -> {
+            SessionManager session = new SessionManager(SplashScreen.this);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                   startActivity(new Intent(SplashScreen.this, LoginActivity.class));
-                   finish();
+            if (session.isLoggedIn()) {
+                String role = session.getUserRole();
+                if ("super_admin".equals(role) || "admin".equals(role)) {
+                    startActivity(new Intent(SplashScreen.this, AdminDashboardActivity.class));
+                } else {
+                    startActivity(new Intent(SplashScreen.this, AddBranchActivity.class));
+                }
+            } else {
+                startActivity(new Intent(SplashScreen.this, LoginActivity.class));
             }
+            finish();
         }, 3000);
-
     }
+
 }

@@ -33,7 +33,7 @@ public class MenuFragment extends Fragment {
     private SearchView searchTxt;
     private String search;
     private RecyclerView categoryCardRv;
-    private ProgressBar progressBar;
+
     private ArrayList<Category> categoryArrayList, filteredArrayList;
     private CategoryCardRvAdapter categoryCardRvAdapter;
     private CategoryController categoryController;
@@ -63,7 +63,6 @@ public class MenuFragment extends Fragment {
         categoryController.getAllCategories(new OnResultListener<List<Category>>() {
             @Override
             public void onSuccess(List<Category> result) {
-                progressBar.setVisibility(View.GONE);
                 if (!result.isEmpty()) {
                     categoryArrayList.clear();
                     categoryArrayList.addAll(result);

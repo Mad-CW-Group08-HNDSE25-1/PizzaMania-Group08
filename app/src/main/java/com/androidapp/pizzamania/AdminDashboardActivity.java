@@ -36,9 +36,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // Firebase refs
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ordersRef = database.getReference("Orders");
+        ordersRef = database.getReference("orders");
         stockRef = database.getReference("BranchStock");
-        branchesRef = database.getReference("Branches");
+        branchesRef = database.getReference("branches");
         usersRef = database.getReference("Users");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -66,11 +66,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         loadLowStock();
         loadBranches();
 
-        // Button clicks
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
+            SessionManager session = new SessionManager(AdminDashboardActivity.this);
+            session.clearSession();
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         });
+
 
         btnProfile.setOnClickListener(v ->
                 startActivity(new Intent(this, AdminProfileActivity.class)));
@@ -139,7 +142,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         pendingCount++;
                     }
                 }
-                tvPendingOrders.setText(String.valueOf(pendingCount));
+                tvPendingOrders.setText("Pending\n" +pendingCount);
             }
 
             @Override
@@ -160,7 +163,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         }
                     }
                 }
-                tvLowStock.setText(String.valueOf(lowStockCount));
+                tvLowStock.setText("Low Stock\n" +lowStockCount);
             }
 
             @Override
@@ -172,7 +175,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         branchesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tvBranches.setText(String.valueOf(snapshot.getChildrenCount()));
+                tvBranches.setText("Branches\n" +snapshot.getChildrenCount());
             }
 
             @Override
