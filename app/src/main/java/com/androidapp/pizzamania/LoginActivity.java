@@ -17,12 +17,23 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.androidapp.pizzamania.controller.AuthController;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private Button btnLogin;
     private TextView linkRegister;
     private AuthController authController;
+
+    private DatabaseReference usersRef;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -37,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         authController = new AuthController();
+        usersRef= FirebaseDatabase.getInstance().getReference("Users");
 
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
@@ -67,4 +79,37 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
+
+    private void checkUserRole(String uid) {
+        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String role = snapshot.child("role").getValue(String.class);
+                    updateLastLogin(uid);
+
+                    if ("super_admin".equals(role) || "admin".equals(role)) {
+                        startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+                    } else {
+                        startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+                    }
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "User data not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(LoginActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+      });
+}
+
+    private void updateLastLogin(String uid) {
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+        usersRef.child(uid).child("lastLogin").setValue(currentTime)
+                .addOnSuccessListener(aVoid -> Log.d("LoginActivity", "Last login updated"))
+                .addOnFailureListener(e -> Log.e("LoginActivity", "Failed to update last login", e));
+      }
 }

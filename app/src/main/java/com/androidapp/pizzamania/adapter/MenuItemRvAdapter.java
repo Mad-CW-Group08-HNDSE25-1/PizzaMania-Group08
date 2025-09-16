@@ -16,7 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidapp.pizzamania.R;
-import com.androidapp.pizzamania.UpdateMenuItemActivity;
 import com.androidapp.pizzamania.controller.MenuItemController;
 import com.androidapp.pizzamania.model.MenuItem;
 
@@ -35,7 +34,7 @@ public class MenuItemRvAdapter extends RecyclerView.Adapter<MenuItemRvAdapter.Vi
     @NonNull
     @Override
     public MenuItemRvAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.menu_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.rv_item_menu, parent, false));
     }
 
     @Override

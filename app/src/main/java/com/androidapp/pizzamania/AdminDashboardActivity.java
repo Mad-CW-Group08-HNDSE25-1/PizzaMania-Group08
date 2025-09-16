@@ -49,19 +49,20 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile);
         btnSignOut = findViewById(R.id.btnSignOut);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        loadDashboardStats();
-        setupRoleBasedVisibility();
-        setupButtonClicks();
+//        loadDashboardStats();
+//        setupRoleBasedVisibility();
+//        setupButtonClicks();
 
         // Load user role only if logged in
+
+        //loadUserRole();
+
         loadUserRole();
-=======
+
         btnAddAdmin = findViewById(R.id.btnAddAdmin);
         btnViewAdmins = findViewById(R.id.btnAdminList);
         btnManageBranches = findViewById(R.id.btnManageBranches);
->>>>>>> 94d6ac9139d1ce67962f68f8a8720fe2550852c5
+
 
         // Load role & dashboard data
         loadUserRole();
@@ -75,10 +76,15 @@ public class AdminDashboardActivity extends AppCompatActivity {
             finish();
         });
 
+        btnProfile.setOnClickListener(v ->
+                startActivity(new Intent(this, AdminProfileActivity.class)));
+
+
         btnOrders.setOnClickListener(v -> startActivity(new Intent(this, OrderManagementActivity.class)));
         btnStock.setOnClickListener(v -> startActivity(new Intent(this, StockManagementActivity.class)));
         btnMenu.setOnClickListener(v -> startActivity(new Intent(this, MenuManagementActivity.class)));
         btnProfile.setOnClickListener(v -> startActivity(new Intent(this, AdminProfileActivity.class)));
+
     }
 
     private void loadUserRole() {
