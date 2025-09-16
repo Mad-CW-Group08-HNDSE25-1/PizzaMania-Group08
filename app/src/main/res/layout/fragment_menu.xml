@@ -38,6 +38,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40px"
+        android:layout_marginLeft="18dp"
+        android:text="Category"
+        android:textSize="44px"
+        android:textStyle="bold"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
