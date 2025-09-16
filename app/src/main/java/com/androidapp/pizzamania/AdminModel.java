@@ -9,9 +9,9 @@ public class AdminModel {
     private String branch;
     private String profileUrl;
 
-    public Admin() {} // Needed for Firebase
+    public AdminModel() {} // Required for Firebase
 
-    public Admin(String id, String name, String email, String phone, String role, String branch, String profileUrl) {
+    public AdminModel(String id, String name, String email, String phone, String role, String branch, String profileUrl) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -21,7 +21,6 @@ public class AdminModel {
         this.profileUrl = profileUrl;
     }
 
-    // Getters and setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
