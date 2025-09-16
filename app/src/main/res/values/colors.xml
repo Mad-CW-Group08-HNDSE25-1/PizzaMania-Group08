@@ -2,12 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<<<<<<< HEAD
+
     <color name="mahogany">#C04000</color>
     <color name="darkGray">#A9A9A9</color>
     <color name="pastelBlue">#A7C7E7</color>
     <color name="zaffre">#0818A8</color>
-=======
 
     <color name="backColor1">#E0770E</color>
     <color name="backColor2">#FAD3AC</color>
@@ -17,5 +16,4 @@
     <color name="green">#10BC10</color>
     <color name="red">#CC0000</color>
 
->>>>>>> kashmini
 </resources>

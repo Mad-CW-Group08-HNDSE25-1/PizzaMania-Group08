@@ -26,7 +26,7 @@
             android:value="AIzaSyDnijXTnJo1TMbi8qDDyhbOb69ZWMb4HJ4" />
 
         <activity
-<<<<<<< HEAD
+
             android:name=".MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
@@ -34,8 +34,9 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true"
-            android:theme="@style/SplashScreen">
-=======
+            android:theme="@style/SplashScreen"/>
+
+        <activity
             android:name=".Domain.admin_adminlist"
             android:exported="false" />
         <activity
@@ -52,9 +53,6 @@
             android:exported="false"
             android:label="@string/title_activity_main3" />
         <activity
-            android:name=".Domain.MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".Domain.forgot_pwd"
             android:exported="false" />
         <activity
@@ -66,7 +64,7 @@
         <activity
             android:name=".Domain.SplashScreen"
             android:exported="true">
->>>>>>> kashmini
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

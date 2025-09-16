@@ -27,7 +27,7 @@
 
     <style name="Theme.PizzaMania" parent="Base.Theme.PizzaMania" />
 
-<<<<<<< HEAD
+
     <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:windowBackground">
             @drawable/splash_screen
@@ -36,7 +36,7 @@
             ?attr/colorPrimary
         </item>
     </style>
-=======
+
     <style name="Theme.PizzaMania.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -45,5 +45,5 @@
     <style name="Theme.PizzaMania.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PizzaMania.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
->>>>>>> kashmini
+
 </resources>

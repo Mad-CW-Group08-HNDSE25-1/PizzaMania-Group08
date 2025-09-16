@@ -1,24 +1,14 @@
 {
   "project_info": {
-<<<<<<< HEAD
     "project_number": "420274150318",
     "firebase_url": "https://pizza-mania-group-08-default-rtdb.firebaseio.com",
     "project_id": "pizza-mania-group-08",
     "storage_bucket": "pizza-mania-group-08.firebasestorage.app"
-=======
-    "project_number": "122441574337",
-    "project_id": "pizzamania-example1",
-    "storage_bucket": "pizzamania-example1.firebasestorage.app"
->>>>>>> kashmini
   },
   "client": [
     {
       "client_info": {
-<<<<<<< HEAD
         "mobilesdk_app_id": "1:420274150318:android:21335d498ec718d898463f",
-=======
-        "mobilesdk_app_id": "1:122441574337:android:6868883f7146e8c0447140",
->>>>>>> kashmini
         "android_client_info": {
           "package_name": "com.androidapp.pizzamania"
         }
@@ -26,7 +16,6 @@
       "oauth_client": [],
       "api_key": [
         {
-<<<<<<< HEAD
           "current_key": "AIzaSyA_qx5SVoPHUClZ-ouyJS_kg2WBQeHPRdc"
         }
       ],
@@ -66,9 +55,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyA_qx5SVoPHUClZ-ouyJS_kg2WBQeHPRdc"
-=======
-          "current_key": "AIzaSyDZuEeZr5Huzuw1WXs8ghm-PDBecl_lcJQ"
->>>>>>> kashmini
         }
       ],
       "services": {

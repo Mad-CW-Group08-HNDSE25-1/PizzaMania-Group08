@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.firebase.database)
     implementation(libs.recyclerview)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -52,7 +52,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         loadDashboardStats();
         setupRoleBasedVisibility();
         setupButtonClicks();
-=======
+
         // Load user role only if logged in
         loadUserRole();
 
