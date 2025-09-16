@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.androidapp.pizzamania.LoginActivity;
 import com.androidapp.pizzamania.R;
 
 public class forgot_pwd extends AppCompatActivity {
@@ -31,7 +32,7 @@ public class forgot_pwd extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(forgot_pwd.this, login.class));
+                startActivity(new Intent(forgot_pwd.this, LoginActivity.class));
             }
         });
     }

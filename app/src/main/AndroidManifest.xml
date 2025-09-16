@@ -34,7 +34,7 @@
 
 
         <activity
-            android:name=".Domain.SplashScreen"
+            android:name=".SplashScreen"
             android:exported="true"
             android:theme="@style/SplashScreen">
             <intent-filter>
@@ -48,13 +48,9 @@
         <activity android:name=".Domain.admin_adduser" android:exported="false" />
         <activity android:name=".Domain.Admin_Dashboard" android:exported="true" />
         <activity android:name=".Domain.menu_management" android:exported="false" />
-        <activity
-            android:name=".Domain.MainActivity3"
-            android:exported="false"
-            android:label="@string/title_activity_main3" />
+
         <activity android:name=".Domain.forgot_pwd" android:exported="false" />
         <activity android:name=".Domain.signup" android:exported="false" />
-        <activity android:name=".Domain.login" android:exported="false" />
 
         <activity android:name=".AdminListActivity" android:exported="false" />
         <activity android:name=".AddAdminActivity" android:exported="true" />
