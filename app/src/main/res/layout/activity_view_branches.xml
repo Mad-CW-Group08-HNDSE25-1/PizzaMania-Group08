@@ -27,9 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Manage Branches"
+            android:text="View Branche"
             android:textColor="@color/black"
-            android:textSize="60px"
+            android:textSize="50px"
             android:textStyle="bold" />
 
     </com.google.android.material.appbar.MaterialToolbar>

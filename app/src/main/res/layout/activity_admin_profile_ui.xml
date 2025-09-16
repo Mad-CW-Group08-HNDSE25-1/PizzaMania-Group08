@@ -46,10 +46,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit"
-                android:textSize="50px"
+                android:textSize="40px"
                 android:textStyle="bold"
                 android:textColor="@color/backColor1"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="#F5F5F5"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"/>
 
@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Role"
+                android:layout_marginBottom="8dp"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -118,9 +119,9 @@
                 android:id="@+id/saveBtn"
                 android:text="Save Details"
                 android:layout_width="match_parent"
-                android:layout_height="170px"
+                android:layout_height="150px"
                 android:textStyle="bold"
-                android:textSize="60px"
+                android:textSize="50px"
                 android:backgroundTint="@color/green"
                 android:layout_marginTop="70px"/>
 
@@ -128,17 +129,17 @@
                 android:id="@+id/saveAuthBtn"
                 android:text="Reset Passward"
                 android:layout_width="match_parent"
-                android:layout_height="170px"
+                android:layout_height="150px"
                 android:textStyle="bold"
-                android:textSize="60px"/>
+                android:textSize="50px"/>
 
             <Button
                 android:id="@+id/deleteAccBtn"
                 android:text="Delete my account"
                 android:layout_width="match_parent"
-                android:layout_height="170px"
+                android:layout_height="150px"
                 android:textStyle="bold"
-                android:textSize="60px"
+                android:textSize="50px"
                 android:backgroundTint="@color/red"
                 android:layout_marginBottom="100px"/>
 
