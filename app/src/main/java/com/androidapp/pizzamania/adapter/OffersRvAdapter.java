@@ -38,13 +38,6 @@ public class OffersRvAdapter extends RecyclerView.Adapter<OffersRvAdapter.OfferV
         holder.offerTitle.setText(offer.getName());
         holder.offerPrice.setText(offer.getPrice());
         holder.offerDescription.setText(offer.getDescription());
-
-        /*
-        if (offer.getImage() != 0) {
-            holder.offerImage.setImageResource(offer.getImage());
-        }
-
-         */
     }
 
     @Override
