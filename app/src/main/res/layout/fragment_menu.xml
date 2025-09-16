@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:text="Menu"
             android:textColor="@color/black"
-            android:textSize="60px"
+            android:textSize="24dp"
             android:textStyle="bold" />
 
     </com.google.android.material.appbar.MaterialToolbar>
