@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -14,9 +15,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidapp.pizzamania.adapter.OptionRvAdapter;
 import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.controller.MenuItemController;
+import com.androidapp.pizzamania.controller.SizeController;
+import com.androidapp.pizzamania.controller.ToppingController;
 import com.androidapp.pizzamania.model.MenuItem;
+import com.androidapp.pizzamania.model.Size;
+import com.androidapp.pizzamania.model.Topping;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +42,10 @@ public class MenuItemDetailFragment extends Fragment {
     private Button minusBtn, plusBtn, addToCartBtn;
     private RecyclerView sizesRv, toppingsRv;
     private MenuItemController menuItemController = new MenuItemController();
+    private SizeController sizeController = new SizeController();
+    private ToppingController toppingController = new ToppingController();
+    private List<Size> sizes = new ArrayList<>();
+    private List<Topping>  toppings = new ArrayList<>();
 
     private int qty = 1, price, total;
 
@@ -92,6 +106,66 @@ public class MenuItemDetailFragment extends Fragment {
                 total = price * qty;
                 totalTxt.setText("Total: "+String.valueOf(total)+".00");
 
+                menuItemController.getSizesByItemId(itemId, new OnResultListener<List<String>>() {
+                    @Override
+                    public void onSuccess(List<String> result) {
+                        sizes.clear();
+                        for(String s : result){
+                            sizeController.getSizeById(s, new OnResultListener<Size>() {
+                                @Override
+                                public void onSuccess(Size result) {
+                                    sizes.add(result);
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+
+                                }
+                            });
+                        }
+                        OptionRvAdapter<Size> sizeAdapter = new OptionRvAdapter<>(sizes, selectedSizes -> {
+                            recalcTotal(selectedSizes, null);
+                        });
+                        sizesRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                        sizesRv.setAdapter(sizeAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
+
+                menuItemController.getToppingsByItemId(itemId, new OnResultListener<List<String>>() {
+                    @Override
+                    public void onSuccess(List<String> result) {
+                        toppings.clear();
+                        for(String t : result){
+                            toppingController.getToppingById(t, new OnResultListener<Topping>() {
+                                @Override
+                                public void onSuccess(Topping result) {
+                                    toppings.add(result);
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+
+                                }
+                            });
+                        }
+                        OptionRvAdapter<Topping> toppingAdapter = new OptionRvAdapter<>(toppings, selectedToppings -> {
+                            recalcTotal(null, selectedToppings);
+                        });
+                        sizesRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                        sizesRv.setAdapter(toppingAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -120,5 +194,23 @@ public class MenuItemDetailFragment extends Fragment {
         addToCartBtn.setOnClickListener(v -> {
             // TODO: send this item to cart (via ViewModel, shared prefs, or callback)
         });
+    }
+
+    private void recalcTotal(Set<Size> selectedSizes, Set<Topping> selectedToppings) {
+        int optionTotal = 0;
+
+        if (selectedSizes != null) {
+            for (Size size : selectedSizes) {
+                optionTotal += Integer.parseInt(size.getPrice());
+            }
+        }
+        if (selectedToppings != null) {
+            for (Topping topping : selectedToppings) {
+                optionTotal += Integer.parseInt(topping.getPrice());
+            }
+        }
+
+        total = (price * qty) + optionTotal;
+        totalTxt.setText("Total: " + total + ".00");
     }
 }
