@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -41,7 +42,9 @@ import java.util.List;
 import java.util.Map;
 
 public class EditMenuItemActivity extends AppCompatActivity {
-    private Button backBtn, editImageBtn, saveMenuItemBtn;
+    private Button editImageBtn, saveMenuItemBtn, deleteBtn;
+
+    private ImageButton backBtn;
     private ImageView itemImage;
     private EditText nameTxt, descriptionTxt, priceTxt;
     private String name, description, price, itemId, branchId, selectedCategoryId;
@@ -84,6 +87,7 @@ public class EditMenuItemActivity extends AppCompatActivity {
         categorySpin = findViewById(R.id.categorSpin);
         sizesRv = findViewById(R.id.sizesRv);
         toppingsRv = findViewById(R.id.toppingsRv);
+//        deleteBtn = findViewById(R.id.deleteMenuItemBtn);
         menuItemController = new MenuItemController();
         authController = new AuthController();
         userController = new UserController();
