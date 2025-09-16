@@ -11,14 +11,40 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 public class AuthController {
-    private final UserController userController = new UserController();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseAuth auth;
 
     public AuthController() {
+        auth = FirebaseAuth.getInstance();
     }
 
-    public AuthController(FirebaseAuth auth) {
-        this.auth = auth;
+    public Task<Void> createAuth(String email, String pass){
+        return auth.createUserWithEmailAndPassword(email, pass)
+                .continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    return Tasks.forResult(null);
+                });
+    }
+
+    public Task<String> signup(String name, String phone, String email, String pass){
+        return auth.createUserWithEmailAndPassword(email, pass)
+                .continueWithTask(task -> {
+                    if(!task.isSuccessful()){
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    String uid = Objects.requireNonNull(task.getResult().getUser()).getUid();
+                    return Tasks.forResult(uid);
+                });
+    }
+
+    public FirebaseUser getCurrentUser(){
+        return auth.getCurrentUser();
+    }
+
+    public String getCurrentUserId(){
+        assert auth.getCurrentUser() != null;
+        return auth.getCurrentUser().getUid();
     }
 
     public Task<Void> login(String email, String pass){
@@ -36,61 +62,19 @@ public class AuthController {
         return Tasks.forResult(null);
     }
 
-    public Task<Void> createAuth(String email, String pass){
-        return auth.createUserWithEmailAndPassword(email, pass)
-                .continueWithTask(task -> {
-                    if (!task.isSuccessful()) {
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return Tasks.forResult(null); // success
-                });
-    }
-    public Task<Void> registerCustomer(String name, String phone, String email, String pass){
-        return auth.createUserWithEmailAndPassword(email, pass)
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    String uid = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    User user = new User(name, email, phone, "customer");
-
-                    return userController.createUser(uid, user);
-                });
-    }
-
-    public Task<Void> registerUser(String name, String phone, String role, String email, String pass){
-        return auth.createUserWithEmailAndPassword(email, pass)
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    String uid = Objects.requireNonNull(task.getResult().getUser()).getUid();
-                    User user = new User(name, email, phone, role);
-
-                    return userController.createUser(uid, user);
-                });
-    }
-
-    public Task<Void> updateAuthEmail(String email){
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            return Tasks.forException(new Exception("No user is logged in"));
-        }
-        user.updateEmail(email);
-        return Tasks.forResult(null);
-    }
-
-    public Task<Void> updateAuthPass(String pass){
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            return Tasks.forException(new Exception("No user is logged in"));
-        }
-        user.updatePassword(pass);
-        return Tasks.forResult(null);
-    }
-
-    public Task<Void> resetPassword(String email) {
+    public Task<Void> resetPass(String email){
         return auth.sendPasswordResetEmail(email)
+                .continueWithTask(task -> {
+                    if(!task.isSuccessful()){
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    return Tasks.forResult(null);
+                });
+    }
+
+    public Task<Void> deleteAuth(){
+        FirebaseUser user = auth.getCurrentUser();
+        return user.delete()
                 .continueWithTask(task -> {
                     if (!task.isSuccessful()) {
                         throw Objects.requireNonNull(task.getException());
@@ -98,39 +82,4 @@ public class AuthController {
                     return Tasks.forResult(null);
                 });
     }
-
-    public Task<Void> checkCredentials(String email, String pass){
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            return Tasks.forException(new Exception("No user is logged in"));
-        }
-        AuthCredential authCredential = EmailAuthProvider.getCredential(email, pass);
-        return user.reauthenticate(authCredential)
-                .continueWithTask(task -> {
-                    if (!task.isSuccessful()) {
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return Tasks.forResult(null); // success
-                });
-    }
-
-    public Task<Void> deleteAuth(){
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            return Tasks.forException(new Exception("No user is logged in"));
-        }
-        String uid = user.getUid();
-        return user.delete()
-                .continueWithTask(task -> {
-                    if (!task.isSuccessful()) {
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return Tasks.forException(null);
-                });
-    }
-
-    public String getAuthId(){
-        return auth.getUid().toString();
-    }
-
 }

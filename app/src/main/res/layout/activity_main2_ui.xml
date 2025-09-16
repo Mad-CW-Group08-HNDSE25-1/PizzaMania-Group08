@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D05F12">
+
+        <LinearLayout
+            android:id="@+id/btnProfileInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="180px"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="10px"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="70px"
+                android:layout_height="70px"
+                android:src="@drawable/arrow_backward_icon"/>
+
+            <TextView
+                android:layout_width="58dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20px"
+                android:layout_weight="1"
+                android:text="Back"
+                android:textColor="@color/white"
+                android:textSize="55px"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:layout_marginTop="160px">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:id="@+id/imgDp"
+                    android:src="@drawable/managerdp"
+                    android:layout_gravity="center"/>
+
+                <Button
+                    android:id="@+id/changeImageBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit"
+                    android:textSize="50px"
+                    android:textStyle="bold"
+                    android:textColor="@color/backColor1"
+                    android:backgroundTint="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"/>
+
+                <EditText
+                    android:id="@+id/txtName"
+                    android:hint="Full Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40px"/>
+
+                <EditText
+                    android:id="@+id/txtPhone"
+                    android:hint="Phone"
+                    android:inputType="phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30px"/>
+
+                <EditText
+                    android:id="@+id/txtBranch"
+                    android:hint="Branch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30px"/>
+
+                <EditText
+                    android:id="@+id/txtEmail"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30px"/>
+
+                <Button android:id="@+id/saveBtn"
+                    android:text="Save Details"
+                    android:layout_width="match_parent"
+                    android:layout_height="170px"
+                    android:textStyle="bold"
+                    android:textSize="60px"
+                    android:backgroundTint="@color/green"
+                    android:layout_marginTop="150px"/>
+
+                <Button
+                    android:id="@+id/saveAuthBtn"
+                    android:text="Send Passward Reset Link"
+                    android:layout_width="match_parent"
+                    android:layout_height="170px"
+                    android:textStyle="bold"
+                    android:textSize="60px"/>
+
+                <Button
+                    android:id="@+id/deleteAccBtn"
+                    android:text="Delete my account"
+                    android:layout_width="match_parent"
+                    android:layout_height="170px"
+                    android:textStyle="bold"
+                    android:textSize="60px"
+                    android:backgroundTint="@color/red"
+                    android:layout_marginBottom="100px"/>
+
+            </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

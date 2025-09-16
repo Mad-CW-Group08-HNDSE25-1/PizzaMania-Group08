@@ -4,35 +4,26 @@ import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
-    @Exclude
-    private String id;
-    private String name, email, phone, role, branch, imageURL;
+public class User {
+    private String id, name, phone, email, role, branchId, image;
 
     public User() {
     }
 
-    public User(String name, String email, String phone, String role, String imageURL) {
+    public User(String id, String name, String phone, String email, String role, String branchId, String image) {
+        this.id = id;
         this.name = name;
-        this.email = email;
         this.phone = phone;
+        this.email = email;
         this.role = role;
-        this.imageURL = imageURL;
+        this.branchId = branchId;
+        this.image = image;
     }
 
-    public User(String name, String email, String phone, String role) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.role = role;
-    }
-
-    @Exclude
     public String getId() {
         return id;
     }
 
-    @Exclude
     public void setId(String id) {
         this.id = id;
     }
@@ -45,20 +36,20 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRole() {
@@ -69,19 +60,19 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public String getBranch() {
-        return branch;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
+    public void setBranch(String branchId) {
+        this.branchId = branchId;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

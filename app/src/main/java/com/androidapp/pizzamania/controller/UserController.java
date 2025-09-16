@@ -3,132 +3,90 @@ package com.androidapp.pizzamania.controller;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.androidapp.pizzamania.callBack.OnResultListener;
 import com.androidapp.pizzamania.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class UserController {
-    private User user = new User();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final DatabaseReference dr;
 
     public UserController() {
+        dr = FirebaseDatabase.getInstance().getReference("Users");
     }
 
-    public UserController(FirebaseFirestore db) {
-        this.db = db;
+    public void createUser(User user, OnResultListener<User> listener){
+        dr.child(user.getId()).setValue(user)
+                .addOnSuccessListener(aVoid -> listener.onSuccess(user))
+                .addOnFailureListener(listener::onFailure);
     }
 
-    public Task<Void> createUser(String id, User user){
-        DocumentReference userDoc = db.collection("users").document(id);
-        return userDoc.set(user)
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return Tasks.forResult(null);
-                });
+    public void updateUser(User user, OnResultListener<Void> listener){
+        dr.child(user.getId()).setValue(user)
+                .addOnSuccessListener(aVoid -> listener.onSuccess(null))
+                .addOnFailureListener(listener::onFailure);
     }
 
-    public Task<Void> updateUser(String id, User upUser){
-        DocumentReference userDoc = db.collection("users").document(id);
-
-        Map<String, Object> updatedUser = new HashMap<>();
-        updatedUser.put("name", upUser.getName());
-        updatedUser.put("email", upUser.getEmail());
-        updatedUser.put("phone", upUser.getPhone());
-        updatedUser.put("branch", upUser.getBranch());
-        updatedUser.put("imageURL", upUser.getImageURL());
-
-        return userDoc.update(updatedUser)
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
+    public void getAllUsers(OnResultListener<List<User>> listener){
+        dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<User> usersList = new ArrayList<>();
+                for(DataSnapshot child : snapshot.getChildren()){
+                    User user = child.getValue(User.class);
+                    if(user != null){
+                        usersList.add(user);
                     }
-                    return Tasks.forResult(null);
-                });
+                    listener.onSuccess(usersList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onFailure(error.toException());
+            }
+        });
     }
 
-    public Task<Void> updateUserEmail(String id, String email){
-        DocumentReference userDoc = db.collection("users").document(id);
-        return userDoc.update("email", email)
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return Tasks.forResult(null);
-                });
+    public void getUserById(String id, OnResultListener<User> listener){
+        dr.child(id).get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    User user = dataSnapshot.getValue(User.class);
+                    listener.onSuccess(user);
+                })
+                .addOnFailureListener(listener::onFailure);
     }
 
-    public Task<List<User>> readAllUsers(){
-        CollectionReference userCollection = db.collection("users");
-        return userCollection.get()
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    QuerySnapshot querySnapshot = task.getResult();
-                    List<User> users = querySnapshot.toObjects(User.class);
-                    return Tasks.forResult(users);
-                });
+    public void deleteUser(String id, OnResultListener<Void> listener){
+        dr.child(id).removeValue()
+                .addOnSuccessListener(aVoid -> listener.onSuccess(null))
+                .addOnFailureListener(listener::onFailure);
     }
 
-    public Task<User> readUserById(String id){
-        DocumentReference userDoc = db.collection("users").document(id);
-        return userDoc.get()
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    DocumentSnapshot doc = task.getResult();
-                    user = null;
-                    if(doc.exists()){
-                        user = doc.toObject(User.class);
-                        user.setId(doc.getId());
-                    }
-                    return Tasks.forResult(user);
-                });
+    public void getUserBranchById(String id, OnResultListener<String> listener) {
+        dr.child(id).child("branchId").get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    String branchId = dataSnapshot.getValue(String.class);
+                    listener.onSuccess(branchId);
+                })
+                .addOnFailureListener(listener::onFailure);
     }
-    public Task<Void> deleteUser(String id){
-        DocumentReference userDoc = db.collection("users").document(id);
-        return userDoc.delete()
-                .continueWithTask(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return Tasks.forResult(null);
-                });
-    }
-
-    public Task<String> getUserBranchById(String id) {
-        DocumentReference userDoc = db.collection("users").document(id);
-
-        return userDoc.get()
-                .continueWith(task -> {
-                    if(!task.isSuccessful()){
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    DocumentSnapshot doc = task.getResult();
-                    if (doc != null && doc.exists()) {
-                        User user = doc.toObject(User.class);
-                        if (user != null) {
-                            user.setId(doc.getId());
-                            String branch = user.getBranch();
-                            return branch;
-                        }
-                    }
-                    return null;
-                });
-    }
-
-
 }
