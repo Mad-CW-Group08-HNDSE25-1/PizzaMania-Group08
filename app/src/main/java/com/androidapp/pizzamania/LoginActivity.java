@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_ui);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                     if ("super_admin".equals(role) || "admin".equals(role)) {
                         startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
                     } else {
-                        startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+                        startActivity(new Intent(LoginActivity.this, OrderHistoryActivity.class));
                     }
                     finish();
                 } else {

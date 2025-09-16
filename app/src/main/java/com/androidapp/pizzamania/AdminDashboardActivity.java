@@ -109,7 +109,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         ));
 
         btnManageBranches.setOnClickListener(v -> startActivity(
-                new Intent(AdminDashboardActivity.this, BranchManagementActivity.class)
+                new Intent(AdminDashboardActivity.this, AddBranchActivity.class)
         ));
 
     }
