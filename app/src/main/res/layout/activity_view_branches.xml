@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewBranches"
-    android:padding="12dp"
-    android:background="@color/white"
-    android:elevation="2dp"
+    android:background="#F5F5F5"
     android:orientation="vertical">
 
-   <androidx.recyclerview.widget.RecyclerView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/arrow_backward_icon"
+            android:contentDescription="Back"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Manage Branches"
+            android:textColor="@color/black"
+            android:textSize="60px"
+            android:textStyle="bold" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:padding="12dp"
+       android:padding="20dp"
        android:layout_above="@id/fabAddBranch"
        android:id="@+id/recyclerViewBranches"/>
 
@@ -30,4 +55,4 @@
         android:contentDescription="@string/add_branch"
         android:onClick="fabButtonOnClick"/>
 
-</RelativeLayout>
+</LinearLayout>

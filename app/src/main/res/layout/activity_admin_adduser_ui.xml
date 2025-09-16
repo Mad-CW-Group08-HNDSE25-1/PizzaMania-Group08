@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Domain.admin_adduser"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -132,7 +133,7 @@
                 android:layout_height="170px"
                 android:layout_marginTop="50px"
                 android:textStyle="bold"
-                android:textSize="60px"/>
+                android:textSize="50px"/>
 
         </LinearLayout>
 
