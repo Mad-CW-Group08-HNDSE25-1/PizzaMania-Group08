@@ -54,10 +54,10 @@
 
         <activity android:name=".AdminListActivity" android:exported="false" />
         <activity android:name=".AddAdminActivity" android:exported="true" />
-        <activity android:name=".LoginActivity" android:exported="false" />
+        <activity android:name=".LoginActivity" android:exported="true" />
         <activity android:name=".OrderManagementActivity" android:exported="false" />
         <activity android:name=".MenuManagementActivity" android:exported="false" />
-        <activity android:name=".BranchManagementActivity" android:exported="false" />
+
         <activity android:name=".AdminDashboardActivity" android:exported="true" />
         <activity android:name=".StockManagementActivity" android:exported="true" />
         <activity android:name=".AdminProfileActivity" android:exported="true" />

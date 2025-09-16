@@ -49,15 +49,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile);
         btnSignOut = findViewById(R.id.btnSignOut);
 
-//        loadDashboardStats();
-//        setupRoleBasedVisibility();
-//        setupButtonClicks();
 
         // Load user role only if logged in
 
-        //loadUserRole();
+        //loadUserRole()
 
-        //loadUserRole();
+        btnAddAdmin = findViewById(R.id.btnAddAdmin);
+        btnViewAdmins = findViewById(R.id.btnAdminList);
+        btnManageBranches = findViewById(R.id.btnManageBranches);
 
         btnAddAdmin = findViewById(R.id.btnAddAdmin);
         btnViewAdmins = findViewById(R.id.btnAdminList);
@@ -96,7 +95,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         ));
 
         btnManageBranches.setOnClickListener(v -> startActivity(
-                new Intent(AdminDashboardActivity.this, BranchManagementActivity.class)
+                new Intent(AdminDashboardActivity.this, AddBranchActivity.class)
         ));
 
     }
