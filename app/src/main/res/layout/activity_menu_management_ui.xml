@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_ui"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Domain.menu_management"
-    android:orientation="vertical">
+    tools:context=".ManageMenuActivity"
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -33,60 +34,64 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="20px">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
 
-        <SearchView
-            android:id="@+id/searchItem"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:queryHint="Search Items..."
-            android:iconifiedByDefault="false"
-            android:background="@drawable/search_background"
-            android:layout_margin="25px"
-            android:elevation="15px"/>
+            android:text="Back" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Menu Management"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
-    <ScrollView
+    <SearchView
+        android:id="@+id/searchItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:queryHint="Search items..."
+        android:iconifiedByDefault="false" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal" >
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvMenuItems"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMenuItems"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
 
-        </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
-    </ScrollView>
 
     <Button
-        android:id="@+id/addMenuItemBtn"
-        android:text="Add New Item"
-        android:textStyle="bold"
-        android:textSize="50px"
         android:layout_width="match_parent"
         android:layout_height="160px"
         android:layout_margin="40px"
         android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"/>
+        android:layout_marginRight="20px"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp" />
 
 
 </LinearLayout>
