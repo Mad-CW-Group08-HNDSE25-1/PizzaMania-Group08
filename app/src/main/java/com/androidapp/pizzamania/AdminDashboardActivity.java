@@ -57,7 +57,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         //loadUserRole();
 
-        loadUserRole();
+        //loadUserRole();
 
         btnAddAdmin = findViewById(R.id.btnAddAdmin);
         btnViewAdmins = findViewById(R.id.btnAdminList);
@@ -73,7 +73,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         // Button clicks
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            finish();
+            startActivity(new Intent(this, LoginActivity.class));
         });
 
         btnProfile.setOnClickListener(v ->
@@ -84,6 +84,20 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnStock.setOnClickListener(v -> startActivity(new Intent(this, StockManagementActivity.class)));
         btnMenu.setOnClickListener(v -> startActivity(new Intent(this, MenuManagementActivity.class)));
         btnProfile.setOnClickListener(v -> startActivity(new Intent(this, AdminProfileActivity.class)));
+
+        btnAddAdmin.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminDashboardActivity.this, AddAdminActivity.class);
+            intent.putExtra("mode", "add"); // optional: indicate add mode
+            startActivity(intent);
+        });
+
+        btnViewAdmins.setOnClickListener(v -> startActivity(
+                new Intent(AdminDashboardActivity.this, AdminListActivity.class)
+        ));
+
+        btnManageBranches.setOnClickListener(v -> startActivity(
+                new Intent(AdminDashboardActivity.this, BranchManagementActivity.class)
+        ));
 
     }
 
@@ -100,19 +114,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         btnManageBranches.setVisibility(View.VISIBLE);
 
                         // Link buttons
-                        btnAddAdmin.setOnClickListener(v -> {
-                            Intent intent = new Intent(AdminDashboardActivity.this, AddAdminActivity.class);
-                            intent.putExtra("mode", "add"); // optional: indicate add mode
-                            startActivity(intent);
-                        });
 
-                        btnViewAdmins.setOnClickListener(v -> startActivity(
-                                new Intent(AdminDashboardActivity.this, AdminListActivity.class)
-                        ));
-
-                        btnManageBranches.setOnClickListener(v -> startActivity(
-                                new Intent(AdminDashboardActivity.this, BranchManagementActivity.class)
-                        ));
                     } else {
                         // Normal Admin: hide super admin buttons
                         btnAddAdmin.setVisibility(View.GONE);

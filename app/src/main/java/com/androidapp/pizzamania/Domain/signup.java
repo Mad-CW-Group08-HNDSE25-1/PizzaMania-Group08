@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.androidapp.pizzamania.LoginActivity;
 import com.androidapp.pizzamania.R;
 
 public class signup extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class signup extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(signup.this, login.class));
+                startActivity(new Intent(signup.this, LoginActivity.class));
             }
         });
     }
