@@ -12,10 +12,10 @@ import com.androidapp.pizzamania.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link my_order_ui#newInstance} factory method to
+ * Use the {@link check_out#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class my_order_ui extends Fragment {
+public class check_out extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class my_order_ui extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public my_order_ui() {
+    public check_out() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class my_order_ui extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment my_order_ui.
+     * @return A new instance of fragment check_out.
      */
     // TODO: Rename and change types and number of parameters
-    public static my_order_ui newInstance(String param1, String param2) {
-        my_order_ui fragment = new my_order_ui();
+    public static check_out newInstance(String param1, String param2) {
+        check_out fragment = new check_out();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class my_order_ui extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_order_ui, container, false);
+        return inflater.inflate(R.layout.fragment_check_out, container, false);
     }
 }

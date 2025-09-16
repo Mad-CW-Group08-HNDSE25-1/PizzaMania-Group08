@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddBranchActivity">
+    tools:context=".AddBranchActivity"
+    android:background="#F5F5F5"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/arrow_backward_icon"
+            android:contentDescription="Back"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Manage Branche"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <EditText
             android:id="@+id/branchName"
@@ -43,32 +71,40 @@
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150px"
             android:text="@string/set_location_on_map"
-            android:id="@+id/btnSetLocation"/>
+            android:textStyle="bold"
+            android:textSize="45px"
+            android:id="@+id/btnSetLocation"
+            android:layout_marginTop="20dp"/>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150px"
             android:text="@string/save_branch"
+            android:textStyle="bold"
+            android:textSize="45px"
             android:id="@+id/btnSaveBranch"
             android:onClick="addBranches"/>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150px"
             android:text="@string/update_branch"
+            android:textStyle="bold"
+            android:textSize="45px"
             android:id="@+id/btnUpdateBranch"
             android:onClick="updateBranches"/>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150px"
             android:text="@string/view_branch"
+            android:textStyle="bold"
+            android:textSize="45px"
             android:id="@+id/btnViewBranches"
             android:onClick="viewBranchBtnOnclick"/>
 
 
     </LinearLayout>
-
-</ScrollView>
+    </LinearLayout>

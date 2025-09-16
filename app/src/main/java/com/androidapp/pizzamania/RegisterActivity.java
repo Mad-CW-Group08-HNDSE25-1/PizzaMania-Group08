@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Button btnRegister;
 
+    private SessionManager sessionManager;
     private Uri profileUri;
     private FirebaseAuth auth;
     private DatabaseReference dbRef;
@@ -47,7 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_ui);
 
-        // Init views
+        sessionManager = new SessionManager(this);
+
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
@@ -165,9 +167,13 @@ public class RegisterActivity extends AppCompatActivity {
                 db.insert(DatabaseHelper.TABLE_USER_SESSION, null, values);
                 db.close();
 
+                sessionManager.createSession(userId, email, role);
+
                 Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
+                Intent intent = new Intent(this, AddBranchActivity.class); // replace with your actual home activity
+                startActivity(intent);
                 finish();
+
             } else {
                 Toast.makeText(this, "Failed to save user info!", Toast.LENGTH_SHORT).show();
             }

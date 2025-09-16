@@ -1,18 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckOutPage"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Domain.check_out"
     android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="My Cart"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Details"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -33,14 +57,21 @@
 
         </RadioGroup>
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="10dp"
+            app:strokeColor="#E0770E"
+            app:strokeWidth="3dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cardDetails"
             android:orientation="vertical"
-            android:paddingTop="12dp"
-            android:background="@color/backColor4"
-            >
+            android:padding="10dp">
 
             <EditText
                 android:layout_width="match_parent"
@@ -75,14 +106,16 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="150px"
-            android:text="@string/place_order"
-            android:textStyle="bold"
-            android:textSize="45px"
-            android:layout_marginTop="20dp"
-            android:id="@+id/btnPlaceOrder"/>
+    </com.google.android.material.card.MaterialCardView>
+
+<Button
+android:layout_width="match_parent"
+android:layout_height="150px"
+android:text="@string/place_order"
+android:textStyle="bold"
+android:textSize="45px"
+android:layout_marginTop="20dp"
+android:id="@+id/btnPlaceOrder"/>
 
     </LinearLayout>
 

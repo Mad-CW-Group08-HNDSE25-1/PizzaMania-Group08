@@ -126,4 +126,40 @@ public class MenuItemController {
         });
     }
 
+    public void getSizesByItemId(String itemId, OnResultListener<List<String>> listener) {
+        dr.child(itemId).child("sizes").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> sizeIds = new ArrayList<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    sizeIds.add(child.getKey()); // Each sizeId stored as key
+                }
+                listener.onSuccess(sizeIds);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onFailure(error.toException());
+            }
+        });
+    }
+
+    public void getToppingsByItemId(String itemId, OnResultListener<List<String>> listener) {
+        dr.child(itemId).child("toppings").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> toppingIds = new ArrayList<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    toppingIds.add(child.getKey()); // Each toppingId stored as key
+                }
+                listener.onSuccess(toppingIds);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onFailure(error.toException());
+            }
+        });
+    }
+
 }
