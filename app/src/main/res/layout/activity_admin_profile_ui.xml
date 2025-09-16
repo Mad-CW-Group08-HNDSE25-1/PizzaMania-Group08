@@ -1,146 +1,138 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#F7F7F7"
+    android:padding="16dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingBottom="24dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
+        <!-- Profile Image -->
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_person"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_bg"
+            android:elevation="4dp"
+            android:padding="4dp"
+            android:layout_marginBottom="16dp"
+            android:clipToOutline="true"
+            android:outlineProvider="background"/>
+
+        <Button
+            android:id="@+id/btnChangePic"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/arrow_backward_icon"
-            android:contentDescription="Back"
-            app:tint="@color/black" />
+            android:layout_height="wrap_content"
+            android:text="Change Profile Picture"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginBottom="24dp"
+            android:elevation="2dp"/>
 
-    </com.google.android.material.appbar.MaterialToolbar>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        <!-- Profile Details Card -->
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40px"
-            android:layout_marginRight="40px">
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:elevation="4dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginHorizontal="4dp"
+            android:clipToPadding="false"
+            android:layout_gravity="center">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profileImage"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/profile_icon"
-                android:layout_gravity="center"
-                android:background="#BCBCBC"/>
-
-            <Button
-                android:id="@+id/changeImageBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit"
-                android:textSize="50px"
-                android:textStyle="bold"
-                android:textColor="@color/backColor1"
-                android:backgroundTint="@color/white"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"/>
-
+            <!-- Name -->
             <EditText
-                android:id="@+id/txtName"
-                android:hint="Full Name"
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40px"/>
+                android:hint="Full Name"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_bg"
+                android:layout_marginBottom="12dp"/>
 
+            <!-- Phone -->
             <EditText
-                android:id="@+id/txtPhone"
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Phone Number"
                 android:inputType="phone"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_bg"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30px"/>
-
-            <EditText
-                android:id="@+id/txtEmail"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30px"/>
+                android:enabled="false"
+                android:padding="12dp"
+                android:background="@drawable/edit_text_bg"
+                android:layout_marginBottom="16dp"/>
 
             <!-- Role -->
             <TextView
-                android:id="@+id/tvUserRole"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvRole"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Role"
-                android:textSize="18sp"
+                android:text="Role: Admin"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
                 android:textStyle="bold"/>
 
             <!-- Branch -->
             <TextView
+                android:id="@+id/tvBranch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="14px"
-                android:text="&lt;Branch_Name&gt;"
-                android:textSize="48px"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:text="Branch: N/A"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"/>
 
-            <Spinner
-                android:id="@+id/spBranch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:visibility="gone"/>
-
+            <!-- Last Login -->
             <TextView
+                android:id="@+id/tvLastLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="14px"
-                android:text="Last Login : &lt;N/A&gt;"
-                android:textSize="48px"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <Button
-                android:id="@+id/saveBtn"
-                android:text="Save Details"
-                android:layout_width="match_parent"
-                android:layout_height="170px"
-                android:textStyle="bold"
-                android:textSize="60px"
-                android:backgroundTint="@color/green"
-                android:layout_marginTop="70px"/>
-
-            <Button
-                android:id="@+id/saveAuthBtn"
-                android:text="Reset Passward"
-                android:layout_width="match_parent"
-                android:layout_height="170px"
-                android:textStyle="bold"
-                android:textSize="60px"/>
-
-            <Button
-                android:id="@+id/deleteAccBtn"
-                android:text="Delete my account"
-                android:layout_width="match_parent"
-                android:layout_height="170px"
-                android:textStyle="bold"
-                android:textSize="60px"
-                android:backgroundTint="@color/red"
-                android:layout_marginBottom="100px"/>
-
+                android:text="Last Login: N/A"
+                android:textColor="#777777"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp"/>
         </LinearLayout>
 
-    </ScrollView>
+        <!-- Buttons -->
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Profile"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginBottom="12dp"
+            android:elevation="2dp"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnResetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset Password"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#F44336"
+            android:elevation="2dp"/>
+
+    </LinearLayout>
+</ScrollView>
