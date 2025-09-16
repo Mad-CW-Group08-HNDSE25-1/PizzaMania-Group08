@@ -66,11 +66,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
         loadLowStock();
         loadBranches();
 
-        // Button clicks
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
+            SessionManager session = new SessionManager(AdminDashboardActivity.this);
+            session.clearSession();
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         });
+
 
         btnProfile.setOnClickListener(v ->
                 startActivity(new Intent(this, AdminProfileActivity.class)));

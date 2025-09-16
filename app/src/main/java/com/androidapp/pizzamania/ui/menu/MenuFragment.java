@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +30,10 @@ import java.util.List;
 
 public class MenuFragment extends Fragment {
     private Button filterBtn;
-    private EditText searchTxt;
+    private SearchView searchTxt;
     private String search;
     private RecyclerView categoryCardRv;
-    private ProgressBar progressBar;
+
     private ArrayList<Category> categoryArrayList, filteredArrayList;
     private CategoryCardRvAdapter categoryCardRvAdapter;
     private CategoryController categoryController;
@@ -47,10 +48,8 @@ public class MenuFragment extends Fragment {
         binding = FragmentMenuBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        filterBtn= binding.filterBtn;
-        searchTxt = binding.searchTxt;
-        categoryCardRv = binding.categoryCardRv;
-        progressBar = binding.progressBar;;
+        searchTxt = binding.searchView;
+        categoryCardRv = binding.cartItemsRv;
         categoryController = new CategoryController();
 
         categoryArrayList = new ArrayList<>();
@@ -64,7 +63,6 @@ public class MenuFragment extends Fragment {
         categoryController.getAllCategories(new OnResultListener<List<Category>>() {
             @Override
             public void onSuccess(List<Category> result) {
-                progressBar.setVisibility(View.GONE);
                 if (!result.isEmpty()) {
                     categoryArrayList.clear();
                     categoryArrayList.addAll(result);

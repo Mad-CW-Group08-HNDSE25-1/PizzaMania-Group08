@@ -89,6 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                     String role = snapshot.child("role").getValue(String.class);
                     updateLastLogin(uid);
 
+                    // Save session
+                    SessionManager session = new SessionManager(LoginActivity.this);
+                    session.createSession(uid, inputEmail.getText().toString(), role);
+
+                    // RBAC redirect
                     if ("super_admin".equals(role) || "admin".equals(role)) {
                         startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
                     } else {
@@ -104,8 +109,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 Toast.makeText(LoginActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
-      });
-}
+        });
+    }
+
 
     private void updateLastLogin(String uid) {
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());

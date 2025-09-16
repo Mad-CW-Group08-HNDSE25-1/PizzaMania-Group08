@@ -51,7 +51,8 @@
                 android:textColor="@color/backColor1"
                 android:backgroundTint="#F5F5F5"
                 android:layout_gravity="center"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:onClick="capturePic"/>
 
             <EditText
                 android:id="@+id/txtName"
