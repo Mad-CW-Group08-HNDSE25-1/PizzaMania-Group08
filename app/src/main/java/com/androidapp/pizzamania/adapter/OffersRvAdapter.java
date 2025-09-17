@@ -1,6 +1,7 @@
 package com.androidapp.pizzamania.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,20 +11,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidapp.pizzamania.EditMenuItemActivity;
+import com.androidapp.pizzamania.MenuItemDetailFragment;
 import com.androidapp.pizzamania.R;
+import com.androidapp.pizzamania.controller.MenuItemController;
 import com.androidapp.pizzamania.model.MenuItem;
+import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OffersRvAdapter extends RecyclerView.Adapter<OffersRvAdapter.OfferViewHolder> {
 
+    private ArrayList<MenuItem> itemArrayList;
     private Context context;
-    private List<MenuItem> offerList;
+    private MenuItemController menuItemController = new MenuItemController();
 
-    public OffersRvAdapter(Context context, List<MenuItem> offerList) {
+    public OffersRvAdapter(ArrayList<MenuItem> itemArrayList, Context context) {
+        this.itemArrayList = itemArrayList;
         this.context = context;
-        this.offerList = offerList;
     }
+
 
     @NonNull
     @Override
@@ -34,34 +42,42 @@ public class OffersRvAdapter extends RecyclerView.Adapter<OffersRvAdapter.OfferV
 
     @Override
     public void onBindViewHolder(@NonNull OfferViewHolder holder, int position) {
-        MenuItem offer = offerList.get(position);
-        holder.offerTitle.setText(offer.getName());
-        holder.offerPrice.setText(offer.getPrice());
-        holder.offerDescription.setText(offer.getDescription());
+        MenuItem menuItem = itemArrayList.get(position);
 
-        /*
-        if (offer.getImage() != 0) {
-            holder.offerImage.setImageResource(offer.getImage());
-        }
+        holder.nameTxt.setText(menuItem.getName());
+        holder.priceTxt.setText(menuItem.getPrice());
+        Glide.with(holder.itemView.getContext())
+                .load(menuItem.getImage())
+                .into(holder.itemImage);
 
-         */
     }
 
     @Override
     public int getItemCount() {
-        return offerList.size();
+        return itemArrayList.size();
     }
 
-    public static class OfferViewHolder extends RecyclerView.ViewHolder {
-        ImageView offerImage;
-        TextView offerTitle, offerDescription, offerPrice;
+    public class OfferViewHolder extends RecyclerView.ViewHolder {
+        private ImageView itemImage;
+        private TextView nameTxt, priceTxt;
 
         public OfferViewHolder(@NonNull View itemView) {
             super(itemView);
-            offerImage = itemView.findViewById(R.id.offerImage);
-            offerTitle = itemView.findViewById(R.id.offerTitle);
-            offerTitle = itemView.findViewById(R.id.offerPrice);
-            offerDescription = itemView.findViewById(R.id.offerDescription);
+            itemImage = itemView.findViewById(R.id.offerImage);
+            nameTxt = itemView.findViewById(R.id.offerTitle);
+            priceTxt = itemView.findViewById(R.id.offerPrice);
+
+            itemView.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+
+                if (position != RecyclerView.NO_POSITION) {
+                    MenuItem menuItem = itemArrayList.get(getAdapterPosition());
+                    Intent intent = new Intent(context, MenuItemDetailFragment.class);
+                    intent.putExtra("itemId", menuItem.getId());
+                    context.startActivity(intent);
+                }
+
+            });
         }
     }
 }

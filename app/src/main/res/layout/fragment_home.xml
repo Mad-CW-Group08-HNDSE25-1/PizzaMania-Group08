@@ -236,34 +236,7 @@
             android:paddingTop="8dp"/>
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recent Order"
-            android:textStyle="bold"
-            android:textSize="48px"
-            android:textColor="@color/black"
-            android:layout_marginLeft="40px"
-            android:paddingTop="16dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecentOrderView"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
-
-        <TextView
-            android:id="@+id/tv_no_recent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No recent orders"
-            android:textAlignment="center"
-            android:textColor="#757171"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recent_label" />
 
 
 

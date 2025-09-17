@@ -7,21 +7,22 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:layout_margin="10dp">
 
         <ImageView
             android:id="@+id/offerImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/offerImage"
             android:layout_marginStart="12dp"
             android:orientation="vertical">
 
@@ -33,13 +34,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/offerDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="On all large pizzas until Sunday"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/offerPrice"
@@ -50,5 +44,5 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
