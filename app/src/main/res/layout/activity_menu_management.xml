@@ -1,70 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ManageMenuActivity"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:background="#F5F5F5">
 
-
-    <LinearLayout
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="8dp">
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back" />
+        android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Menu Management"
+            android:layout_gravity="center"
+            android:text="Menu"
             android:textSize="20sp"
             android:textStyle="bold" />
-    </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/arrow_backward_icon"
+            android:contentDescription="Back"
+            app:tint="@color/black" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
+    <!-- Search -->
     <SearchView
         android:id="@+id/searchItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Search items..."
-        android:iconifiedByDefault="false" />
+        android:iconifiedByDefault="false"
+        android:background="@drawable/search_background"
+        android:layout_margin="12dp"
+        android:elevation="4dp"
+        android:layout_below="@id/toolbar" />
 
-
+    <!-- RecyclerView fills space above button -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenuItems"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp" />
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:layout_below="@id/searchItem"
+        android:layout_above="@id/addMenuItemBtn" />
 
-
+    <!-- ProgressBar centered -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:visibility="gone" />
 
-
+    <!-- Fixed Add Button at bottom -->
     <Button
         android:id="@+id/addMenuItemBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Item"
+        android:text="Add Menu Item"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginTop="12dp" />
+        android:layout_margin="12dp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/orange_500"
+        android:textColor="@android:color/white" />
 
-</LinearLayout>
+</RelativeLayout>

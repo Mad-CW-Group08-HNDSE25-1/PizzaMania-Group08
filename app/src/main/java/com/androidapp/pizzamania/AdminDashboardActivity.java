@@ -23,7 +23,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private TextView tvPendingOrders, tvLowStock, tvBranches;
     private MaterialCardView btnMenu, btnStock, btnOrders, btnProfile, btnSignOut;
-    private MaterialCardView btnAddAdmin, btnViewAdmins, btnManageBranches;
+    private MaterialCardView btnAddAdmin, btnViewAdmins, btnManageBranches, addExtra;
 
     private DatabaseReference ordersRef, stockRef, branchesRef, usersRef;
     private String currentUserId, currentUserRole = "admin"; // default admin
@@ -59,6 +59,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         btnAddAdmin = findViewById(R.id.btnAddAdmin);
         btnViewAdmins = findViewById(R.id.btnAddList);
         btnManageBranches = findViewById(R.id.btnManageBranches);
+        addExtra = findViewById(R.id.btnAddExtra);
 
         // Load role & dashboard data
         loadUserRole();
@@ -72,6 +73,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
             session.clearSession();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+        });
+
+        addExtra.setOnClickListener(v -> {
+            startActivity(new Intent(this, ManageExtrasActivity.class));
         });
 
 

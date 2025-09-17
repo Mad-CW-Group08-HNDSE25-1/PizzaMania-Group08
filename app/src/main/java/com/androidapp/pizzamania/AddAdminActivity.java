@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,6 +43,8 @@ public class AddAdminActivity extends AppCompatActivity {
     private DatabaseReference usersRef, branchesRef;
     private List<String> branchList = new ArrayList<>();
     private ArrayAdapter<String> branchAdapter;
+
+    private FirebaseAuth secondaryAuth;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -78,6 +82,24 @@ public class AddAdminActivity extends AppCompatActivity {
 
         btnChoosePic.setOnClickListener(v -> chooseImage());
         btnAddAdmin.setOnClickListener(v -> addAdmin());
+
+        auth = FirebaseAuth.getInstance(); // main session (super admin)
+        usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        branchesRef = FirebaseDatabase.getInstance().getReference("branches");
+
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setApiKey(getString(R.string.firebase_api_key))
+                .setApplicationId(getString(R.string.firebase_app_id))
+                .setDatabaseUrl(getString(R.string.firebase_db_url))
+                .build();
+
+        try {
+            FirebaseApp secondaryApp = FirebaseApp.initializeApp(this, options, "secondary");
+            secondaryAuth = FirebaseAuth.getInstance(secondaryApp);
+        } catch (IllegalStateException e) {
+            secondaryAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("secondary"));
+        }
+
     }
 
     private void loadBranches() {
@@ -91,8 +113,10 @@ public class AddAdminActivity extends AppCompatActivity {
                 }
                 branchAdapter.notifyDataSetChanged();
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
 
@@ -104,7 +128,7 @@ public class AddAdminActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 102 && resultCode == RESULT_OK && data != null){
+        if (requestCode == 102 && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             imgProfile.setImageURI(imageUri);
         }
@@ -119,12 +143,12 @@ public class AddAdminActivity extends AppCompatActivity {
         String role = spRole.getSelectedItem().toString();
         String branch = spBranch.getSelectedItem().toString();
 
-        if(name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
+        if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(!password.equals(confirmPassword)){
+        if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -140,7 +164,7 @@ public class AddAdminActivity extends AppCompatActivity {
                     adminData.put("branch", branch);
                     adminData.put("lastLogin", "");
 
-                    if(imageUri != null){
+                    if (imageUri != null) {
                         StorageReference storageRef = FirebaseStorage.getInstance().getReference("profileImages/" + uid);
                         storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot ->
                                 storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -157,5 +181,33 @@ public class AddAdminActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
- }
+
+        secondaryAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> {
+                    String uid = authResult.getUser().getUid();
+
+                    Map<String, Object> adminData = new HashMap<>();
+                    adminData.put("name", name);
+                    adminData.put("email", email);
+                    adminData.put("phone", phone);
+                    adminData.put("role", role);   // super_admin, admin, user
+                    adminData.put("branch", branch);
+                    adminData.put("lastLogin", "");
+
+                    usersRef.child(uid).setValue(adminData)   // 🔑 Save into DB
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(this, "Admin added successfully", Toast.LENGTH_SHORT).show();
+                                secondaryAuth.signOut(); // prevent interference
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "Failed to save user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+
+    }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.view.*;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +85,7 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
     static class AdminViewHolder extends RecyclerView.ViewHolder {
         ImageView imgAdmin;
         TextView tvAdminName, tvAdminEmail, tvAdminRole;
-        Button btnRemove;
+        ImageButton btnRemove;
 
         public AdminViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +94,6 @@ public class AdminListAdapter extends RecyclerView.Adapter<AdminListAdapter.Admi
             tvAdminEmail = itemView.findViewById(R.id.tvAdminEmail);
             tvAdminRole = itemView.findViewById(R.id.tvAdminRole);
             btnRemove = itemView.findViewById(R.id.btnRemoveAdmin);
-}
-}
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.androidapp.pizzamania;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -42,15 +44,80 @@ public class CartActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         orderRef = FirebaseDatabase.getInstance().getReference("orders");
 
+        // Handle Intent extras from addToCartBtn
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+            String itemId = intent.getStringExtra("itemId");
+            String itemName = intent.getStringExtra("itemName");
+            double price = intent.getDoubleExtra("total", 0.0);
+            int qty = intent.getIntExtra("qty", 1);
+
+            if (itemId != null && itemName != null && price > 0 && qty > 0) {
+                addOrUpdateCartItem(itemId, itemName, price, qty);
+            }
+        }
+
         loadCart();
 
-        btnCheckout.setOnClickListener(v -> placeOrder());
+        btnCheckout.setOnClickListener(v -> {
+            if (cartList.isEmpty()) {
+                Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Prepare data to pass to CheckOutPage
+            ArrayList<String> itemIds = new ArrayList<>();
+            ArrayList<String> itemNames = new ArrayList<>();
+            ArrayList<Integer> itemQtys = new ArrayList<>();
+            ArrayList<Double> itemPrices = new ArrayList<>();
+            double totalAmount = 0;
+
+            for (CartItem item : cartList) {
+                itemIds.add(item.getItemId());
+                itemNames.add(item.getName());
+                itemQtys.add(item.getQuantity());
+                itemPrices.add(item.getPrice());
+                totalAmount += item.getTotalPrice();
+            }
+
+            // Pass data via Intent
+            Intent intent2 = new Intent(this, CheckOutPage.class);
+            intent2.putStringArrayListExtra("itemIds", itemIds);
+            intent2.putStringArrayListExtra("itemNames", itemNames);
+            intent2.putIntegerArrayListExtra("itemQtys", itemQtys);
+            intent2.putExtra("totalAmount", totalAmount);
+            startActivity(intent2);
+        });
+
+    }
+
+    private void addOrUpdateCartItem(String itemId, String name, double price, int qty) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Check if item already exists
+        Cursor cursor = db.query(DatabaseHelper.TABLE_CART, new String[]{"quantity"}, "itemId=?", new String[]{itemId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            // Item exists, update quantity
+            int existingQty = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));
+            values.put("quantity", existingQty + qty);
+            db.update(DatabaseHelper.TABLE_CART, values, "itemId=?", new String[]{itemId});
+        } else {
+            // Item doesn't exist, insert new item
+            values.put("itemId", itemId);
+            values.put("name", name);
+            values.put("price", price);
+            values.put("quantity", qty);
+            db.insert(DatabaseHelper.TABLE_CART, null, values);
+        }
+        cursor.close();
+        db.close();
     }
 
     private void loadCart() {
         cartList.clear();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query("Cart", null, null, null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.TABLE_CART, null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             String itemId = cursor.getString(cursor.getColumnIndexOrThrow("itemId"));
@@ -63,7 +130,7 @@ public class CartActivity extends AppCompatActivity {
         cursor.close();
         db.close();
 
-        adapter = new CartAdapter(this,cartList, this::updateTotal);
+        adapter = new CartAdapter(this, cartList, this::updateTotal);
         recyclerCart.setLayoutManager(new LinearLayoutManager(this));
         recyclerCart.setAdapter(adapter);
 
@@ -75,7 +142,7 @@ public class CartActivity extends AppCompatActivity {
         for (CartItem item : cartList) {
             total += item.getTotalPrice();
         }
-        tvTotal.setText("Total: Rs. " + total);
+        tvTotal.setText(String.format("Total: Rs. %.2f", total));
     }
 
     private void placeOrder() {
@@ -118,6 +185,7 @@ public class CartActivity extends AppCompatActivity {
                 .addOnSuccessListener(a -> {
                     clearCart();
                     Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                    finish(); // Close CartActivity after successful order
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Order failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -125,7 +193,7 @@ public class CartActivity extends AppCompatActivity {
 
     private void clearCart() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete("Cart", null, null);
+        db.delete(DatabaseHelper.TABLE_CART, null, null);
         db.close();
         loadCart();
     }

@@ -7,8 +7,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MenuItemDetailFragment">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,106 +18,129 @@
             <ImageView
                 android:id="@+id/itemImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop" />
+                android:layout_height="220dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/nameTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/nameTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Item name"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
+                android:layout_marginTop="12dp"
+                android:text="Item name"
+                android:textStyle="bold"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/priceTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Item price"
+                android:layout_marginTop="4dp"
+                android:text="Item price"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/descriptionTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description goes here" />
+                android:layout_marginTop="8dp"
+                android:text="Description goes here"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose Size" />
+                android:layout_marginTop="16dp"
+                android:text="Choose Size"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/sizesRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:paddingVertical="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose Toppings" />
+                android:layout_marginTop="16dp"
+                android:text="Choose Toppings"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/toppingsRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:paddingVertical="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/tvTotal"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Total: $0.00"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/minusBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:text="-"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@android:color/holo_orange_light"
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/qtyTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="16dp"
                         android:text="1"
-                        android:padding="8dp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/plusBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:text="+"
+                        android:textSize="50sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@android:color/holo_orange_light"
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/addToCartBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Add to cart" />
-
+                    android:layout_marginTop="16dp"
+                    android:text="Add to cart"
+                    android:textStyle="bold"
+                    android:paddingVertical="14dp"
+                    android:backgroundTint="@android:color/holo_orange_dark"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
 
 </FrameLayout>

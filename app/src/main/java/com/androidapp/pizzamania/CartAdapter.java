@@ -46,9 +46,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         // Set item data
         holder.tvName.setText(item.getName());
         holder.tvQty.setText(String.valueOf(item.getQuantity()));
-        holder.tvPrice.setText("Rs. " + item.getTotalPrice());
+        holder.tvPrice.setText(String.format("Rs. %.2f", item.getTotalPrice()));
 
-        // Increase quantity (+)
+
         holder.btnPlus.setOnClickListener(v -> {
             item.setQuantity(item.getQuantity() + 1);
             updateItemInDB(item);
@@ -56,7 +56,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             listener.onCartChanged();
         });
 
-        // Decrease quantity (–)
+
         holder.btnMinus.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.setQuantity(item.getQuantity() - 1);
@@ -66,7 +66,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
 
-        // Delete item
+
         holder.btnDelete.setOnClickListener(v -> {
             removeItemFromDB(item);
             cartList.remove(position);
@@ -81,19 +81,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return cartList.size();
     }
 
-    // Update existing item in SQLite
+
     private void updateItemInDB(CartItem item) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("quantity", item.getQuantity());
-        db.update("Cart", values, "itemId=?", new String[]{item.getItemId()});
+        db.update(DatabaseHelper.TABLE_CART, values, "itemId=?", new String[]{item.getItemId()});
         db.close();
     }
 
-    // Remove item from SQLite
+
     private void removeItemFromDB(CartItem item) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete("Cart", "itemId=?", new String[]{item.getItemId()});
+        db.delete(DatabaseHelper.TABLE_CART, "itemId=?", new String[]{item.getItemId()});
         db.close();
     }
 

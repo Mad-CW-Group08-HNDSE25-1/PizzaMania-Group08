@@ -1,6 +1,8 @@
 package com.androidapp.pizzamania;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidapp.pizzamania.adapter.OptionRvAdapter;
 import com.androidapp.pizzamania.callBack.OnResultListener;
@@ -200,16 +203,30 @@ public class MenuItemDetailFragment extends Fragment {
         });
 
         addToCartBtn.setOnClickListener(v -> {
+            // Insert item into SQLite Cart table
+            DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("itemId", itemId);
+            values.put("name", menuItem.getName());
+            values.put("price", total); // or menuItem.getPrice() if you have it
+            values.put("quantity", qty);
+
+            db.insertWithOnConflict("Cart", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            db.close();
+
+            Toast.makeText(requireContext(), menuItem.getName() + " added to cart", Toast.LENGTH_SHORT).show();
+
+            // Open CartActivity
             Intent intent = new Intent(requireActivity(), CartActivity.class);
-            intent.putExtra("itemId", itemId);
-            intent.putExtra("itemName", menuItem.getName());
-            intent.putExtra("total", total);
-            intent.putExtra("qty", qty);
             startActivity(intent);
         });
+
     }
 
     private void recalcTotal(Set<Size> selectedSizes, Set<Topping> selectedToppings) {
+        int basePrice = Integer.parseInt(menuItem.getPrice()); // base price of item
         int optionTotal = 0;
 
         if (selectedSizes != null) {
@@ -223,7 +240,9 @@ public class MenuItemDetailFragment extends Fragment {
             }
         }
 
-        total = (price * qty) + optionTotal;
+        total = (basePrice + optionTotal) * qty; // multiply only after summing base + options
         totalTxt.setText("Total: " + total + ".00");
     }
+
+
 }

@@ -205,7 +205,7 @@ public class AdminProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void capturePic(View view) {
+    public void capturePic(View view) {
         Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cam, 100);
     }

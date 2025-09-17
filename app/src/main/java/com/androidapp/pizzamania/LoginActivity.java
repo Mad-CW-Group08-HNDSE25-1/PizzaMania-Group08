@@ -25,7 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
@@ -86,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    // ✅ User already exists in DB
                     String role = snapshot.child("role").getValue(String.class);
                     updateLastLogin(uid);
 
@@ -93,15 +96,28 @@ public class LoginActivity extends AppCompatActivity {
                     SessionManager session = new SessionManager(LoginActivity.this);
                     session.createSession(uid, inputEmail.getText().toString(), role);
 
-                    // RBAC redirect
-                    if ("super_admin".equals(role) || "admin".equals(role)) {
-                        startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
-                    } else {
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    }
-                    finish();
+                    redirectBasedOnRole(role);
                 } else {
-                    Toast.makeText(LoginActivity.this, "User data not found", Toast.LENGTH_SHORT).show();
+
+                    String email = inputEmail.getText().toString();
+                    String role = "admin";
+                    String branch = "unassigned";
+
+                    Map<String, Object> userData = new HashMap<>();
+                    userData.put("email", email);
+                    userData.put("role", role);
+                    userData.put("branch", branch);
+                    userData.put("lastLogin", getCurrentTime());
+
+                    usersRef.child(uid).setValue(userData)
+                            .addOnSuccessListener(aVoid -> {
+                                SessionManager session = new SessionManager(LoginActivity.this);
+                                session.createSession(uid, email, role);
+                                redirectBasedOnRole(role);
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(LoginActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show()
+                            );
                 }
             }
 
@@ -111,6 +127,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void redirectBasedOnRole(String role) {
+        if ("super_admin".equals(role) || "admin".equals(role)) {
+            startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+        } else {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
+        finish();
+    }
+
+    private String getCurrentTime() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+    }
+
 
 
     private void updateLastLogin(String uid) {
