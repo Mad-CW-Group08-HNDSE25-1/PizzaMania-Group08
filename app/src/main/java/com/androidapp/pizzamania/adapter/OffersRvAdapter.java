@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OffersRvAdapter extends RecyclerView.Adapter<OffersRvAdapter.OfferViewHolder> {
+public class  OffersRvAdapter extends RecyclerView.Adapter<OffersRvAdapter.OfferViewHolder> {
 
     private ArrayList<MenuItem> itemArrayList;
     private Context context;

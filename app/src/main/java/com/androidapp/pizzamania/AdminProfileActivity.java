@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class AdminProfileActivity extends AppCompatActivity {
     private TextView tvEmail, tvRole, tvLastLogin, tvBranch;
     private Button btnUpdate, btnResetPassword, editPicBtn;
 
+    private Spinner spinner;
     private Uri imageUri;
     private FirebaseAuth auth;
     private DatabaseReference usersRef;
@@ -55,7 +57,7 @@ public class AdminProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_profile_ui);
+        setContentView(R.layout.activity_admin_profile);
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
@@ -68,7 +70,7 @@ public class AdminProfileActivity extends AppCompatActivity {
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
         // Initialize views
-        imgProfile = findViewById(R.id.profileImage);
+        imgProfile = findViewById(R.id.imgProfile);
         etName = findViewById(R.id.etName);
         etPhone = findViewById(R.id.etPhone);
         tvEmail = findViewById(R.id.txtEmail);
@@ -76,9 +78,9 @@ public class AdminProfileActivity extends AppCompatActivity {
         tvLastLogin = findViewById(R.id.tvLastLogin);
         tvBranch = findViewById(R.id.tvBranch);
 
-        btnUpdate = findViewById(R.id.saveBtn);
-        btnResetPassword = findViewById(R.id.saveAuthBtn);
-        editPicBtn = findViewById(R.id.changeImageBtn);
+        btnUpdate = findViewById(R.id.btnUpdate);
+        btnResetPassword = findViewById(R.id.btnResetPassword);
+        editPicBtn = findViewById(R.id.btnChangePic);
 
         // Set click listeners
         btnUpdate.setOnClickListener(v -> updateProfile());

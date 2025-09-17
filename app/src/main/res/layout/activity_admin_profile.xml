@@ -43,13 +43,12 @@
             android:inputType="phone"
             android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/etEmail"
+        <TextView
+            android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:enabled="false"
+            android:text="Email"
+            android:textSize="14sp"
             android:layout_marginBottom="12dp"/>
 
         <!-- Role -->
@@ -61,13 +60,6 @@
             android:textSize="14sp"
             android:layout_marginBottom="12dp"/>
 
-        <Spinner
-            android:id="@+id/spRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:visibility="gone"/>
-
         <!-- Branch -->
         <TextView
             android:id="@+id/tvBranch"
@@ -76,13 +68,6 @@
             android:text="Branch Name"
             android:textSize="14sp"
             android:layout_marginBottom="12dp"/>
-
-        <Spinner
-            android:id="@+id/spBranch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:visibility="gone"/>
 
         <!-- Last Login -->
         <TextView

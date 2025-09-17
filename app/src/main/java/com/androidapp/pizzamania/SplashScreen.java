@@ -49,7 +49,7 @@ public class SplashScreen extends AppCompatActivity {
             }
             finish();
         }, 3000);
-
+//
 //        FirebaseAuth.getInstance().signOut();
 //        session.clearSession();
 //        startActivity(new Intent(this, LoginActivity.class));

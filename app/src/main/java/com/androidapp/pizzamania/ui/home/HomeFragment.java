@@ -23,7 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class  HomeFragment extends Fragment {
     private Button btnDetectLocation;
     private RecyclerView rv_offers;
     private ArrayList<MenuItem> itemArrayList;
