@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvItemName"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Pizza Name"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/btnMinus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#03DAC5"
+        android:src="@drawable/ic_minus"
+        android:contentDescription="Minus"
+        android:tint="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="1"
+        android:textSize="16sp"
+        android:gravity="center" />
+
+    <ImageButton
+        android:id="@+id/btnPlus"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#03DAC5"
+        android:src="@drawable/ic_plus"
+        android:contentDescription="Plus"
+        android:tint="@android:color/white" />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#FF5252"
+        android:src="@drawable/ic_delete"
+        android:contentDescription="Delete"
+        app:tint="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvItemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Rs. 0"
+        android:textSize="16sp" />
+</LinearLayout>
